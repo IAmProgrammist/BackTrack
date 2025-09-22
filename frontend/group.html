@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="./css/base.css"/>
+        <link rel="stylesheet" href="./css/home.css"/>
+        <link rel="stylesheet" href="./css/groups.css"/>
+        <link rel="stylesheet" href="./css/authors.css"/>
+        <link rel="stylesheet" href="./css/songs.css"/>
+        <title>BackTrack</title>
+    </head>
+    <body>
+        <header>
+            <img class="logo" src="./assets/logo.png"/>
+            <input name="search"/>
+            <img class="avatar avatar--small" src="./assets/avatar.jpg"/>
+        </header>
+        <main>
+            <section class="navbar">
+                <nav>
+                    <a href="./home.html">Главная</a>
+                    <a href="./groups.html">Группы</a>
+                    <a href="./playlists.html">Плейлисты</a>
+                    <a href="./songs.html">Песни</a>
+                    <a href="./authors.html">Авторы</a>
+                </nav>
+            </section>
+            <section class="main-section dashboard">
+                <article class="card group group--big">
+                    <div class="card-header">
+                        <img src="https://www.placebeard.it/400x400"/>
+                        <div class="card-title">
+                            <h3>Группа 'Эхо'</h3>
+                            <button>
+                                Редактировать группу
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <p class="group-desciption">
+                            Коллектив инди-рок музыкантов, известный своими атмосферными мелодиями и глубокими текстами. Экспериментируем с новыми звуками и жанрами, чтобы создать уникальный опыт для наших слушателей.
+                        </p>
+                        <div class="group-participants">
+                            <div class="group-participants-text">Участники:</div> 
+                            <img class="avatar avatar--small" src="./assets/avatar.jpg"/>
+                            <img class="avatar avatar--small" src="./assets/avatar.jpg"/>
+                            <img class="avatar avatar--small" src="./assets/avatar.jpg"/>
+                        </div>
+                    </div>
+                </article>
+
+                <article>
+                    <h1>
+                        Песни
+                    </h1>
+                    <div class="dashboard-items">
+                        <a class="card card--clickable song song--small" href="./song.html">
+                            <div class="card-header">
+                                <h3>Крутая песня</h3>
+                            </div>
+                            <div class="card-title">
+                                <p>Элис Рейнхарт</p>
+                            </div>
+                            <div class="card-content">
+                                <div class="song-duration">
+                                    Длительность: 3:45
+                                </div>
+                                <button class="song-play">
+                                    Играть
+                                </button>
+                            </div>
+                        </a>
+                        <a class="card card--clickable song song--small" href="./song.html">
+                            <div class="card-header">
+                                <h3>Крутая песня</h3>
+                            </div>
+                            <div class="card-title">
+                                <p>Элис Рейнхарт</p>
+                            </div>
+                            <div class="card-content">
+                                <div class="song-duration">
+                                    Длительность: 3:45
+                                </div>
+                                <button class="song-play">
+                                    Играть
+                                </button>
+                            </div>
+                        </a>
+                        <a class="card card--clickable song song--small" href="./song.html">
+                            <div class="card-header">
+                                <h3>Крутая песня</h3>
+                            </div>
+                            <div class="card-title">
+                                <p>Элис Рейнхарт</p>
+                            </div>
+                            <div class="card-content">
+                                <div class="song-duration">
+                                    Длительность: 3:45
+                                </div>
+                                <button class="song-play">
+                                    Играть
+                                </button>
+                            </div>
+                        </a>
+                    </div>
+                </article>
+            </section>
+        </main>
+        <footer>
+            IAmProgrammist, 2025
+        </footer>
+    </body>
+</html>

@@ -1,0 +1,444 @@
+/* 1. Use a more-intuitive box-sizing model */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+/* 2. Remove default margin */
+* {
+  margin: 0;
+}
+/* 3. Enable keyword animations */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    interpolate-size: allow-keywords;
+  }
+}
+body {
+  /* 4. Add accessible line-height */
+  line-height: 1.5;
+  /* 5. Improve text rendering */
+  -webkit-font-smoothing: antialiased;
+}
+/* 6. Improve media defaults */
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+/* 7. Inherit fonts for form controls */
+input, button, textarea, select {
+  font: inherit;
+}
+/* 8. Avoid text overflows */
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+/* 9. Improve line wrapping */
+p {
+  text-wrap: pretty;
+}
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+/*
+  10. Create a root stacking context
+*/
+#root, #__next {
+  isolation: isolate;
+}
+
+h1 {
+    font-size: 1.75rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+}
+
+h3 {
+    font-size: 1.25rem;
+}
+
+h4 {
+    font-size: 1rem;
+}
+
+h5 {
+    font-size: 0.75rem;
+}
+
+h6 {
+    font-size: 0.5rem;
+}
+
+a:link {
+    text-decoration: inherit;
+    color: inherit;
+    cursor: auto;
+}
+
+a:visited {
+    text-decoration: inherit;
+    color: inherit;
+    cursor: auto;
+}
+
+
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+html {
+    min-height: 100vh;
+    font-family: "Play", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Play", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex-grow: 1;
+}
+
+header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 8px;
+    gap: 16px;
+    box-shadow: 0px 0px 10px grey;
+    z-index: 20;
+    position: relative;
+}
+
+.logo {
+    width: 250px;
+}
+
+header {
+    .logo {
+        margin-right: auto;
+    }
+}
+
+input {
+    border: 2px solid gainsboro;
+    background-color: ghostwhite;
+    border-radius: 12px;
+    padding: 8px;
+}
+
+.avatar {
+    overflow: hidden;
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+    flex-shrink: 0;
+}
+
+.avatar--small {
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+}
+
+.avatar--medium {
+    height: 70px;
+    width: 70px;
+    border-radius: 35px;
+}
+
+.avatar--big {
+    height: 100px;
+    width: 100px;
+    border-radius: 50px;
+}
+
+main {
+    display: flex;
+    flex-direction: row;
+    z-index: 19;
+}
+
+.main-section {
+    flex-grow: 1;
+    background-color: aliceblue;
+}
+
+.navbar {
+    min-width: 200px;
+    padding: 8px;
+
+    nav {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    a {
+        border-radius: 12px;
+        padding: 8px;
+        transition: background-color .2s ease-in-out;
+    }
+
+    a:hover {
+        background-color: ghostwhite;
+    }
+
+    a:active {
+        background-color: grey;
+    }
+}
+
+button {
+  appearance: none;
+  background-color: #FAFBFC;
+  border: 1px solid rgba(27, 31, 35, 0.15);
+  border-radius: 6px;
+  box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+  color: #24292E;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  list-style: none;
+  padding: 6px 16px;
+  position: relative;
+  transition: background-color 0.2s ease-in-out;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  white-space: nowrap;
+  word-wrap: break-word;
+}
+
+button:hover {
+  background-color: #F3F4F6;
+  text-decoration: none;
+  transition-duration: 0.1s;
+}
+
+button:disabled {
+  background-color: #FAFBFC;
+  border-color: rgba(27, 31, 35, 0.15);
+  color: #959DA5;
+  cursor: default;
+}
+
+button:active {
+  background-color: #EDEFF2;
+  box-shadow: rgba(225, 228, 232, 0.2) 0 1px 0 inset;
+  transition: none 0s;
+}
+
+button:focus {
+  outline: 1px transparent;
+}
+
+button:before {
+  display: none;
+}
+
+button:-webkit-details-marker {
+  display: none;
+}
+
+.icon-button {
+  appearance: none;
+  background-color: #FAFBFC;
+  border: 1px solid rgba(27, 31, 35, 0.15);
+  border-radius: 6px;
+  box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+  color: #24292E;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  list-style: none;
+  padding: 6px 16px;
+  position: relative;
+  transition: background-color 0.2s ease-in-out;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  white-space: nowrap;
+  word-wrap: break-word;
+  display: flex;
+  justify-content: center;
+}
+
+.icon-button:hover {
+  background-color: #F3F4F6;
+  text-decoration: none;
+  transition-duration: 0.1s;
+}
+
+.icon-button:disabled {
+  background-color: #FAFBFC;
+  border-color: rgba(27, 31, 35, 0.15);
+  color: #959DA5;
+  cursor: default;
+}
+
+.icon-button:active {
+  background-color: #EDEFF2;
+  box-shadow: rgba(225, 228, 232, 0.2) 0 1px 0 inset;
+  transition: none 0s;
+}
+
+.icon-button:focus {
+  outline: 1px transparent;
+}
+
+.icon-button:before {
+  display: none;
+}
+
+.icon-button:-webkit-details-marker {
+  display: none;
+}
+
+.icon-button--small {
+    height: 32px;
+    width: 32px;
+    border-radius: 16px;
+}
+
+.icon-button--medium {
+    height: 48px;
+    width: 48px;
+    border-radius: 24px;
+}
+
+
+.icon-button--big {
+    height: 64px;
+    width: 64px;
+    border-radius: 32px;
+}
+
+.icon-button--text {
+    background-color: transparent;
+    border: none;
+}
+
+.icon-button--primary {
+  color: #d1d3d4;
+  background-color: #0c78e4;
+  border: 1px solid rgba(27, 31, 35, 0.15);
+}
+
+.icon-button--primary:hover {
+  background-color: #50a7ff;
+  border: 1px solid rgba(27, 31, 35, 0.15);
+}
+
+.icon-button--primary:active {
+  background-color: #a1d0ff;
+  border: 1px solid rgba(27, 31, 35, 0.15);
+}
+
+.card {
+    display: block;
+    background-color: white;
+    border-radius: 12px;
+    padding: 12px;
+    overflow: hidden;
+}
+
+.card--clickable {
+    transition: background-color .2s ease-in-out;
+}
+
+.card--clickable:hover {
+    background-color: rgb(189, 189, 189);
+}
+
+.card--clickable:active {
+    background-color: grey;
+}
+
+footer {
+    padding: 8px;
+    text-align: center;
+}
+
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    padding: 32px 24px;
+    gap: 12px;
+
+    article {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    h1 {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .dashboard-items {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 16px;
+    }
+}
+
+.dashboard article>button {
+    align-self: center;
+}
+
+.progress {
+    position: relative;
+    height: 20px;
+}
+
+.progress-background {
+    width: 100%;
+    height: 4px;
+    background-color: rgb(201, 201, 201);
+    position: absolute;
+    border-radius: 2px;
+    top: 8px;
+}
+
+.progress-foreground {
+    width: 10px;
+    left: 0;
+    height: 4px;
+    background-color: rgb(28, 110, 235);
+    position: absolute;
+    border-radius: 2px;
+    top: 8px;
+}
+
+.progress-slider {
+    height: 20px;
+    width: 20px;
+    border-radius: 10px;
+    border: 2px solid rgb(28, 110, 235);
+    background-color: white;
+    position: absolute;
+    left: 10px;
+}

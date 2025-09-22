@@ -1,0 +1,39 @@
+.card.playlist.playlist--big {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    align-items: center;
+
+    .playlist-image {
+        height: 200px;
+        width: 200px;
+        object-fit: cover;
+        border-radius: 20px;
+    }
+    .playlist-info {
+        display: flex;
+        flex-direction: column;
+        align-self: stretch;
+        justify-content: space-between;
+    }
+    .playlist-actions {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+    }
+}
+
+.card.playlist-list {
+    .card-content {
+        display: grid;
+        grid-template-columns: 20px 1fr 110px 80px 110px 80px;
+        gap: 16px;
+    }
+
+    .grid-hr {
+        grid-column: span 6;
+        background-color: rgb(207, 207, 207);
+        height: 1px;
+        width: 100%;
+    }
+}

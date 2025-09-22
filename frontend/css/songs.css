@@ -1,0 +1,18 @@
+.card.song.song--small {
+    .card-header {
+    }
+
+    .card-title {
+    }
+
+    .card-content {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.card.song.song--big {
+}

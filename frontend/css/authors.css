@@ -1,0 +1,31 @@
+.card.author.author--small {
+    .card-header {
+        display: flex;
+        justify-content: center;
+    }
+
+    .card-title {
+        text-align: center;
+    }
+}
+
+.card.author.author--big {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    align-items: center;
+
+    .author-info {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        flex-wrap: 1;
+
+        .author-title {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            gap: 16px;
+        }
+    }
+}

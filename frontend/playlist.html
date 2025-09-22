@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="./css/base.css"/>
+        <link rel="stylesheet" href="./css/playlists.css"/>
+        <link rel="stylesheet" href="./css/player.css"/>
+        <title>BackTrack</title>
+    </head>
+    <body>
+        <header>
+            <img class="logo" src="./assets/logo.png"/>
+            <input name="search"/>
+            <img class="avatar avatar--small" src="./assets/avatar.jpg"/>
+        </header>
+        <main>
+            <section class="navbar">
+                <nav>
+                    <a href="./home.html">Главная</a>
+                    <a href="./groups.html">Группы</a>
+                    <a href="./playlists.html">Плейлисты</a>
+                    <a href="./songs.html">Песни</a>
+                    <a href="./authors.html">Авторы</a>
+                </nav>
+            </section>
+            <section class="main-section dashboard">
+                <article class="card playlist playlist--big">
+                    <img src="https://www.placebeard.it/400x400" class="playlist-image"/>
+                    <div class="playlist-info">
+                        <h1 class="playlist-title">
+                            Популярные Хиты 2024
+                        </h1>
+                        <p class="playlist-description">
+                            Лучшие треки и новинки этого года, отобранные для вашего удовольствия. Идеально для работы, учебы и отдыха.
+                        </p>
+                        <div class="playlist-actions">
+                            <button>
+                                Редактировать плейлист
+                            </button>
+                            <button>
+                                Поделиться
+                            </button>
+                            <button>
+                                Удалить
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="card player">
+                    <div class="card-title">
+                        <h3>Управление воспроизведением</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="player-controls">
+                            <div class="icon-button icon-button--medium icon-button--text">
+                                <img src="./assets/shuffle.svg"/>
+                            </div>
+                            <div class="icon-button icon-button--medium icon-button--text">
+                                <img src="./assets/skip-backwards.svg"/>
+                                
+                            </div>
+                            <div class="icon-button icon-button--medium icon-button--primary">
+                                <img src="./assets/play-pause.svg"/>
+                                
+                            </div>
+                            <div class="icon-button icon-button--medium icon-button--text">
+                                <img src="./assets/skip-forward.svg"/>
+                                
+                            </div>
+                            <div class="icon-button icon-button--medium icon-button--text">
+                                <img src="./assets/arrows-repeat.svg"/>
+                                
+                            </div>
+                        </div>
+                        <div class="player-progress">
+                            <div class="player-current-time">0:04</div>    
+                            <div class="progress">
+                                <div class="progress-background">
+                                </div>
+                                <div class="progress-foreground">
+                                </div>
+                                <div class="progress-slider">
+                                </div>
+                            </div>
+                            <div class="player-total-time">5:32</div>
+                        </div>
+                        <div class="player-options">
+                            <div class="progress">
+                                <div class="progress-background">
+                                </div>
+                                <div class="progress-foreground">
+                                </div>
+                                <div class="progress-slider">
+                                </div>
+                            </div>
+                            <button>
+                                Одновременное воспроизведение
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="card playlist-list">
+                    <div class="card-title">
+                        <h3>Треки в плейлисте</h3>
+                    </div>
+                    <div class="card-content">
+                        <div>#</div>
+                        <div>Название трека</div>
+                        <div>Исполнитель</div>
+                        <div>Версия</div>
+                        <div>Длительность</div>
+                        <div>Действия</div>
+                        <div class="grid-hr"></div>
+                        <div>1</div>
+                        <div>Вечные ритмы</div>
+                        <div>РитмМастеры</div>
+                        <div>e2j3ii</div>
+                        <div>3:30</div>
+                        <div>...</div>
+                        <div class="grid-hr"></div>
+                        <div>2</div>
+                        <div>Вечные ритмы</div>
+                        <div>РитмМастеры</div>
+                        <div>e2j3ii</div>
+                        <div>3:30</div>
+                        <div>...</div>
+                        <div class="grid-hr"></div>
+                        <div>3</div>
+                        <div>Вечные ритмы</div>
+                        <div>РитмМастеры</div>
+                        <div>e2j3ii</div>
+                        <div>3:30</div>
+                        <div>...</div>
+                        <div class="grid-hr"></div>
+                        <div>4</div>
+                        <div>Вечные ритмы</div>
+                        <div>РитмМастеры</div>
+                        <div>e2j3ii</div>
+                        <div>3:30</div>
+                        <div>...</div>
+                        <div class="grid-hr"></div>
+                        <div>5</div>
+                        <div>Вечные ритмы</div>
+                        <div>РитмМастеры</div>
+                        <div>e2j3ii</div>
+                        <div>3:30</div>
+                        <div>...</div>
+                        <div class="grid-hr"></div>
+                        <div>6</div>
+                        <div>Вечные ритмы</div>
+                        <div>РитмМастеры</div>
+                        <div>e2j3ii</div>
+                        <div>3:30</div>
+                        <div>...</div>
+                        <div class="grid-hr"></div>
+                        <div>7</div>
+                        <div>Вечные ритмы</div>
+                        <div>РитмМастеры</div>
+                        <div>e2j3ii</div>
+                        <div>3:30</div>
+                        <div>...</div>
+                    </div>
+                </article>
+                
+            </section>
+        </main>
+        <footer>
+            IAmProgrammist, 2025
+        </footer>
+    </body>
+</html>

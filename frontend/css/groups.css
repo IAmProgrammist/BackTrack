@@ -1,0 +1,61 @@
+.card.group.group--small {
+    padding: 0;
+
+    .card-header img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .card-title, .card-content {
+        padding: 12px
+    }
+}
+
+.card.group.group--big {
+    padding: 0;
+
+    .card-header {
+        position: relative;
+    }
+
+    .card-header img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+    }
+
+    .card-title {
+        position: absolute;
+        bottom: 12px;
+        left: 12px;
+        right: 12px;
+        filter: drop-shadow(1px 1px 6px white);
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .card-title h3 {
+        font-size: 3rem;
+    }
+
+    .card-content {
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .group-participants {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .group-participants-text {
+        font-weight: 700;
+    }
+}
