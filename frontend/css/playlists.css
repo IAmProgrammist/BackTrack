@@ -32,8 +32,5 @@
 
     .grid-hr {
         grid-column: span 6;
-        background-color: rgb(207, 207, 207);
-        height: 1px;
-        width: 100%;
     }
 }

@@ -15,4 +15,53 @@
 }
 
 .card.song.song--big {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    align-items: center;
+
+    .song-image {
+        height: 200px;
+        width: 200px;
+        object-fit: cover;
+        border-radius: 20px;
+    }
+    .song-info {
+        display: flex;
+        flex-direction: column;
+        align-self: stretch;
+        justify-content: space-between;
+    }
+    .song-actions {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+    }
+}
+
+.card.song-history {
+    .card-content {
+        max-height: 500px;
+        overflow-y: auto;
+        display: grid;
+        grid-template-columns: 120px 100px 1fr 100px;
+        gap: 16px;
+    }
+
+    .grid-hr {
+        grid-column: span 4;
+    }
+}
+
+.song-section {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+}
+
+.song-sub-section {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }

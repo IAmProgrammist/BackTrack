@@ -5,14 +5,15 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="./css/base.css"/>
-        <link rel="stylesheet" href="./css/home.css"/>
-        <link rel="stylesheet" href="./css/authors.css"/>
+        <link rel="stylesheet" href="./css/songs.css"/>
+        <link rel="stylesheet" href="./css/comments.css"/>
+        <link rel="stylesheet" href="./css/files.css"/>
         <title>BackTrack</title>
     </head>
     <body>
         <header>
             <img class="logo" src="./assets/logo.png"/>
-            <input name="search"/>
+            <input name="search" value="Поиск"/>
             <img class="avatar avatar--small" src="./assets/avatar.jpg"/>
         </header>
         <main>
@@ -26,84 +27,365 @@
                 </nav>
             </section>
             <section class="main-section dashboard">
-                <article class="card group group--big">
-                    <div class="card-header">
-                        <img src="https://www.placebeard.it/400x400"/>
-                        <div class="card-title">
-                            <h3>Группа 'Эхо'</h3>
+                <article class="card song song--big">
+                    <img src="https://www.placebeard.it/400x400" class="song-image"/>
+                    <div class="song-info">
+                        <h1 class="song-title">
+                            Мощная песня
+                            <div class="chip">
+                                Черновик
+                            </div>
+                        </h1>
+                        <p class="song-description">
+                            Я в своем познании настолько преисполнился, что я как будто бы уже сто триллионов миллиардов лет проживаю на триллионах и триллионах таких же планет, как эта Земля, мне этот мир абсолютно понятен, и я здесь ищу только одного - покоя, умиротворения и вот этой гармонии, от слияния с бесконечно вечным, от созерцания великого фрактального подобия и от вот этого замечательного всеединства существа, бесконечно вечного, куда ни посмотри, хоть вглубь - бесконечно малое, хоть ввысь - бесконечное большое, понимаешь?
+                        </p>
+                        <h4>BPM: 124<br/>Тональность: C#<br/>Длительность: 3:45</h4>
+                        <div class="song-actions">
                             <button>
-                                Редактировать группу
+                                Выпустить версию
                             </button>
                         </div>
                     </div>
-                    <div class="card-content">
-                        <p class="group-desciption">
-                            Коллектив инди-рок музыкантов, известный своими атмосферными мелодиями и глубокими текстами. Экспериментируем с новыми звуками и жанрами, чтобы создать уникальный опыт для наших слушателей.
-                        </p>
-                        <div class="group-participants">
-                            <div class="group-participants-text">Участники:</div> 
-                            <img class="avatar avatar--small" src="./assets/avatar.jpg"/>
-                            <img class="avatar avatar--small" src="./assets/avatar.jpg"/>
-                            <img class="avatar avatar--small" src="./assets/avatar.jpg"/>
-                        </div>
-                    </div>
                 </article>
-
-                <article>
-                    <h1>
-                        Песни
-                    </h1>
-                    <div class="dashboard-items">
-                        <a class="card card--clickable song song--small" href="./song.html">
-                            <div class="card-header">
-                                <h3>Крутая песня</h3>
-                            </div>
+                <section class="song-section">
+                    <section class="song-sub-section song-sub-section--left">
+                        <article class="card">
                             <div class="card-title">
-                                <p>Элис Рейнхарт</p>
+                                <h3>Слова</h3>
                             </div>
                             <div class="card-content">
-                                <div class="song-duration">
-                                    Длительность: 3:45
-                                </div>
-                                <button class="song-play">
-                                    Играть
-                                </button>
+                                [Припев]<br/>
+                                А муха тоже вертолёт<br/>
+                                Но без коробки передач<br/>
+                                А по стене ползёт пельмень<br/>
+                                И все коленки в огурцах<br/>
+                                Он деревянный, как кирпич<br/>
+                                Он волосатый, как трамвай<br/>
+                                А это песня про любовь<br/>
+                                И ты её не забывай<br/>
+<br/>
+                                [Куплет 1]<br/>
+                                Он такой же зелёный, как и корни старого клёна<br/>
+                                Такой же прозрачный, как Миринда или Кока-Кола<br/>
+                                Или как железобетонная стена твоего дома<br/>
+                                Огромный, как диагональ твоего монитора<br/>
+                                Такой же тихий, как и стоны ночных занятий влюбленных<br/>
+                                Такой же здоровый, как и дед, пьющий водку палёную<br/>
+                                Такой же весёлый, как и ноты ре-минора<br/>
+                                Такой же вкусный, как и пища в школьной столовой<br/>
+                                Такой же опасный, как и муха — лучше не трогай<br/>
+                                Ведь муха тоже вертолёт, железная строга<br/>
+                                И даже не понятно, что сейчас пельмешка мутит<br/>
+                                А о том что эта песня про любовь, забывать не будем<br/>
+<br/>
+                                [Припев]<br/>
+                                А муха тоже вертолёт<br/>
+                                Но без коробки передач<br/>
+                                А по стене ползёт пельмень<br/>
+                                И все коленки в огурцах<br/>
+                                Он деревянный, как кирпич<br/>
+                                Он волосатый, как трамвай<br/>
+                                А это песня про любовь<br/>
+                                И ты её не забывай<br/>
+<br/>
+                                [Куплет 2]<br/>
+                                По деревянной стене из кирпича ползёт пельмешка<br/>
+                                Вареник и макаронинка тоже не стали мешкать<br/>
+                                А просто вежливо позвали кириешку<br/>
+                                И дабы не быть поверженными, стали догонять пельмешку<br/>
+                                Пока я отмывал коленки от огурцов<br/>
+                                Забыл, что эта песня про высокое чувство — любовь<br/>
+                                Следом отмывая голову от салата<br/>
+                                Понял, что об этом лучше забывать не надо<br/>
+                                Потом мы всей компанией прокатимся на волосатом трамвае<br/>
+                                При этом о главном не забывая<br/>
+                                О чём же эта песня, вовсе не понятно<br/>
+                                Да и я и сам не понял, да и вы поймёте вряд ли<br/>
+<br/>
+                                [Припев]<br/>
+                                А муха тоже вертолёт<br/>
+                                Но без коробки передач<br/>
+                                А по стене ползёт пельмень<br/>
+                                И все коленки в огурцах<br/>
+                                Он деревянный, как кирпич<br/>
+                                Он волосатый, как трамвай<br/>
+                                А это песня про любовь<br/>
+                                И ты её не забывай<br/>
                             </div>
-                        </a>
-                        <a class="card card--clickable song song--small" href="./song.html">
-                            <div class="card-header">
-                                <h3>Крутая песня</h3>
-                            </div>
+                        </article>
+                        <article class="card song-history">
                             <div class="card-title">
-                                <p>Элис Рейнхарт</p>
+                                <h3>История версий</h3>
                             </div>
                             <div class="card-content">
-                                <div class="song-duration">
-                                    Длительность: 3:45
-                                </div>
-                                <button class="song-play">
-                                    Играть
-                                </button>
+                                <div>Номер версии</div>
+                                <div>Дата</div>
+                                <div>Изменения</div>
+                                <div></div>
+                                <div class="grid-hr"></div>
+                                <div>e8i2kf</div>
+                                <div>2025-12-01</div>
+                                <div>Небольшие изменения</div>
+                                <div><button>Открыть</button></div>
+                                <div class="grid-hr"></div>
+                                <div>e8i2kf</div>
+                                <div>2025-12-01</div>
+                                <div>Небольшие изменения</div>
+                                <div><button>Открыть</button></div>
+                                <div class="grid-hr"></div>
+                                <div>e8i2kf</div>
+                                <div>2025-12-01</div>
+                                <div>Небольшие изменения</div>
+                                <div><button>Открыть</button></div>
+                                <div class="grid-hr"></div>
+                                <div>e8i2kf</div>
+                                <div>2025-12-01</div>
+                                <div>Небольшие изменения</div>
+                                <div><button>Открыть</button></div>
+                                <div class="grid-hr"></div>
+                                <div>e8i2kf</div>
+                                <div>2025-12-01</div>
+                                <div>Небольшие изменения</div>
+                                <div><button>Открыть</button></div>
+                                <div class="grid-hr"></div>
+                                <div>e8i2kf</div>
+                                <div>2025-12-01</div>
+                                <div>Небольшие изменения</div>
+                                <div><button>Открыть</button></div>
+                                <div class="grid-hr"></div>
+                                <div>e8i2kf</div>
+                                <div>2025-12-01</div>
+                                <div>Небольшие изменения</div>
+                                <div><button>Открыть</button></div>
+                                <div class="grid-hr"></div>
+                                <div>e8i2kf</div>
+                                <div>2025-12-01</div>
+                                <div>Небольшие изменения</div>
+                                <div><button>Открыть</button></div>
+                                <div class="grid-hr"></div>
+                                <div>e8i2kf</div>
+                                <div>2025-12-01</div>
+                                <div>Небольшие изменения</div>
+                                <div><button>Открыть</button></div>
+                                <div class="grid-hr"></div>
+                                <div>e8i2kf</div>
+                                <div>2025-12-01</div>
+                                <div>Небольшие изменения</div>
+                                <div><button>Открыть</button></div>
+                                <div class="grid-hr"></div>
+                                <div>e8i2kf</div>
+                                <div>2025-12-01</div>
+                                <div>Небольшие изменения</div>
+                                <div><button>Открыть</button></div>
+                                <div class="grid-hr"></div>
+                                <div>e8i2kf</div>
+                                <div>2025-12-01</div>
+                                <div>Небольшие изменения</div>
+                                <div><button>Открыть</button></div>
+                                <div class="grid-hr"></div>
+                                <div>e8i2kf</div>
+                                <div>2025-12-01</div>
+                                <div>Небольшие изменения</div>
+                                <div><button>Открыть</button></div>
+                                <div class="grid-hr"></div>
+                                <div>e8i2kf</div>
+                                <div>2025-12-01</div>
+                                <div>Небольшие изменения</div>
+                                <div><button>Открыть</button></div>
+                                <div class="grid-hr"></div>
+                                <div>e8i2kf</div>
+                                <div>2025-12-01</div>
+                                <div>Небольшие изменения</div>
+                                <div><button>Открыть</button></div>
+                                <div class="grid-hr"></div>
+                                <div>e8i2kf</div>
+                                <div>2025-12-01</div>
+                                <div>Небольшие изменения</div>
+                                <div><button>Открыть</button></div>
                             </div>
-                        </a>
-                        <a class="card card--clickable song song--small" href="./song.html">
-                            <div class="card-header">
-                                <h3>Крутая песня</h3>
-                            </div>
+                        </article>
+                    </section>
+                    <section class="song-sub-section song-sub-section--right">
+                        <article class="card">
                             <div class="card-title">
-                                <p>Элис Рейнхарт</p>
+                                <h3>
+                                    Авторы
+                                </h3>
+                            </div>
+                            <div class="card-content item-container">
+                                <div class="item">
+                                    <div class="item-image">
+                                        <img class="avatar avatar--small" src="./assets/avatar.jpg"/>
+                                    </div>
+                                    <div class="item-text">
+                                        <h4>Автор суперский</h4>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="item-image">
+                                        <img class="avatar avatar--small" src="./assets/avatar.jpg"/>
+                                    </div>
+                                    <div class="item-text">
+                                        <h4>Автор суперский</h4>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="item-image">
+                                        <img class="avatar avatar--small" src="./assets/avatar.jpg"/>
+                                    </div>
+                                    <div class="item-text">
+                                        <h4>Автор суперский</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="card">
+                            <div class="card-title">
+                                <h3>
+                                    Группы
+                                </h3>
+                            </div>
+                            <div class="card-content item-container">
+                                <div class="item">
+                                    <div class="item-image">
+                                        <img class="avatar avatar--small" src="./assets/avatar.jpg"/>
+                                    </div>
+                                    <div class="item-text">
+                                        <h4>Группа суперская</h4>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="item-image">
+                                        <img class="avatar avatar--small" src="./assets/avatar.jpg"/>
+                                    </div>
+                                    <div class="item-text">
+                                        <h4>Группа суперская</h4>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="item-image">
+                                        <img class="avatar avatar--small" src="./assets/avatar.jpg"/>
+                                    </div>
+                                    <div class="item-text">
+                                        <h4>Группа суперская</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="card files">
+                            <div class="card-title">
+                                <h3>
+                                    Файлы
+                                </h3>
                             </div>
                             <div class="card-content">
-                                <div class="song-duration">
-                                    Длительность: 3:45
+                                <div class="file">
+                                    <div class="file-header">
+                                        <img src="https://www.placebeard.it/400x400" class="song-image"/>
+                                    </div>
+                                    <p class="file-name">
+                                        Название файлища
+                                    </p>
                                 </div>
-                                <button class="song-play">
-                                    Играть
-                                </button>
+                                <div class="file">
+                                    <div class="file-header">
+                                        <img src="https://www.placebeard.it/400x400" class="song-image"/>
+                                    </div>
+                                    <p class="file-name">
+                                        Название файлища
+                                    </p>
+                                </div>
+                                <div class="file">
+                                    <div class="file-header">
+                                        <img src="https://www.placebeard.it/400x400" class="song-image"/>
+                                    </div>
+                                    <p class="file-name">
+                                        Название файлища
+                                    </p>
+                                </div>
                             </div>
-                        </a>
-                    </div>
-                </article>
+                        </article>
+                        <article class="card">
+                            <div class="card-title">
+                                <h3>
+                                    Плейлисты
+                                </h3>
+                            </div>
+                            <div class="card-content item-container">
+                                <div class="item">
+                                    <div class="item-image">
+                                        <img class="avatar avatar--small" src="./assets/avatar.jpg"/>
+                                    </div>
+                                    <div class="item-text">
+                                        <h4>Группа суперская</h4>
+                                        <div class="chip">Публичная</div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="item-image">
+                                        <img class="avatar avatar--small" src="./assets/avatar.jpg"/>
+                                    </div>
+                                    <div class="item-text">
+                                        <h4>Группа суперская</h4>
+                                        <div class="chip">Приватная</div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="item-image">
+                                        <img class="avatar avatar--small" src="./assets/avatar.jpg"/>
+                                    </div>
+                                    <div class="item-text">
+                                        <h4>Группа суперская</h4>
+                                        <div class="chip">Приватная</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="card comments">
+                            <div class="card-title">
+                                <h3>Комментарии</h3>
+                            </div>
+                            <div class="card-content">
+                                <div class="comments-list-scroller">
+                                    <div class="comments-list">
+                                        <div class="card card--outlined comment">
+                                            <div class="card-title">
+                                                <h4>Бобёр</h4>
+                                                <div>2025-12-02</div>
+                                            </div>
+                                            <div class="card-content">
+                                                Брат, дай полено, очень надо
+                                            </div>
+                                        </div>
+                                        <div class="card card--outlined comment">
+                                            <div class="card-title">
+                                                <h4>Бобёр</h4>
+                                                <div>2025-12-02</div>
+                                            </div>
+                                            <div class="card-content">
+                                                Брат, дай полено, очень надо
+                                            </div>
+                                        </div>
+                                        <div class="card card--outlined comment">
+                                            <div class="card-title">
+                                                <h4>Бобёр</h4>
+                                                <div>2025-12-02</div>
+                                            </div>
+                                            <div class="card-content">
+                                                Брат, дай полено, очень надо
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form>
+                                    <label for="comment">Введите комментарий:</label>
+                                    <textarea name="comment"></textarea>
+                                    <button type="submit">Отправить</button>
+                                </form>
+                            </div>
+                        </article>
+                    </section>
+                </section>
             </section>
         </main>
         <footer>

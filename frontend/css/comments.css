@@ -1,0 +1,34 @@
+.card.comments  {
+
+    .card-content form {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .comments-list-scroller {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    .comments-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .card-content {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+}
+
+.card.comment {
+    .card-title {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 24px;
+    }
+}

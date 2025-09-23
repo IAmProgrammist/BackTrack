@@ -133,11 +133,12 @@ header {
     }
 }
 
-input {
-    border: 2px solid gainsboro;
-    background-color: ghostwhite;
-    border-radius: 12px;
-    padding: 8px;
+input, textarea {
+  border: none;
+  background-color: ghostwhite;
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.041);
 }
 
 .avatar {
@@ -374,6 +375,10 @@ button:-webkit-details-marker {
     background-color: grey;
 }
 
+.card--outlined {
+  border: solid 1px rgb(230, 230, 230);
+}
+
 footer {
     padding: 8px;
     text-align: center;
@@ -411,7 +416,7 @@ footer {
 
 .progress {
     position: relative;
-    height: 20px;
+    height: 4px;
 }
 
 .progress-background {
@@ -420,7 +425,6 @@ footer {
     background-color: rgb(201, 201, 201);
     position: absolute;
     border-radius: 2px;
-    top: 8px;
 }
 
 .progress-foreground {
@@ -430,15 +434,63 @@ footer {
     background-color: rgb(28, 110, 235);
     position: absolute;
     border-radius: 2px;
-    top: 8px;
 }
 
 .progress-slider {
     height: 20px;
     width: 20px;
     border-radius: 10px;
+    transform: translate(calc(-50% + 2px),calc(-50% + 2px));
     border: 2px solid rgb(28, 110, 235);
     background-color: white;
     position: absolute;
     left: 10px;
+    transition: background-color .2s ease-in-out;
+}
+
+.progress-slider:hover {
+    background-color: rgb(231, 231, 231);
+}
+
+.progress-slider:active {
+    background-color: rgb(194, 194, 194);
+}
+
+.chip {
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: cadetblue;
+  color: white;
+  box-shadow: 0px 0px 5px rgb(201, 201, 201);
+}
+
+.grid-hr {
+  background-color: rgb(207, 207, 207);
+  height: 1px;
+  width: 100%;
+}
+
+.item-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.item {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+
+  .item-image {
+    flex-shrink: 0;
+  }
+
+  .item-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    align-items: start;
+  }
 }
