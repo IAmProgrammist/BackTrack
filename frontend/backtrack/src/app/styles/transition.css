@@ -1,0 +1,5 @@
+:root {
+    --transition-fast: 'all .1s ease-in-out';
+    --transition-medium: 'all .4s ease-in-out';
+    --transition-slow: 'all .7s ease-in-out';
+}

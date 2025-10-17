@@ -1,0 +1,16 @@
+.header {
+    height: 64px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: var(--spaces-x4);
+    gap: var(--spaces-x8);
+    box-shadow: var(--shadows-small);
+    z-index: 20;
+    position: relative;
+    background-color: var(--white-color);
+
+    .logo {
+        margin-right: auto;
+    }
+}

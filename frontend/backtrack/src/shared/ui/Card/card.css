@@ -1,0 +1,32 @@
+.card {
+    background-color: var(--white-color);
+    border-radius: var(--spaces-x6);
+
+    .card-header {
+
+    }
+
+    .card-title {
+
+    }
+
+    .card-content {
+
+    }
+}
+
+.card--clickable {
+    transition: var(--transition-slow);
+}
+
+.card--clickable:hover {
+    background-color: var(--grey-100-color);
+}
+
+.card--clickable:is(:focus, :active) {
+    background-color: var(--grey-200-color);
+}
+
+.card--outlined {
+    border: solid 1px var(--grey-700);
+}

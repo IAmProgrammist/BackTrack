@@ -1,0 +1,12 @@
+:root {
+    --font-h1: 700 2rem/3rem "Inter", sans-serif;
+    --font-h2: 700 1.75rem/2.75rem "Inter", sans-serif;
+    --font-h3: 600 1.5rem/2.25rem "Inter", sans-serif;
+    --font-h4: 600 1.25rem/2rem "Inter", sans-serif;
+    --font-h5: 500 1rem/1.5rem "Inter", sans-serif;
+    --font-h6: 500 0.75rem/1.25rem "Inter", sans-serif;
+
+    --font-p1: 300 1rem/1.5rem "Inter", sans-serif;
+    --font-p2: 300 0.75rem/1.25rem "Inter", sans-serif;
+    --font-p3: 300 0.5rem/1rem "Inter", sans-serif;
+}
