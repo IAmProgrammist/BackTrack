@@ -1,0 +1,11 @@
+.author.author--small {
+    .author-header {
+        display: flex;
+        justify-content: center;
+    }
+
+    .author-title {
+        font: var(--font-h3);
+        text-align: center;
+    }
+}

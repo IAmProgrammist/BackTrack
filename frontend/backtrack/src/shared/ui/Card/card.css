@@ -11,20 +11,20 @@
     }
 
     .card-content {
-
+        padding: var(--spaces-x6);
     }
 }
 
 .card--clickable {
-    transition: var(--transition-slow);
+    transition: background-color var(--transition-fast);
 }
 
 .card--clickable:hover {
-    background-color: var(--grey-100-color);
+    background-color: var(--grey-200-color);
 }
 
 .card--clickable:is(:focus, :active) {
-    background-color: var(--grey-200-color);
+    background-color: var(--grey-300-color);
 }
 
 .card--outlined {

@@ -1,0 +1,14 @@
+.group.group--small {
+    padding: 0;
+
+    .card-header img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .group-title {
+        font: var(--font-h3);
+        padding: 12px
+    }
+}

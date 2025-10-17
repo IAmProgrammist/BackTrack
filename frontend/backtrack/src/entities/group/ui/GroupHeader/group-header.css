@@ -1,0 +1,48 @@
+.card.group.group--big {
+    padding: 0;
+
+    .group-header {
+        position: relative;
+    }
+
+    .group-header img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+    }
+
+    .group-title {
+        position: absolute;
+        bottom: 12px;
+        left: 12px;
+        right: 12px;
+        filter: var(--shadow-big);
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .group-title h3 {
+        color: var(--white-color);
+        font: var(--font-h3)
+    }
+
+    .group-content {
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .group-participants {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .group-participants-text {
+        font-weight: 700;
+    }
+}

@@ -5,12 +5,16 @@
     align-items: center;
     padding: var(--spaces-x4);
     gap: var(--spaces-x8);
-    box-shadow: var(--shadows-small);
+    box-shadow: var(--shadow-medium);
     z-index: 20;
     position: relative;
     background-color: var(--white-color);
 
     .logo {
         margin-right: auto;
+    }
+
+    .header-menu {
+        flex-shrink: 0;
     }
 }

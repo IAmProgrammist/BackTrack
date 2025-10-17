@@ -20,3 +20,8 @@
     color: var(--primary-700-color);
     font: var(--font-h5);
 }
+
+.avatar--small {
+    width: 16px;
+    height: 16px;
+}
