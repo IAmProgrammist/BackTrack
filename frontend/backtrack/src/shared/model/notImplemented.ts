@@ -1,0 +1,1 @@
+export const notImplenented = () => alert("Не реализовано")
