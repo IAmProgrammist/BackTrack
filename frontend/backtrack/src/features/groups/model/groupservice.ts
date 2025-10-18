@@ -1,56 +1,61 @@
-import type { ObjectSchema } from "yup";
-import type { GroupCreateSchema, GroupUpdateSchema, IGroupService } from "./igroupservice";
+import { object, type AnyObject, type ObjectSchema } from "yup";
+import type { GroupCreateDTO, GroupUpdateDTO, IGroupService } from "./igroupservice";
+import { GROUP_DESCRIPTION_VALIDATION, GROUP_IMAGE_VALIDATION, GROUP_NAME_VALIDATION, GROUP_PARTICIPANTS_VALIDATION } from "entities/group/model/validators";
+import type { IGroupApi } from "./igroupapi";
+import { objectToFormData } from "shared/model/objectToFormData";
 
 export class GroupService implements IGroupService {
-    constructor() {
-
+    groupApi: IGroupApi
+    
+    constructor(groupApi: IGroupApi) {
+        this.groupApi = groupApi;
     }
-
+    
     getGroup(id: string) {
-        return Promise.resolve({
-            id,
-            name: "ABBA",
-            description: "A greatest group ever!",
-            participants: [{id: "1", name: "Агнета Фэльтског"}, {id: "1", name: "Бьорн Ульвеус"}],
-            imageURL: "https://dknews.kz/storage/news/2021-10/E21Y6T0JhyxNxfh6UuEJ3xw4a2Wy6aDw4Omhid7z.jpg"
-        })
+        return this.groupApi.getGroup(id)
     }
 
     getGroups() {
-        return Promise.resolve([{
-            id: "1",
-            name: "ABBA",
-            description: "A greatest group ever!",
-            participants: ["1", "2", "3"],
-            imageURL: "https://dknews.kz/storage/news/2021-10/E21Y6T0JhyxNxfh6UuEJ3xw4a2Wy6aDw4Omhid7z.jpg"
-        },
-        {
-            id: "1",
-            name: "ABBA",
-            description: "A greatest group ever!",
-            participants: ["1", "2", "3"],
-            imageURL: "https://dknews.kz/storage/news/2021-10/E21Y6T0JhyxNxfh6UuEJ3xw4a2Wy6aDw4Omhid7z.jpg"
-        }]) 
+        return this.groupApi.getGroups()
     }
 
-    createGroup(data: GroupCreateSchema) {
+    createGroup(data: GroupCreateDTO) {
         const schema = this.createSchema();
-        schema.validate(data).;
+
+        return async () => {
+            await schema.validate(data);
+            return this.groupApi.createGroup(objectToFormData({...data, icon: data.icon[0], participants: JSON.stringify(data.participants)}))()
+        }
     }
 
-    updateGroup(data: GroupUpdateSchema) {
+    updateGroup(data: GroupUpdateDTO) {
+        const schema = this.updateSchema();
 
+        return async () => {
+            await schema.validate(data);
+            return this.groupApi.updateGroup(objectToFormData({...data, icon: data.icon[0], participants: JSON.stringify(data.participants)}))()
+        }
     }
 
     deleteGroup(id: string) {
-
+        return this.groupApi.deleteGroup(id)
     }
 
-    createSchema(): ObjectSchema<GroupCreateSchema> {
-        
+    createSchema(): ObjectSchema<AnyObject, GroupCreateDTO> {
+        return object<GroupCreateDTO>().shape({
+            name: GROUP_NAME_VALIDATION,
+            description: GROUP_DESCRIPTION_VALIDATION,
+            participants: GROUP_PARTICIPANTS_VALIDATION,
+            icon: GROUP_IMAGE_VALIDATION
+        })
     }
 
-    updateSchema(): ObjectSchema<GroupUpdateSchema> {
-
+    updateSchema(): ObjectSchema<AnyObject, GroupUpdateDTO> {
+        return object<GroupUpdateDTO>().shape({
+            name: GROUP_NAME_VALIDATION,
+            description: GROUP_DESCRIPTION_VALIDATION,
+            participants: GROUP_PARTICIPANTS_VALIDATION,
+            icon: GROUP_IMAGE_VALIDATION
+        })
     }
 }

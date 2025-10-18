@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router"
-import { Card, CardHeader, CardTitle } from "../../../../shared/ui/Card"
+import { Card, CardHeader, CardTitle } from "shared/ui/Card"
 import "./group.css"
 import type { GroupProps } from "./types"
 

@@ -1,0 +1,40 @@
+.sidebar-link {
+  appearance: none;
+  background-color: var(--white-color);
+  border-radius: 6px;
+  color: var(--grey-700-color);
+  cursor: pointer;
+  display: inline-block;
+  font: var(--font-p1);
+  list-style: none;
+  padding: 6px 16px;
+  position: relative;
+  transition: background-color var(--transition-fast);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  white-space: nowrap;
+  word-wrap: break-word;
+  text-decoration: none;
+}
+
+.sidebar-link:hover {
+  background-color: var(--grey-200-color);
+}
+
+.sidebar-link:active {
+  background-color: var(--grey-300-color);
+}
+
+.sidebar-link:focus {
+  outline: 1px transparent;
+}
+
+.sidebar-link:before {
+  display: none;
+}
+
+.sidebar-link:-webkit-details-marker {
+  display: none;
+}

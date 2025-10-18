@@ -1,6 +1,6 @@
-import { Avatar } from "../../../../shared/ui/Avatar/Avatar"
-import { Button } from "../../../../shared/ui/Button"
-import { Card, CardContent, CardHeader, CardTitle } from "../../../../shared/ui/Card"
+import { Avatar } from "shared/ui/Avatar/Avatar"
+import { Button } from "shared/ui/Button"
+import { Card, CardContent, CardHeader, CardTitle } from "shared/ui/Card"
 import "./author-header.css"
 import type { AuthorHeaderProps } from "./types"
 

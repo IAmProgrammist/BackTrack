@@ -1,0 +1,1 @@
+export const SONG_QUERY_KEY = "songs"

@@ -1,13 +1,13 @@
-import { ObjectSchema } from "yup"
+import { ObjectSchema, type AnyObject } from "yup"
 
-export interface GroupCreateSchema {
+export interface GroupCreateDTO {
     name: string
     description: string
     participants: string[]
     icon: File[]
 }
 
-export interface GroupUpdateSchema {
+export interface GroupUpdateDTO {
     id: string
     name: string
     description: string
@@ -15,7 +15,7 @@ export interface GroupUpdateSchema {
     icon: File[]
 }
 
-export interface GroupResponseShortSchema {
+export interface GroupResponseShortDTO {
     id: string
     name: string
     description: string
@@ -23,7 +23,7 @@ export interface GroupResponseShortSchema {
     imageURL: string
 }
 
-export interface GroupResponseExpandedSchema {
+export interface GroupResponseExpandedDTO {
     id: string
     name: string
     description: string
@@ -32,11 +32,11 @@ export interface GroupResponseExpandedSchema {
 }
 
 export interface IGroupService {
-    getGroups: () => Promise<GroupResponseShortSchema[]>
-    getGroup: (id: string) => Promise<GroupResponseExpandedSchema>
-    updateGroup: (data: GroupUpdateSchema) => Promise<GroupResponseShortSchema>
-    deleteGroup: (id: string) => Promise<unknown>
-    createGroup: (data: GroupCreateSchema) => Promise<GroupResponseShortSchema>
-    updateSchema: () => ObjectSchema<GroupUpdateSchema>
-    createSchema: () => ObjectSchema<GroupCreateSchema>
+    getGroups: () => () => Promise<GroupResponseShortDTO[]>
+    getGroup: (id: string) => () => Promise<GroupResponseExpandedDTO>
+    updateGroup: (data: GroupUpdateDTO) => () => Promise<GroupResponseShortDTO>
+    deleteGroup: (id: string) => () => Promise<unknown>
+    createGroup: (data: GroupCreateDTO) => () => Promise<GroupResponseShortDTO>
+    updateSchema: () => ObjectSchema<AnyObject, GroupUpdateDTO>
+    createSchema: () => ObjectSchema<AnyObject, GroupCreateDTO>
 }

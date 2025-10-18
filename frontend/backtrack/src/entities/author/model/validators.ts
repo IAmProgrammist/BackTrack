@@ -1,5 +1,5 @@
 import { string, array, mixed } from "yup"
-import { checkIfFilesAreCorrectType, checkIfFilesAreTooBig } from "../../../shared/model/helpers";
+import { checkIfFilesAreCorrectType, checkIfFilesAreTooBig } from "shared/model/helpers";
 
 export const AUTHOR_NAME_VALIDATION = string().required("Имя не может быть пустым").min(1, "Имя не может быть пустым").max(1024, "Имя слишком длинное");
 export const AUTHOR_DESCRIPTION_VALIDATION = string().required("Описание не может быть пустым").min(0).max(1024, "Имя слишком длинное");

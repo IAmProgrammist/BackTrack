@@ -1,5 +1,6 @@
 .group.group--small {
     padding: 0;
+    overflow: hidden;
 
     .card-header img {
         width: 100%;

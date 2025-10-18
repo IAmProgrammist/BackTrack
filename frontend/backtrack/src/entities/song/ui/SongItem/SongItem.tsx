@@ -1,4 +1,4 @@
-import { TextWithIcon } from "../../../../shared/ui/TextWithIcon"
+import { TextWithIcon } from "shared/ui/TextWithIcon"
 import type { SongItemProps } from "./types"
 import "./song-item.css"
 

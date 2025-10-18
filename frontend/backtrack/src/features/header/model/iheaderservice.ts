@@ -1,4 +1,4 @@
-import type { EventListener } from "../../../shared/model/eventHandler"
+import type { EventListener } from "shared/model/eventHandler"
 
 
 export type HeaderServiceEvents = {

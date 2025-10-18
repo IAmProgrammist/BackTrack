@@ -14,5 +14,8 @@
 }
 
 .sidebar-content {
+    display: flex;
+    flex-direction: column;
     width: 200px;
+    gap: var(--spaces-x3);
 }

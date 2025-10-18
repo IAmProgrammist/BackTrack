@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "../../../../shared/ui/Card"
+import { Card, CardContent, CardHeader, CardTitle } from "shared/ui/Card"
 import { msToMMSS } from "../../model/helpers"
 import "./author.css"
 import type { SongProps } from "./types"

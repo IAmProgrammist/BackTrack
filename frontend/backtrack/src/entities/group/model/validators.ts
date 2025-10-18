@@ -1,4 +1,4 @@
-import { string, array, mixed } from "yup"
+import { string, array, mixed, number } from "yup"
 import { checkIfFilesAreCorrectType, checkIfFilesAreTooBig } from "../../../shared/model/helpers";
 
 export const GROUP_NAME_VALIDATION = string().required("Имя не может быть пустым").min(1, "Имя не может быть пустым").max(1024, "Имя слишком длинное");

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router"
-import { Avatar } from "../../../../shared/ui/Avatar/Avatar"
-import { Card, CardHeader, CardTitle } from "../../../../shared/ui/Card"
+import { Avatar } from "shared/ui/Avatar/Avatar"
+import { Card, CardHeader, CardTitle } from "shared/ui/Card"
 import "./author.css"
 import type { AuthorProps } from "./types"
 

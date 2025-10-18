@@ -1,0 +1,1 @@
+export const AUTHOR_QUERY_KEY = "authors"
