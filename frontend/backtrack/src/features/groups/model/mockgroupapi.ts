@@ -26,7 +26,7 @@ export class MockGroupApi implements IGroupApi {
             imageURL: "https://dknews.kz/storage/news/2021-10/E21Y6T0JhyxNxfh6UuEJ3xw4a2Wy6aDw4Omhid7z.jpg"
         })
     }
-    updateGroup(data: GroupUpdateDTO) {
+    updateGroup(_data: GroupUpdateDTO) {
         return async () => Promise.resolve({
             id: "1",
             name: "ABBA",
@@ -35,10 +35,10 @@ export class MockGroupApi implements IGroupApi {
             imageURL: "https://dknews.kz/storage/news/2021-10/E21Y6T0JhyxNxfh6UuEJ3xw4a2Wy6aDw4Omhid7z.jpg"
         });
     }
-    deleteGroup(id: string) {
+    deleteGroup(_id: string) {
         return async () => Promise.resolve("Ok")
     }
-    createGroup(data: GroupCreateDTO) {
+    createGroup(_data: GroupCreateDTO) {
         return async () => Promise.resolve({
             id: "1",
             name: "ABBA",

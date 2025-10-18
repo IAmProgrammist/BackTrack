@@ -1,17 +1,6 @@
-import type { TypedFormData } from "shared/model/typedFormData"
+export type AuthorCreateDTO = FormData
 
-export type AuthorCreateDTO = TypedFormData<{
-    name: string
-    description: string
-    icon: File
-}>
-
-export type AuthorUpdateDTO = TypedFormData<{
-    id: string
-    name: string
-    description: string
-    icon: File
-}>
+export type AuthorUpdateDTO = FormData
 
 export interface AuthorResponseDTO {
     id: string

@@ -1,19 +1,6 @@
-import type { TypedFormData } from "shared/model/typedFormData"
+export type PlaylistCreateDTO = FormData
 
-export type PlaylistCreateDTO = TypedFormData<{
-    name: string
-    description: string
-    songs: string
-    icon: File
-}>
-
-export type PlaylistUpdateDTO = TypedFormData<{
-    id: string
-    name: string
-    description: string
-    songs: string
-    icon: File
-}>
+export type PlaylistUpdateDTO = FormData
 
 export interface PlaylistResponseShortDTO {
     id: string

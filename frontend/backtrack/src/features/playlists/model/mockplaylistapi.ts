@@ -38,7 +38,7 @@ export class MockPlaylistApi implements IPlaylistApi {
             ]
         })
     }
-    updatePlaylist(data: PlaylistUpdateDTO){
+    updatePlaylist(_data: PlaylistUpdateDTO){
         return async () => Promise.resolve({
             id: "1",
             name: "Плейлист 1",
@@ -46,10 +46,10 @@ export class MockPlaylistApi implements IPlaylistApi {
             imageURL: "https://dknews.kz/storage/news/2021-10/E21Y6T0JhyxNxfh6UuEJ3xw4a2Wy6aDw4Omhid7z.jpg"
         })
     }
-    deletePlaylist(id: string) {
+    deletePlaylist(_id: string) {
         return async () => Promise.resolve("Ok")
     }
-    createPlaylist(data: PlaylistCreateDTO) {
+    createPlaylist(_data: PlaylistCreateDTO) {
         return async () => Promise.resolve({
             id: "1",
             name: "Плейлист 1",

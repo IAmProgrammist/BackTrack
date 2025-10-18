@@ -23,7 +23,7 @@ export class MockAuthorApi implements IAuthorApi {
             imageURL: "https://dknews.kz/storage/news/2021-10/E21Y6T0JhyxNxfh6UuEJ3xw4a2Wy6aDw4Omhid7z.jpg"
         })
     }
-    updateAuthor(data: AuthorUpdateDTO) {
+    updateAuthor(_data: AuthorUpdateDTO) {
         return async () => Promise.resolve({
             id: "1",
             name: "ABBA",
@@ -31,10 +31,10 @@ export class MockAuthorApi implements IAuthorApi {
             imageURL: "https://dknews.kz/storage/news/2021-10/E21Y6T0JhyxNxfh6UuEJ3xw4a2Wy6aDw4Omhid7z.jpg"
         });
     }
-    deleteAuthor(id: string) {
+    deleteAuthor(_id: string) {
         return async () => Promise.resolve("Ok")
     }
-    createAuthor(data: AuthorCreateDTO) {
+    createAuthor(_data: AuthorCreateDTO) {
         return async () => Promise.resolve({
             id: "1",
             name: "ABBA",

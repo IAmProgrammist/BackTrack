@@ -1,19 +1,6 @@
-import type { TypedFormData } from "shared/model/typedFormData"
+export type GroupCreateDTO = FormData
 
-export type GroupCreateDTO = TypedFormData<{
-    name: string
-    description: string
-    participants: string
-    icon: File
-}>
-
-export type GroupUpdateDTO = TypedFormData<{
-    id: string
-    name: string
-    description: string
-    participants: string
-    icon: File
-}>
+export type GroupUpdateDTO = FormData
 
 export interface GroupResponseShortDTO {
     id: string

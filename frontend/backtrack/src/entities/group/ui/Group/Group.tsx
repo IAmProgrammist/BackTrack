@@ -4,7 +4,7 @@ import "./group.css"
 import type { GroupProps } from "./types"
 
 export const Group = ({id, name, imageURL, redirect = false}: GroupProps) => {
-    const navigate = (v: string) => {}//useNavigate();
+    const navigate = useNavigate();
     
     return <Card clickable={redirect} onClick={() => {
         if (!redirect) return;

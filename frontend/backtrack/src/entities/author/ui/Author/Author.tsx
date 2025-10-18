@@ -5,7 +5,7 @@ import "./author.css"
 import type { AuthorProps } from "./types"
 
 export const Author = ({id, name, imageURL, redirect = false}: AuthorProps) => {
-    const navigate = (v: string) => {}//useNavigate();
+    const navigate = useNavigate();
 
     return <Card clickable={redirect} onClick={() => {
         if (!redirect) return;
