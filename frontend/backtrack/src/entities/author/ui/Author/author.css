@@ -1,4 +1,6 @@
 .author.author--small {
+    padding: var(--spaces-x6);
+
     .author-header {
         display: flex;
         justify-content: center;

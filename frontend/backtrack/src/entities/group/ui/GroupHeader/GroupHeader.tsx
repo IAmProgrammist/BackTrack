@@ -5,8 +5,8 @@ import "./group-header.css"
 import type { GroupHeaderProps } from "./types"
 
 export const GroupHeader = ({name, imageURL, description, participants}: GroupHeaderProps) => {
-    return <Card className="group group--big">
-        <CardHeader className="group-header">
+    return <Card className="group-header">
+        <CardHeader className="group-header-header">
             <img src={imageURL}/>
             <CardTitle className="group-title">
                 <h3>{name}</h3>

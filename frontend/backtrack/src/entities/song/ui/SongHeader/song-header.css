@@ -1,4 +1,4 @@
-.author.author-header {
+.author.author--big {
     display: flex;
     flex-direction: row;
     gap: 12px;

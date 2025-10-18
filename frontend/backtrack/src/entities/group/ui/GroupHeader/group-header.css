@@ -1,11 +1,11 @@
-.card.group.group--big {
+.card.group-header {
     padding: 0;
 
     .group-header {
         position: relative;
     }
 
-    .group-header img {
+    .group-header-header img {
         width: 100%;
         height: 300px;
         object-fit: cover;

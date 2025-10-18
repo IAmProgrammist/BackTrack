@@ -1,0 +1,29 @@
+.text-with-icon {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spaces-x8);
+    
+    .text-with-icon-avatar {
+        flex-shrink: 0;
+    }
+
+    .text-with-icon-content {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spaces-x1);
+    }
+
+    .text-with-icon-title {
+        font: var(--font-h4);
+    }
+
+    .text-with-icon-sub-content {
+        font: var(--font-p1);
+        color: var(--grey-600-color);
+    }
+
+    .text-with-icon-sub-sub-content {
+        font: var(--font-p2);
+        color: var(--grey-600-color);
+    }
+}
