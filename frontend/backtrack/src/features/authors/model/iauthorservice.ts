@@ -23,9 +23,9 @@ export interface AuthorResponseDTO {
 export interface IAuthorService {
     getAuthors: () => () => Promise<AuthorResponseDTO[]>
     getAuthor: (id: string) => () => Promise<AuthorResponseDTO>
-    updateAuthor: (data: AuthorUpdateDTO) => () => Promise<AuthorResponseDTO>
+    updateAuthor: (id: string, data: unknown) => () => Promise<AuthorResponseDTO>
     deleteAuthor: (id: string) => () => Promise<unknown>
-    createAuthor: (data: AuthorCreateDTO) => () => Promise<AuthorResponseDTO>
+    createAuthor: (data: unknown) => () => Promise<AuthorResponseDTO>
     updateSchema: () => ObjectSchema<AnyObject, AuthorUpdateDTO>
     createSchema: () => ObjectSchema<AnyObject, AuthorCreateDTO>
 }

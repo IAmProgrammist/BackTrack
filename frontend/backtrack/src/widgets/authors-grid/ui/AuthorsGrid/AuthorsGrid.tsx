@@ -3,6 +3,8 @@ import "./authors-grid.css"
 import { useAuthorsService } from "features/authors/lib/useAuthorsService";
 import { AUTHOR_QUERY_KEY } from "entities/author/model/query-key";
 import { Author } from "entities/author/ui/Author";
+import { Button } from "shared/ui/Button";
+import { useNavigate } from "react-router";
 
 export const AuthorsGrid = () => {
     const {service} = useAuthorsService();
@@ -10,6 +12,7 @@ export const AuthorsGrid = () => {
         queryKey: [AUTHOR_QUERY_KEY],
         queryFn: service.getAuthors()
     })
+    const navigate = useNavigate();
 
     let content = null;
     if (authorsIsLoading) {
@@ -22,7 +25,7 @@ export const AuthorsGrid = () => {
 
     return <article className="authors-grid">
         <h1 className="authors-grid-title">
-            Авторы
+            Авторы <Button onClick={() => navigate("/authors/create")}>Добавить</Button>
         </h1>
         <div className="authors-grid-content">
             {content}

@@ -17,4 +17,8 @@
     .header-menu {
         flex-shrink: 0;
     }
+
+    .header-search {
+        width: 175px;
+    }
 }

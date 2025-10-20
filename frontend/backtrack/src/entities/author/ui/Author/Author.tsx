@@ -10,7 +10,7 @@ export const Author = ({id, name, imageURL, redirect = false}: AuthorProps) => {
     return <Card clickable={redirect} onClick={() => {
         if (!redirect) return;
 
-        navigate(`/authors/${id}/view`)
+        navigate(`/authors/view/${id}`)
     }} className="author author--small">
         <CardHeader className="author-header">
             <Avatar src={imageURL}/>

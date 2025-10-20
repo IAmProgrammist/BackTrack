@@ -1,0 +1,14 @@
+.mutate {
+    
+}
+
+.mutate-title {
+    font: var(--font-h1);
+    padding: var(--spaces-x6);
+}
+
+.mutate-content form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spaces-x4);
+}

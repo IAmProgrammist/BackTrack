@@ -23,9 +23,9 @@ export class MockAuthorApi implements IAuthorApi {
             imageURL: "https://dknews.kz/storage/news/2021-10/E21Y6T0JhyxNxfh6UuEJ3xw4a2Wy6aDw4Omhid7z.jpg"
         })
     }
-    updateAuthor(_data: AuthorUpdateDTO) {
+    updateAuthor(id: string, _data: AuthorUpdateDTO) {
         return async () => Promise.resolve({
-            id: "1",
+            id,
             name: "ABBA",
             description: "A greatest group ever!",
             imageURL: "https://dknews.kz/storage/news/2021-10/E21Y6T0JhyxNxfh6UuEJ3xw4a2Wy6aDw4Omhid7z.jpg"

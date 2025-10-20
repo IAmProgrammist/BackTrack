@@ -1,7 +1,4 @@
-import type { HTMLAttributes } from "react";
-
-export interface InputProps extends HTMLAttributes<HTMLInputElement> {
-    placeholder?: string,
+export interface InputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     error?: string,
     subText?: string
 }

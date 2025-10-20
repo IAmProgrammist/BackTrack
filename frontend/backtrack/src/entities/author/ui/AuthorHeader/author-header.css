@@ -3,11 +3,12 @@
     flex-direction: row;
     gap: 12px;
     align-items: center;
+    padding: var(--spaces-x12);
 
     .author-info {
         display: flex;
         flex-direction: column;
-        gap: 2px;
+        gap: var(--spaces-x4);
         flex-wrap: 1;
 
         .author-title {

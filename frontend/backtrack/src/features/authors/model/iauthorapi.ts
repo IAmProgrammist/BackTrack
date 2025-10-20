@@ -12,7 +12,7 @@ export interface AuthorResponseDTO {
 export interface IAuthorApi {
     getAuthors: () => () => Promise<AuthorResponseDTO[]>
     getAuthor: (id: string) => () => Promise<AuthorResponseDTO>
-    updateAuthor: (data: AuthorUpdateDTO) => () => Promise<AuthorResponseDTO>
+    updateAuthor: (id: string, data: AuthorUpdateDTO) => () => Promise<AuthorResponseDTO>
     deleteAuthor: (id: string) => () => Promise<unknown>
     createAuthor: (data: AuthorCreateDTO) => () => Promise<AuthorResponseDTO>
 }

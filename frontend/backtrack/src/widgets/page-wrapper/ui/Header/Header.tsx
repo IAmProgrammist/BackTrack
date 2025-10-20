@@ -18,7 +18,7 @@ export const Header = () => {
         <header className="header">
             <Button onClick={() => headerService.setSidebarOpen(!headerVals.sidebarOpen)} equated className="header-menu"><MdMenu/></Button>
             <Logo size={isMobile ? "small" : "large"}/>
-            <Input placeholder="Поиск..."/>
+            <Input className="header-search" placeholder="Поиск..."/>
             <Avatar onClick={() => headerService.avatarClicked()} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDjnosIvnhNdSTKDT8jzE9Nr7HDqmZ3s2Akw&s"/>
         </header>
         <Sidebar/>

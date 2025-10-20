@@ -10,7 +10,8 @@ const RANDOM_PHRASES = [
     "Год за годом растут большие города",
     "And everybody wants to get evil tonight",
     "Словно из водопровода льёт на нас с небес вода",
-    "Sometimes I wonder again and again"
+    "Sometimes I wonder again and again",
+    "Это за окном рассвет!"
 ]
 
 export const Footer = () => {

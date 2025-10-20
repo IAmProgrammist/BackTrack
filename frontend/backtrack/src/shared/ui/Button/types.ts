@@ -1,5 +1,3 @@
-import type { HTMLAttributes } from "react";
-
-export interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
     equated?: boolean
 }
