@@ -13,7 +13,6 @@ export interface ISongCreateDTO {
 }
 
 export interface ISongReleaseVersionDTO {
-    id: string
     name: string
     tag: string
     description: string
@@ -71,11 +70,12 @@ export interface ISongService {
     getSongs: () => () => Promise<ISongResponseShortDTO[]>
     getSong: (id: string, version?: string) => () => Promise<ISongResponseExtendedDTO>
     getSongVersions: (id: string) => () => Promise<ISongResponseVersionDTO[]>
-    createSong: (data: FormData) => () => Promise<ISongResponseShortDTO>
-    releaseSongVersion: (id: string, data: FormData) => () => Promise<ISongResponseVersionDTO>
+    createSong: (data: ISongCreateDTO) => () => Promise<ISongResponseShortDTO>
+    releaseSongVersion: (id: string, data: ISongReleaseVersionDTO) => () => Promise<ISongResponseVersionDTO>
     deleteSong: (id: string) => () => Promise<unknown>
     createComment: (id: string, data: ISongCreateCommentDTO) => () => Promise<ISongResponseCommentDTO>
     getComments: (id: string) => () => Promise<ISongResponseCommentDTO[]>
     createSchema: () => ObjectSchema<AnyObject, ISongCreateDTO>
     releaseSchema: () => ObjectSchema<AnyObject, ISongReleaseVersionDTO>
+    createCommentSchema: () => ObjectSchema<AnyObject, ISongCreateCommentDTO>
 }

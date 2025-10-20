@@ -1,4 +1,4 @@
-import type { ISongApi } from "./isongapi";
+import type { ISongApi, ISongCreateCommentDTO } from "./isongapi";
 
 export class MockSongApi implements ISongApi {
     constructor() {
@@ -105,8 +105,58 @@ export class MockSongApi implements ISongApi {
             duration: 195000
         })
     }
-    releaseSongVersion: (id: string, data: FormData) => () => Promise<ISongResponseVersionDTO>
-    deleteSong: (id: string) => () => Promise<unknown>
-    getComments: () => () => Promise<ISongResponseCommentDTO>
-    createComment: (id: string, data: ISongCreateCommentDTO) => () => Promise<ISongResponseCommentDTO>
+    releaseSongVersion(id: string, _data: FormData) {
+        return async () => Promise.resolve({
+            id,
+            version: "ver2",
+            createdAt: new Date().toISOString(),
+            changelog: "Changed a lot of data",
+            tag: "Черновик"
+        })
+    }
+    deleteSong(_id: string) {
+        return async () => Promise.resolve("Ok")
+    }
+    getComments() {
+        return async () => Promise.resolve([
+            {
+                id: "1",
+                userName: "User A",
+                createdAt: new Date().toISOString(),
+                content: "A greate comment-e"
+            },
+            {
+                id: "2",
+                userName: "User A",
+                createdAt: new Date().toISOString(),
+                content: "A greate comment-e"
+            },
+            {
+                id: "3",
+                userName: "User A",
+                createdAt: new Date().toISOString(),
+                content: "A greate comment-e"
+            },
+            {
+                id: "4",
+                userName: "User A",
+                createdAt: new Date().toISOString(),
+                content: "A greate comment-e"
+            },
+            {
+                id: "5",
+                userName: "User A",
+                createdAt: new Date().toISOString(),
+                content: "A greate comment-e"
+            }
+        ])
+    }
+    createComment(_id: string, _data: ISongCreateCommentDTO) {
+        return async () => Promise.resolve({
+            id: "1",
+            userName: "User A",
+            createdAt: new Date().toISOString(),
+            content: "A greate comment-e"
+        })
+    }
 }

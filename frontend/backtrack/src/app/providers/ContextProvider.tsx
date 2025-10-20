@@ -4,6 +4,7 @@ import { GroupsContextProvider } from "./GroupsContextProvider";
 import { AuthorsContextProvider } from "./AuthorsContextProvider";
 import { QueryClientProvider } from "./QueryClientProvider";
 import { BrowserRouter } from "react-router";
+import { SongsContextProvider } from "./SongsContextProvider";
 
 export const ContextProvider = ({children}: {children: ReactNode}) => {
     return <BrowserRouter>
@@ -11,7 +12,9 @@ export const ContextProvider = ({children}: {children: ReactNode}) => {
             <HeaderContextProvider>
                 <GroupsContextProvider>
                     <AuthorsContextProvider>
-                        {children}
+                        <SongsContextProvider>
+                            {children}
+                        </SongsContextProvider>
                     </AuthorsContextProvider>
                 </GroupsContextProvider>
             </HeaderContextProvider>

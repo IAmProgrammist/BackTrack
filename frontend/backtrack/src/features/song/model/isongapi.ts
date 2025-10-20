@@ -47,6 +47,6 @@ export interface ISongApi {
     createSong: (data: FormData) => () => Promise<ISongResponseShortDTO>
     releaseSongVersion: (id: string, data: FormData) => () => Promise<ISongResponseVersionDTO>
     deleteSong: (id: string) => () => Promise<unknown>
-    getComments: () => () => Promise<ISongResponseCommentDTO>
+    getComments: () => () => Promise<ISongResponseCommentDTO[]>
     createComment: (id: string, data: ISongCreateCommentDTO) => () => Promise<ISongResponseCommentDTO>
 }
