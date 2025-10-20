@@ -1,0 +1,15 @@
+.playlists-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spaces-x8);
+}
+
+.playlists-grid-title {
+    font: var(--font-h2);
+}
+
+.playlists-grid-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--spaces-x8);
+}

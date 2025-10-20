@@ -1,11 +1,9 @@
-import { Header } from "widgets/header/ui/Header"
+import { Router } from "app/router/Router"
 import { ContextProvider } from "../providers/ContextProvider"
-import { HomePage } from "pages/home/ui/HomePage/HomePage"
 
 function App() {
   return <ContextProvider>
-    <Header/>
-    <HomePage/>
+    <Router/>
   </ContextProvider>
 }
 

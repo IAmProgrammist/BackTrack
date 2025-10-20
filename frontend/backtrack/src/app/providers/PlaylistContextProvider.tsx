@@ -3,7 +3,7 @@ import { MockPlaylistApi } from "features/playlists/model/mockplaylistapi"
 import { PlaylistService } from "features/playlists/model/playlistservice"
 import { useState, type ReactNode } from "react"
 
-export const PlaylisContextProvider = ({children}: {children: ReactNode}) => {
+export const PlaylistContextProvider = ({children}: {children: ReactNode}) => {
     const [api] = useState(new MockPlaylistApi())
     const [service] = useState(new PlaylistService(api))
     

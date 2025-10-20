@@ -1,5 +1,3 @@
-import type { TypedFormData } from "./typedFormData";
-
 type NestedRecord = { [k: string]: string | File | string[] | File[] | NestedRecord }
 
 const flatObject = (sourceObject: NestedRecord, prefix: string = ""): Record<string, string | File | string[] | File[]> => {

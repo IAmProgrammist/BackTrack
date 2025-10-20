@@ -5,8 +5,8 @@ import { Button } from "../../../../shared/ui/Button"
 import { Logo } from "../../../../shared/ui/Logo"
 import { Input } from "../../../../shared/ui/Input"
 import { Avatar } from "../../../../shared/ui/Avatar/Avatar"
-import { Sidebar } from "../Sidebar"
 import { useHeaderService } from "../../../../features/header/lib/useHeaderService"
+import { Sidebar } from "../Sidebar"
 
 export const Header = () => {
     const { service: headerService, ...headerVals } = useHeaderService();
@@ -14,12 +14,13 @@ export const Header = () => {
         query: "(max-width: 720px)"
     })
 
-    return <><header className="header">
-        <Button onClick={() => headerService.setSidebarOpen(!headerVals.sidebarOpen)} equated className="header-menu"><MdMenu/></Button>
-        <Logo size={isMobile ? "small" : "large"}/>
-        <Input placeholder="Поиск..."/>
-        <Avatar onClick={() => headerService.avatarClicked()} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDjnosIvnhNdSTKDT8jzE9Nr7HDqmZ3s2Akw&s"/>
-    </header>
-    <Sidebar opened={headerVals.sidebarOpen}/>
-    </>
+    return <div>
+        <header className="header">
+            <Button onClick={() => headerService.setSidebarOpen(!headerVals.sidebarOpen)} equated className="header-menu"><MdMenu/></Button>
+            <Logo size={isMobile ? "small" : "large"}/>
+            <Input placeholder="Поиск..."/>
+            <Avatar onClick={() => headerService.avatarClicked()} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDjnosIvnhNdSTKDT8jzE9Nr7HDqmZ3s2Akw&s"/>
+        </header>
+        <Sidebar/>
+    </div>
 }

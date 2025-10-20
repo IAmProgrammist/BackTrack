@@ -1,0 +1,7 @@
+.page-wrapper {
+    padding: var(--spaces-x12);
+    max-width: 1024px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}

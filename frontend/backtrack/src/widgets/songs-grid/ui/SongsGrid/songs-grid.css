@@ -1,0 +1,15 @@
+.songs-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spaces-x8);
+}
+
+.songs-grid-title {
+    font: var(--font-h2);
+}
+
+.songs-grid-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--spaces-x8);
+}

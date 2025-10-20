@@ -15,6 +15,62 @@ export class MockGroupApi implements IGroupApi {
             description: "A greatest group ever!",
             participants: ["1", "2", "3"],
             imageURL: "https://dknews.kz/storage/news/2021-10/E21Y6T0JhyxNxfh6UuEJ3xw4a2Wy6aDw4Omhid7z.jpg"
+        },
+        {
+            id: "3",
+            name: "ABBA",
+            description: "A greatest group ever!",
+            participants: ["1", "2", "3"],
+            imageURL: "https://dknews.kz/storage/news/2021-10/E21Y6T0JhyxNxfh6UuEJ3xw4a2Wy6aDw4Omhid7z.jpg"
+        },
+        {
+            id: "4",
+            name: "ABBA",
+            description: "A greatest group ever!",
+            participants: ["1", "2", "3"],
+            imageURL: "https://dknews.kz/storage/news/2021-10/E21Y6T0JhyxNxfh6UuEJ3xw4a2Wy6aDw4Omhid7z.jpg"
+        },
+        {
+            id: "5",
+            name: "ABBA",
+            description: "A greatest group ever!",
+            participants: ["1", "2", "3"],
+            imageURL: "https://dknews.kz/storage/news/2021-10/E21Y6T0JhyxNxfh6UuEJ3xw4a2Wy6aDw4Omhid7z.jpg"
+        },
+        {
+            id: "6",
+            name: "ABBA",
+            description: "A greatest group ever!",
+            participants: ["1", "2", "3"],
+            imageURL: "https://dknews.kz/storage/news/2021-10/E21Y6T0JhyxNxfh6UuEJ3xw4a2Wy6aDw4Omhid7z.jpg"
+        },
+        {
+            id: "7",
+            name: "ABBA",
+            description: "A greatest group ever!",
+            participants: ["1", "2", "3"],
+            imageURL: "https://dknews.kz/storage/news/2021-10/E21Y6T0JhyxNxfh6UuEJ3xw4a2Wy6aDw4Omhid7z.jpg"
+        },
+        {
+            id: "8",
+            name: "ABBA",
+            description: "A greatest group ever!",
+            participants: ["1", "2", "3"],
+            imageURL: "https://dknews.kz/storage/news/2021-10/E21Y6T0JhyxNxfh6UuEJ3xw4a2Wy6aDw4Omhid7z.jpg"
+        },
+        {
+            id: "9",
+            name: "ABBA",
+            description: "A greatest group ever!",
+            participants: ["1", "2", "3"],
+            imageURL: "https://dknews.kz/storage/news/2021-10/E21Y6T0JhyxNxfh6UuEJ3xw4a2Wy6aDw4Omhid7z.jpg"
+        },
+        {
+            id: "10",
+            name: "ABBA",
+            description: "A greatest group ever!",
+            participants: ["1", "2", "3"],
+            imageURL: "https://dknews.kz/storage/news/2021-10/E21Y6T0JhyxNxfh6UuEJ3xw4a2Wy6aDw4Omhid7z.jpg"
         }]) 
     }
     getGroup(id: string) {

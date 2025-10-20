@@ -2,6 +2,12 @@ body {
     background-color: var(--grey-100-color);
 }
 
+#root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
 * {
     font: var(--font-p1);
     color: var(--grey-700-color);

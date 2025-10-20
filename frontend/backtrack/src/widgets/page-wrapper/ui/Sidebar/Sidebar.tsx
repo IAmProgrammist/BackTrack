@@ -1,10 +1,12 @@
 import clsx from "clsx"
 import "./sidebar.css"
-import type { SidebarProps } from "./types"
 import { SidebarLink } from "../SidebarLink/SidebarLink"
+import { useHeaderService } from "features/header/lib/useHeaderService"
 
-export const Sidebar = ({opened}: SidebarProps) => {
-    return <section className={clsx("sidebar", opened && "sidebar--opened")}>
+export const Sidebar = () => {
+    const {sidebarOpen} = useHeaderService();
+
+    return <section className={clsx("sidebar", sidebarOpen && "sidebar--opened")}>
         <nav className="sidebar-content">
             <SidebarLink to={"/"}>
                 Главная страница
@@ -13,7 +15,7 @@ export const Sidebar = ({opened}: SidebarProps) => {
                 Авторы
             </SidebarLink>
             <SidebarLink to={"/groups"}>
-                Авторы
+                Группы
             </SidebarLink>
             <SidebarLink to={"/playlists"}>
                 Плейлисты

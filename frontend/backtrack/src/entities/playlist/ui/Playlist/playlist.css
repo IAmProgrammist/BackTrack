@@ -1,0 +1,10 @@
+.playlist.playlist--small {
+    .playlist-title {
+        font: var(--font-h3);
+        padding: var(--spaces-x6) var(--spaces-x6) var(--spaces-x0) var(--spaces-x6);
+    }
+
+    .playlist-content {
+        padding: var(--spaces-x6);
+    }
+}

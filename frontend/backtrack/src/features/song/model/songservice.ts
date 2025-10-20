@@ -1,6 +1,6 @@
 import { objectToFormData } from "shared/model/objectToFormData";
 import type { ISongApi } from "./isongapi";
-import type { ISongCreateCommentDTO, ISongCreateDTO, ISongReleaseVersionDTO, ISongResponseCommentDTO, ISongService } from "./isongservice";
+import type { ISongCreateCommentDTO, ISongCreateDTO, ISongReleaseVersionDTO, ISongService } from "./isongservice";
 import { object } from "yup";
 import { COMMENT_CONTENT_VALIDATOR, SONG_AUTHORS_VALIDATOR, SONG_BPM_VALIDATOR, SONG_DESCRIPTION_VALIDATOR, SONG_FILES_VALIDATOR, SONG_GROUPS_VALIDATOR, SONG_KEY_VALIDATOR, SONG_LYRICS_VALIDATOR, SONG_NAME_VALIDATOR, SONG_TAG_VALIDATOR } from "entities/song/model/validators";
 
