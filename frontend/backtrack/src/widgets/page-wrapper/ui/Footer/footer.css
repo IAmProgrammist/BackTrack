@@ -5,4 +5,5 @@
     font: var(--font-p1);
     text-align: center;
     margin-top: auto;
+    min-height: 272px;
 }

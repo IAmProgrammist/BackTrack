@@ -78,13 +78,16 @@ export class MockGroupApi implements IGroupApi {
             id,
             name: "ABBA",
             description: "A greatest group ever!",
-            participants: [{id: "1", name: "Агнета Фэльтског"}, {id: "1", name: "Бьорн Ульвеус"}],
+            participants: [
+                {id: "1", name: "Агнета Фэльтског", imageURL: "https://dknews.kz/storage/news/2021-10/E21Y6T0JhyxNxfh6UuEJ3xw4a2Wy6aDw4Omhid7z.jpg"}, 
+                {id: "1", name: "Бьорн Ульвеус", imageURL: "https://dknews.kz/storage/news/2021-10/E21Y6T0JhyxNxfh6UuEJ3xw4a2Wy6aDw4Omhid7z.jpg"}
+            ],
             imageURL: "https://dknews.kz/storage/news/2021-10/E21Y6T0JhyxNxfh6UuEJ3xw4a2Wy6aDw4Omhid7z.jpg"
         })
     }
-    updateGroup(_data: GroupUpdateDTO) {
+    updateGroup(id: string, _data: GroupUpdateDTO) {
         return async () => Promise.resolve({
-            id: "1",
+            id,
             name: "ABBA",
             description: "DESCIP",
             participants: ["1", "2", "3"],

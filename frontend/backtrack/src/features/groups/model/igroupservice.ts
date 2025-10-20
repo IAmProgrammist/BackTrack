@@ -27,16 +27,16 @@ export interface GroupResponseExpandedDTO {
     id: string
     name: string
     description: string
-    participants: {id: string, name: string}[]
+    participants: {id: string, name: string, imageURL: string}[]
     imageURL: string
 }
 
 export interface IGroupService {
     getGroups: () => () => Promise<GroupResponseShortDTO[]>
     getGroup: (id: string) => () => Promise<GroupResponseExpandedDTO>
-    updateGroup: (data: GroupUpdateDTO) => () => Promise<GroupResponseShortDTO>
+    updateGroup: (id: string, data: unknown) => () => Promise<GroupResponseShortDTO>
     deleteGroup: (id: string) => () => Promise<unknown>
-    createGroup: (data: GroupCreateDTO) => () => Promise<GroupResponseShortDTO>
+    createGroup: (data: unknown) => () => Promise<GroupResponseShortDTO>
     updateSchema: () => ObjectSchema<AnyObject, GroupUpdateDTO>
     createSchema: () => ObjectSchema<AnyObject, GroupCreateDTO>
 }

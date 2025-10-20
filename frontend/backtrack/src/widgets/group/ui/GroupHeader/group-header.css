@@ -1,7 +1,7 @@
 .card.group-header {
     padding: 0;
 
-    .group-header {
+    .group-header-header {
         position: relative;
     }
 
@@ -19,14 +19,14 @@
         filter: var(--shadow-big);
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
         align-items: center;
         gap: 16px;
     }
 
     .group-title h3 {
         color: var(--white-color);
-        font: var(--font-h3)
+        font: var(--font-h3);
+        margin-right: auto;
     }
 
     .group-content {

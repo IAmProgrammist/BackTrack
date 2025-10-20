@@ -3,7 +3,6 @@ import { FormProvider, useForm } from "react-hook-form"
 import { Card, CardContent, CardTitle } from "shared/ui/Card"
 import type { MutateProps } from "./types";
 import "./mutate.css"
-import { MutateContext } from "widgets/mutate/models/mutateContext";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object } from "yup";
 

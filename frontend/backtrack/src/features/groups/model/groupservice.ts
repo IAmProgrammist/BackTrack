@@ -19,21 +19,21 @@ export class GroupService implements IGroupService {
         return this.groupApi.getGroups()
     }
 
-    createGroup(data: GroupCreateDTO) {
+    createGroup(data: unknown) {
         const schema = this.createSchema();
 
         return async () => {
-            await schema.validate(data);
-            return this.groupApi.createGroup(objectToFormData({...data, icon: data.icon[0], participants: JSON.stringify(data.participants)}))()
+            let validated = await schema.validate(data);
+            return this.groupApi.createGroup(objectToFormData({...validated, icon: validated.icon[0]}))()
         }
     }
 
-    updateGroup(data: GroupUpdateDTO) {
+    updateGroup(id: string, data: unknown) {
         const schema = this.updateSchema();
 
         return async () => {
-            await schema.validate(data);
-            return this.groupApi.updateGroup(objectToFormData({...data, icon: data.icon[0], participants: JSON.stringify(data.participants)}))()
+            let validated = await schema.validate(data);
+            return this.groupApi.updateGroup(id, objectToFormData({...validated, icon: validated.icon[0]}))()
         }
     }
 

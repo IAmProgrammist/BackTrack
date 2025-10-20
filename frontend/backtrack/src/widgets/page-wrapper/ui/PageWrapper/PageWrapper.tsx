@@ -3,6 +3,7 @@ import { Outlet } from "react-router"
 import { Header } from "../Header"
 import { Footer } from "../Footer/Footer"
 import "./page-wrapper.css"
+import { Player } from "widgets/player/ui/Player/Player"
 
 export const PageWrapper = () => {
     return <>
@@ -13,5 +14,6 @@ export const PageWrapper = () => {
             </Suspense>
         </div>
         <Footer/>
+        <Player/>
     </>
 }

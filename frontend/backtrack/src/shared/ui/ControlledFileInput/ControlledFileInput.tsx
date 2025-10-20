@@ -10,6 +10,6 @@ export const ControlledFileInput = ({inputProps, controlProps}: ControlledFileIn
         {...controlProps}
         control={control}
         render={({ field: { onChange, ref}, fieldState: {error} }) => {
-        return <Input {...inputProps} type="file" onChange={(ev) => onChange(Array.from(ev.target.files))} ref={ref} error={error?.message}/>
+        return <Input {...inputProps} name={controlProps.name} type="file" onChange={(ev) => onChange(Array.from(ev.target.files || []))} ref={ref} error={error?.message}/>
     }}/>
 }

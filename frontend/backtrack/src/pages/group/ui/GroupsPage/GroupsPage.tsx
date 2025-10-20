@@ -1,4 +1,4 @@
-import { GroupsGrid } from "widgets/groups-grid/ui/GroupsGrid"
+import { GroupsGrid } from "widgets/group/ui/GroupsGrid"
 
 export const GroupsPage = () => {
     return <div>

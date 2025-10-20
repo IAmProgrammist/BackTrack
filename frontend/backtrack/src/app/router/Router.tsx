@@ -8,6 +8,8 @@ import { SongsPage } from "pages/song/ui/SongsPage"
 import { AuthorPage } from "pages/author/ui/AuthorPage/AuthorPage"
 import { AddAuthorPage } from "pages/author/ui/AddAuthorPage/AddAuthorPage"
 import { EditAuthorPage } from "pages/author/ui/EditAuthorPage/EditAuthorPage"
+import { GroupPage } from "pages/group/ui/GroupPage"
+import { AddGroupPage } from "pages/group/ui/AddGroupPage/AddGroupPage"
 
 export const Router = () => {
     const routes = useRoutes([
@@ -21,6 +23,8 @@ export const Router = () => {
         { path: '/authors/update/:authorId', element: <EditAuthorPage /> },
         { path: '/authors/create', element: <AddAuthorPage /> },
         { path: '/groups', element: <GroupsPage /> },
+        { path: '/groups/view/:groupId', element: <GroupPage /> },
+        { path: '/groups/create', element: <AddGroupPage/> },
         { path: '/playlists', element: <PlaylistsPage /> },
         { path: '/songs', element: <SongsPage /> },
         { path: '*', element: <Navigate to='/' /> },

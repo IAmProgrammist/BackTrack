@@ -1,8 +1,8 @@
 import { Controller, useFormContext, useWatch } from "react-hook-form"
-import { Input } from "../Input";
 import type { ControlledTextInputProps } from "./types";
+import { Select } from "../Select";
 
-export const ControlledTextInput = ({inputProps, controlProps}: ControlledTextInputProps) => {
+export const ControlledSelectInput = ({selectProps, controlProps}: ControlledTextInputProps) => {
     const {control} = useFormContext();
     useWatch({name: controlProps.name, control});
     
@@ -10,6 +10,6 @@ export const ControlledTextInput = ({inputProps, controlProps}: ControlledTextIn
         {...controlProps}
         control={control}
         render={({ field: { onChange, value, ref}, fieldState: {error} }) => {
-        return <Input {...inputProps} name={controlProps.name} value={value} onChange={onChange} ref={ref} error={error?.message}/>
+        return <Select {...selectProps} name={controlProps.name} value={value} onChange={onChange} ref={ref} error={error?.message}/>
     }}/>
 }

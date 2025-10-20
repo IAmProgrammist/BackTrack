@@ -9,7 +9,7 @@ export const Group = ({id, name, imageURL, redirect = false}: GroupProps) => {
     return <Card clickable={redirect} onClick={() => {
         if (!redirect) return;
 
-        navigate(`/groups/${id}/view`);
+        navigate(`/groups/view/${id}`);
     }} className="group group--small">
         <CardHeader className="group-header">
             <img src={imageURL}/>

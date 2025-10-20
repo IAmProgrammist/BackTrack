@@ -1,8 +1,9 @@
-import { AuthorsGrid } from "widgets/authors-grid/ui/AuthorsGrid/AuthorsGrid";
+import { AuthorsGrid } from "widgets/author/ui/AuthorsGrid/AuthorsGrid";
 import "./home-page.css"
-import { GroupsGrid } from "widgets/groups-grid/ui/GroupsGrid/GroupsGrid";
+import { GroupsGrid } from "widgets/group/ui/GroupsGrid/GroupsGrid";
 import { PlaylistsGrid } from "widgets/playlists-grid/ui/PlaylistsGrid";
 import { SongsGrid } from "widgets/songs-grid/ui/SongsGrid";
+import { Slider } from "shared/ui/Slider";
 
 export const HomePage = () => {
     return <div className="home-page">

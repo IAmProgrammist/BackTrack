@@ -3,6 +3,8 @@ import { GROUP_QUERY_KEY } from "entities/group/model/query-key";
 import { Group } from "entities/group/ui/Group";
 import { useGroupsService } from "features/groups/lib/useGroupsService"
 import "./groups-grid.css"
+import { Button } from "shared/ui/Button";
+import { useNavigate } from "react-router";
 
 export const GroupsGrid = () => {
     const {service} = useGroupsService();
@@ -10,6 +12,7 @@ export const GroupsGrid = () => {
         queryKey: [GROUP_QUERY_KEY],
         queryFn: service.getGroups()
     })
+    const navigate = useNavigate();
 
     let content = null;
     if (groupsIsLoading) {
@@ -22,7 +25,7 @@ export const GroupsGrid = () => {
 
     return <article className="groups-grid">
         <h1 className="groups-grid-title">
-            Группы
+            Группы <Button onClick={() => navigate("/groups/create")}>Добавить</Button>
         </h1>
         <div className="groups-grid-content">
             {content}

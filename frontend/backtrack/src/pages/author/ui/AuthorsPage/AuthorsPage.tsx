@@ -1,4 +1,4 @@
-import { AuthorsGrid } from "widgets/authors-grid/ui/AuthorsGrid/AuthorsGrid";
+import { AuthorsGrid } from "widgets/author/ui/AuthorsGrid/AuthorsGrid";
 
 export const AuthorsPage = () => {
     return <div>
