@@ -3,8 +3,7 @@ import "./player.css"
 import { Card, CardContent } from "shared/ui/Card"
 import { useState } from "react"
 import { Button } from "shared/ui/Button"
-import { MdPause, MdRepeat, MdShuffle } from "react-icons/md"
-import { FcNext, FcPrevious } from "react-icons/fc"
+import { MdArrowLeft, MdArrowRight, MdPause, MdRepeat, MdShuffle } from "react-icons/md"
 
 export const Player = () => {
     const [progress, setProgress] = useState(0.);
@@ -19,13 +18,13 @@ export const Player = () => {
                             <MdShuffle/>
                         </Button>
                         <Button equated>
-                            <FcPrevious/>
+                            <MdArrowLeft/>
                         </Button>
                         <Button equated>
                             <MdPause/>
                         </Button>
                         <Button equated>
-                            <FcNext/>
+                            <MdArrowRight/>
                         </Button>
                         <Button equated>
                             <MdRepeat/>

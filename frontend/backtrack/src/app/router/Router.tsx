@@ -10,6 +10,7 @@ import { AddAuthorPage } from "pages/author/ui/AddAuthorPage/AddAuthorPage"
 import { EditAuthorPage } from "pages/author/ui/EditAuthorPage/EditAuthorPage"
 import { GroupPage } from "pages/group/ui/GroupPage"
 import { AddGroupPage } from "pages/group/ui/AddGroupPage/AddGroupPage"
+import { EditGroupPage } from "pages/group/ui/EditGroupPage/EditGroupPage"
 
 export const Router = () => {
     const routes = useRoutes([
@@ -25,6 +26,7 @@ export const Router = () => {
         { path: '/groups', element: <GroupsPage /> },
         { path: '/groups/view/:groupId', element: <GroupPage /> },
         { path: '/groups/create', element: <AddGroupPage/> },
+        { path: '/groups/update/:groupId', element: <EditGroupPage/> },
         { path: '/playlists', element: <PlaylistsPage /> },
         { path: '/songs', element: <SongsPage /> },
         { path: '*', element: <Navigate to='/' /> },
