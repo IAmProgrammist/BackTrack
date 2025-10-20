@@ -9,7 +9,7 @@ export const Playlist = ({id, name, songsAmount, redirect = false}: PlaylistProp
     return <Card clickable={redirect} onClick={() => {
         if (!redirect) return;
 
-        navigate(`/playlists/${id}/view`);
+        navigate(`/playlists/view/${id}`);
     }} className="playlist playlist--small">
         <CardTitle className="playlist-title">
             {name}

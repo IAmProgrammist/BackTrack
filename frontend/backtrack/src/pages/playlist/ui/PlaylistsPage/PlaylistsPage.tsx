@@ -1,4 +1,4 @@
-import { PlaylistsGrid } from "widgets/playlists-grid/ui/PlaylistsGrid"
+import { PlaylistsGrid } from "widgets/playlist/ui/PlaylistsGrid"
 
 export const PlaylistsPage = () => {
     return <div>

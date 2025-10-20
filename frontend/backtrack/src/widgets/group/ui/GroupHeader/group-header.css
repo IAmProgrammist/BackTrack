@@ -27,6 +27,7 @@
         color: var(--white-color);
         font: var(--font-h3);
         margin-right: auto;
+        filter: drop-shadow(0px 4px 6px var(--grey-700-color));
     }
 
     .group-content {
