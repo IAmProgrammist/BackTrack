@@ -24,23 +24,29 @@ export class SongService implements ISongService {
         return this.songApi.getSongVersions(id);
     }
 
-    createSong(data: ISongCreateDTO) {
+    createSong(data: unknown) {
         const schema = this.createSchema();
 
         return async () => {
-            await schema.validate(data);
-            const {files, ...restData} = data;
-            return this.songApi.createSong(objectToFormData({...restData, bpm: data.bpm.toString(), 'files.file': files.map((it) => it.file), 'files.leading': files.map((it) => `${it.leading}`)}))()
+            let validated = await schema.validate(data);
+            const {files, bpm, authors, groups, ...restData} = validated;
+            return this.songApi.createSong(objectToFormData({...restData, 
+                ...(bpm ? {bpm: bpm.toString()} : {}),
+                'files.file': files?.map((it) => it?.file?.[0] || new File([], "Failed")) || [], 
+                'files.leading': files?.map((it) => `${it.leading || false}`) || []}))()
         }
     }
     
-    releaseSongVersion(id: string, data: ISongReleaseVersionDTO) {
+    releaseSongVersion(id: string, data: unknown) {
         const schema = this.releaseSchema();
 
         return async () => {
-            await schema.validate(data);
-            const {files, ...restData} = data;
-            return this.songApi.releaseSongVersion(id, objectToFormData({...restData, bpm: data.bpm.toString(), 'files.file': files.map((it) => it.file), 'files.leading': files.map((it) => `${it.leading}`)}))()
+            let validated = await schema.validate(data);
+            const {files, bpm, authors, groups, ...restData} = validated;
+            return this.songApi.releaseSongVersion(id, objectToFormData({...restData, 
+                ...(bpm ? {bpm: bpm.toString()} : {}),
+                'files.file': files?.map((it) => it?.file?.[0] || new File([], "Failed")) || [], 
+                'files.leading': files?.map((it) => `${it.leading || false}`) || []}))()
         }
     }
 
@@ -48,12 +54,12 @@ export class SongService implements ISongService {
         return this.songApi.deleteSong(id);
     }
     
-    createComment(id: string, data: ISongCreateCommentDTO) {
+    createComment(id: string, data: unknown) {
         const schema = this.createCommentSchema();
 
         return async () => {
-            await schema.validate(data);
-            return this.songApi.createComment(id, data)()
+            let validated = await schema.validate(data);
+            return this.songApi.createComment(id, validated)()
         }
     }
     

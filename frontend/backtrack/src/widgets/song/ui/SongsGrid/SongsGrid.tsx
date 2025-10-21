@@ -3,6 +3,8 @@ import "./songs-grid.css"
 import { SONG_QUERY_KEY } from "entities/song/model/query-key";
 import { Song } from "entities/song/ui/Song";
 import { useSongsService } from "features/song/lib/useSongsService";
+import { Button } from "shared/ui/Button";
+import { useNavigate } from "react-router";
 
 export const SongsGrid = () => {
     const {service} = useSongsService();
@@ -10,6 +12,7 @@ export const SongsGrid = () => {
         queryKey: [SONG_QUERY_KEY],
         queryFn: service.getSongs()
     })
+    const navigate = useNavigate();
 
     let content = null;
     if (songsIsLoading) {
@@ -22,7 +25,7 @@ export const SongsGrid = () => {
 
     return <article className="songs-grid">
         <h1 className="songs-grid-title">
-            Песни
+            Песни<Button onClick={() => navigate("/songs/create")}>Создать</Button>
         </h1>
         <div className="songs-grid-content">
             {content}

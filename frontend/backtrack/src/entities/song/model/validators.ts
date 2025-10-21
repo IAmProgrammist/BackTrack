@@ -1,7 +1,7 @@
 import { array, boolean, mixed, number, object, string } from "yup";
 
-export const SONG_NAME_VALIDATOR = string().required().trim().min(1, "Имя песни не может быть пустым").max(1024, "Имя песни слишком длинное")
-export const SONG_TAG_VALIDATOR = string().required().trim().min(0).max(256, "Имя тэга слишком длинное")
+export const SONG_NAME_VALIDATOR = string().required("Поле обязательно").trim().min(1, "Имя песни не может быть пустым").max(1024, "Имя песни слишком длинное")
+export const SONG_TAG_VALIDATOR = string().optional().trim().min(0).max(256, "Имя тэга слишком длинное")
 export const SONG_DESCRIPTION_VALIDATOR = string().trim().min(0).max(8192, "Описание слишком длинное")
 export const SONG_BPM_VALIDATOR = number().optional().min(0)
 export const SONG_KEY_VALIDATOR = string().optional().min(1).max(32, "Слишком длиное")

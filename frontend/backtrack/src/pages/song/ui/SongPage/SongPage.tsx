@@ -11,7 +11,6 @@ import { GroupItem } from "entities/group/ui/GroupItem";
 import { AuthorItem } from "entities/author/ui/AuthorItem";
 import { FileGrid } from "widgets/file/ui/FileGrid/FileGrid";
 import { PlaylistItem } from "entities/playlist/ui/PlaylistItem";
-import { Comment } from "entities/comment/ui/Comment";
 import { CommentsList } from "widgets/song/ui/CommentsList";
 
 export const SongPage = () => {

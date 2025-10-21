@@ -1,0 +1,22 @@
+.file-with-leading-select {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spaces-x8);
+}
+
+.file-with-leading-item-title {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spaces-x4);
+    align-items: center;
+}
+
+.file-with-leading-item-file {
+    max-width: 19rem;
+}
+
+.file-with-leading-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spaces-x4)
+}

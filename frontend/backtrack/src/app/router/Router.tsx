@@ -15,6 +15,8 @@ import { PlaylistPage } from "pages/playlist/ui/PlaylistPage"
 import { AddPlaylistPage } from "pages/playlist/ui/AddPlaylistPage/AddPlaylistPage"
 import { EditPlaylistPage } from "pages/playlist/ui/EditPlaylistPage/EditPlaylistPage"
 import { SongPage } from "pages/song/ui/SongPage"
+import { AddSongPage } from "pages/song/ui/AddSongPage"
+import { ReleaseSongVersionPage } from "pages/song/ui/ReleaseSongVersionPage"
 
 export const Router = () => {
     const routes = useRoutes([
@@ -37,6 +39,8 @@ export const Router = () => {
         { path: '/playlists/create', element: <AddPlaylistPage /> },
         { path: '/songs', element: <SongsPage /> },
         { path: '/songs/view/:songId', element: <SongPage /> },
+        { path: '/songs/create', element: <AddSongPage /> },
+        { path: '/songs/release/:songId', element: <ReleaseSongVersionPage /> },
         { path: '*', element: <Navigate to='/' /> },
       ],
     },

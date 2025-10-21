@@ -7,7 +7,7 @@ export interface ISongCreateDTO {
     bpm: number
     songKey: string
     lyrics: string
-    files: {file: File, leading: boolean}[]
+    files: {file: File[], leading: boolean}[]
     authors: string[]
     groups: string[]
 }
@@ -73,10 +73,10 @@ export interface ISongService {
     getSongs: () => () => Promise<ISongResponseShortDTO[]>
     getSong: (id: string, version?: string) => () => Promise<ISongResponseExtendedDTO>
     getSongVersions: (id: string) => () => Promise<ISongResponseVersionDTO[]>
-    createSong: (data: ISongCreateDTO) => () => Promise<ISongResponseShortDTO>
-    releaseSongVersion: (id: string, data: ISongReleaseVersionDTO) => () => Promise<ISongResponseVersionDTO>
+    createSong: (data: unknown) => () => Promise<ISongResponseShortDTO>
+    releaseSongVersion: (id: string, data: unknown) => () => Promise<ISongResponseVersionDTO>
     deleteSong: (id: string) => () => Promise<unknown>
-    createComment: (id: string, data: ISongCreateCommentDTO) => () => Promise<ISongResponseCommentDTO>
+    createComment: (id: string, data: unknown) => () => Promise<ISongResponseCommentDTO>
     getComments: (id: string) => () => Promise<ISongResponseCommentDTO[]>
     createSchema: () => ObjectSchema<AnyObject, ISongCreateDTO>
     releaseSchema: () => ObjectSchema<AnyObject, ISongReleaseVersionDTO>

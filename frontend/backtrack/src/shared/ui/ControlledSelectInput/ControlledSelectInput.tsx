@@ -10,6 +10,12 @@ export const ControlledSelectInput = ({selectProps, controlProps}: ControlledTex
         {...controlProps}
         control={control}
         render={({ field: { onChange, value, ref}, fieldState: {error} }) => {
-        return <Select {...selectProps} name={controlProps.name} value={value} onChange={onChange} ref={ref} error={error?.message}/>
+        return <Select {...selectProps} name={controlProps.name} value={value} onChange={(ev) => {
+            if (!selectProps?.multiple) {
+                onChange(ev.target.value)
+            } else {
+                onChange([...ev.target.options].filter((option) => option.selected).map((option) => option.value))
+            }
+        }} ref={ref} error={error?.message}/>
     }}/>
 }
