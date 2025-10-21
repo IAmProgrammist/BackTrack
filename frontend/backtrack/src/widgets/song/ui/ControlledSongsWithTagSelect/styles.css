@@ -1,0 +1,17 @@
+.songs-with-tag-select-song-item {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spaces-x4);
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.songs-with-tag-select-song-finder {
+    margin-bottom: var(--spaces-x12);
+}
+
+.songs-with-tag-select-song-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spaces-x8);
+}

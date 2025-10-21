@@ -1,4 +1,4 @@
-import React, { useEffect, useState, type MouseEventHandler, type TouchEvent, type TouchEventHandler } from "react"
+import React, { useEffect, useState } from "react"
 import "./slider.css"
 import type { SliderProps } from "./types"
 import clsx from "clsx";

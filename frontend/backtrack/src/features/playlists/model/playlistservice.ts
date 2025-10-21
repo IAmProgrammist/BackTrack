@@ -19,21 +19,21 @@ export class PlaylistService implements IPlaylistService {
         return this.playlistApi.getPlaylists()
     }
 
-    createPlaylist(data: PlaylistCreateDTO) {
+    createPlaylist(data: unknown) {
         const schema = this.createSchema();
         
         return async () => {
-            await schema.validate(data);
-            return this.playlistApi.createPlaylist(objectToFormData({...data, icon: data.icon, songs: JSON.stringify(data.songs)}))()
+            let validated = await schema.validate(data);
+            return this.playlistApi.createPlaylist(objectToFormData({...validated, icon: validated.icon[0], songs: JSON.stringify(validated.songs)}))()
         }
     }
 
-    updatePlaylist(data: PlaylistUpdateDTO) {
+    updatePlaylist(id: string, data: unknown) {
         const schema = this.createSchema();
         
         return async () => {
-            await schema.validate(data);
-            return this.playlistApi.updatePlaylist(objectToFormData({...data, icon: data.icon, songs: JSON.stringify(data.songs)}))()
+            let validated = await schema.validate(data);
+            return this.playlistApi.updatePlaylist(id, objectToFormData({...validated, icon: validated.icon[0], songs: JSON.stringify(validated.songs)}))()
         }
     }
 

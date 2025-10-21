@@ -1,0 +1,7 @@
+.song-table {
+    grid-template-columns: 1fr 110px 80px 50px;
+
+    .table-hr {
+        grid-column: span 4;
+    }
+}

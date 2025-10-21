@@ -14,13 +14,13 @@ export interface PlaylistResponseExpandedDTO {
     name: string
     description: string
     imageURL: string
-    tracks: {id: string, name: string, groups: {id: string, name: string}[], authors: {id: string, name: string}[], duration: number}[]
+    tracks: {id: string, name: string, tagSelector: string, groups: {id: string, name: string}[], authors: {id: string, name: string}[], duration: number}[]
 }
 
 export interface IPlaylistApi {
     getPlaylists: () => () => Promise<PlaylistResponseShortDTO[]>
     getPlaylist: (id: string) => () => Promise<PlaylistResponseExpandedDTO>
-    updatePlaylist: (data: PlaylistUpdateDTO) => () => Promise<PlaylistResponseShortDTO>
+    updatePlaylist: (id: string, data: PlaylistUpdateDTO) => () => Promise<PlaylistResponseShortDTO>
     deletePlaylist: (id: string) => () => Promise<unknown>
     createPlaylist: (data: PlaylistCreateDTO) => () => Promise<PlaylistResponseShortDTO>
 }

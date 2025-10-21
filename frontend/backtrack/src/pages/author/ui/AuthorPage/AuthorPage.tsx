@@ -1,6 +1,6 @@
 import { AuthorHeader } from "widgets/author/ui/AuthorHeader"
 import "./author-page.css"
-import { SongsGrid } from "widgets/songs-grid/ui/SongsGrid"
+import { SongsGrid } from "widgets/song/ui/SongsGrid"
 import { useAuthorsService } from "features/authors/lib/useAuthorsService"
 import { useParams } from "react-router"
 import { useQuery } from "@tanstack/react-query"

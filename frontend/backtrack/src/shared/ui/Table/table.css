@@ -1,0 +1,18 @@
+.table {
+    display: grid;
+    gap: var(--spaces-x8);
+}
+
+.table-header-cell {
+    font: var(--font-h5);
+}
+
+.table-cell {
+    font: var(--font-p1);
+}
+
+.table-hr {
+    height: 1px;
+    background-color: var(--grey-100-color);
+    width: 100%;
+}

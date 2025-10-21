@@ -1,4 +1,4 @@
-import { SongsGrid } from "widgets/songs-grid/ui/SongsGrid"
+import { SongsGrid } from "widgets/song/ui/SongsGrid"
 
 export const SongsPage = () => {
     return <div>
