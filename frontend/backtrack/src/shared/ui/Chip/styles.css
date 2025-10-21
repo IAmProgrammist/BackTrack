@@ -1,0 +1,8 @@
+.chip {
+    padding: var(--spaces-x1) var(--spaces-x4);
+    border-radius: var(--spaces-x4);
+    font-size: var(--font-p1);
+    background-color: var(--secondary-500-color);
+    color: var(--secondary-100-color);
+    box-shadow: var(--shadow-small);
+}

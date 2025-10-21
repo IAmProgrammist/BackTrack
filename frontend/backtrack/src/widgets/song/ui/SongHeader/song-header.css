@@ -1,0 +1,32 @@
+.playlist-header {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    align-items: center;
+    padding: var(--spaces-x12);
+}
+
+.playlist-header-image {
+    height: 200px;
+    width: 200px;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+.playlist-header-info {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    justify-content: space-between;
+}
+
+.playlist-header-title {
+    font: var(--font-h3);
+}
+
+.playlist-header-actions {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    flex-wrap: wrap;
+}
