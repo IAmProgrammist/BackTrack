@@ -24,7 +24,7 @@ export const AuthorHeader = ({name, imageURL, description, id}: AuthorHeaderProp
         <CardContent className="author-info">
             <CardTitle className="author-title">
                 {name} 
-                <Button onClick={() => navigate(`/authors/update/${id}`)}>Редактировать</Button>
+                <Button className="author-title-edit" onClick={() => navigate(`/authors/update/${id}`)}>Редактировать</Button>
                 <Button onClick={() => deleteAuthor()}>Удалить</Button>
             </CardTitle>
             <p>

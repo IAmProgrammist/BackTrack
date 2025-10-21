@@ -10,6 +10,7 @@
         flex-direction: column;
         gap: var(--spaces-x4);
         flex-wrap: 1;
+        flex-grow: 1;
 
         .author-title {
             font: var(--font-h3);
@@ -17,6 +18,10 @@
             flex-direction: row;
             justify-content: space-between;
             gap: 16px;
+        }
+
+        .author-title-edit {
+            margin-left: auto;
         }
     }
 }
