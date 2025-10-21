@@ -6,6 +6,9 @@
 
 .playlists-grid-title {
     font: var(--font-h2);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .playlists-grid-content {
