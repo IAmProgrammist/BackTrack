@@ -57,15 +57,14 @@ export const Slider = ({progress, onProgressChange, ...props}: SliderProps) => {
         }
     })
 
-    return <div {...props} className={clsx(props.className, "slider")}>
+    return <div onMouseDown={handleSliderButtonStarted}
+            onTouchStart={handleSliderButtonStarted}  {...props} className={clsx(props.className, "slider")}>
         <div className="slider-background" ref={backgroundRef}></div>
         <div style={{width: `${progressLocal * 100}%`}} className="slider-foreground"></div>
         <div 
             style={{left: `${progressLocal * 100}%`}}
             className="slider-button" 
             ref={sliderButtonRef}
-            onMouseDown={handleSliderButtonStarted}
-            onTouchStart={handleSliderButtonStarted}
         ></div>
     </div>
 }
