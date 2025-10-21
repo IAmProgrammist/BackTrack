@@ -19,21 +19,21 @@ export const GroupHeader = ({id, name, imageURL, description, participants}: Gro
     })
     const navigate = useNavigate();
     
-    return <Card className="group-header">
-        <CardHeader className="group-header-header">
+    return <Card className="groupheader">
+        <CardHeader className="groupheader-header">
             <img src={imageURL}/>
-            <CardTitle className="group-title">
+            <CardTitle className="groupheader-title">
                 <h3>{name}</h3>
                 <Button onClick={() => navigate(`/groups/update/${id}`)}>Редактировать</Button>
                 <Button onClick={() => deleteGroup()}>Удалить</Button>
             </CardTitle>
         </CardHeader>
-        <CardContent className="group-content">
-            <p className="group-desciption">
+        <CardContent className="groupheader-content">
+            <p className="groupheader-desciption">
                 {description}
             </p>
-            <div className="group-participants">
-                <div className="group-participants-text">Участники:</div>
+            <div className="groupheader-participants">
+                <div className="groupheader-participants-text">Участники:</div>
                 {participants.map((it) => (<Avatar src={it.imageURL}/>))}
             </div>
         </CardContent>

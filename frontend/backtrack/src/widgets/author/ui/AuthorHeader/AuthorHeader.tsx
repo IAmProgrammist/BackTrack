@@ -19,12 +19,12 @@ export const AuthorHeader = ({name, imageURL, description, id}: AuthorHeaderProp
     })
     const navigate = useNavigate();
 
-    return <Card className="author author-header">
+    return <Card className="authorheader">
         <Avatar src={imageURL}/>
-        <CardContent className="author-info">
-            <CardTitle className="author-title">
+        <CardContent className="authorheader-info">
+            <CardTitle className="authorheader-title">
                 {name} 
-                <Button className="author-title-edit" onClick={() => navigate(`/authors/update/${id}`)}>Редактировать</Button>
+                <Button className="authorheader-title-edit" onClick={() => navigate(`/authors/update/${id}`)}>Редактировать</Button>
                 <Button onClick={() => deleteAuthor()}>Удалить</Button>
             </CardTitle>
             <p>

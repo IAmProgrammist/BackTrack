@@ -1,4 +1,4 @@
-.playlist-header {
+.playlistheader {
     display: flex;
     flex-direction: row;
     gap: 12px;
@@ -6,25 +6,25 @@
     padding: var(--spaces-x12);
 }
 
-.playlist-header-image {
+.playlistheader-image {
     height: 200px;
     width: 200px;
     object-fit: cover;
     border-radius: 20px;
 }
 
-.playlist-header-info {
+.playlistheader-info {
     display: flex;
     flex-direction: column;
     align-self: stretch;
     justify-content: space-between;
 }
 
-.playlist-header-title {
+.playlistheader-title {
     font: var(--font-h3);
 }
 
-.playlist-header-actions {
+.playlistheader-actions {
     display: flex;
     flex-direction: row;
     gap: 8px;

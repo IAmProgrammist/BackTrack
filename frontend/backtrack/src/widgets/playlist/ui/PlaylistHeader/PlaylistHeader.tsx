@@ -18,16 +18,16 @@ export const PlaylistHeader = ({id, name, description, imageURL}: PlaylistHeader
     })
     const navigate = useNavigate();
     
-    return <Card className="playlist-header">
-        <img src={imageURL} className="playlist-header-image"/>
-        <div className="playlist-header-info">
-            <h3 className="playlist-header-title">
+    return <Card className="playlistheader">
+        <img src={imageURL} className="playlistheader-image"/>
+        <div className="playlistheader-info">
+            <h3 className="playlistheader-title">
                 {name}
             </h3>
-            <p className="playlist-header-description">
+            <p className="playlistheader-description">
                 {description}
             </p>
-            <div className="playlist-header-actions">
+            <div className="playlistheader-actions">
                 <Button onClick={() => navigate(`/playlists/update/${id}`)}>Редактировать</Button>
                 <Button onClick={() => deletePlaylist()}>Удалить</Button>
             </div>

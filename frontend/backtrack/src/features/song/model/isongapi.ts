@@ -19,8 +19,8 @@ export interface ISongResponseExtendedDTO {
     duration: number
     lyrics: string
     files: {url: string, mime: string, leading: boolean, name: string}[]
-    authors: {id: string, name: string}[]
-    groups: {id: string, name: string}[]
+    authors: {id: string, name: string, imageURL: string}[]
+    groups: {id: string, name: string, imageURL: string}[]
 }
 
 export interface ISongResponseVersionDTO {

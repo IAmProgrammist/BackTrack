@@ -1,0 +1,14 @@
+.songversionstable {
+    max-height: 500px;
+    overflow-y: auto;
+    grid-template-columns: 75px 100px 100px 1fr 50px;
+
+    .songversionstable-hr {
+        grid-column: span 5;
+    }
+}
+
+.songversionstable-wrapper-title {
+    font: var(--font-h4);
+    padding: var(--spaces-x6);
+}

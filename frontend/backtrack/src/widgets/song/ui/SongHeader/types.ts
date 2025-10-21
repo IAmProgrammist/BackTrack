@@ -1,11 +1,11 @@
-export interface PlaylistHeaderProps {
+export interface SongHeaderProps {
     id: string
     name: string 
     description: string 
     tag?: string
-    imageURL: string
-    bpm: string
-    songKey: string
+    imageURL?: string
+    bpm?: string
+    songKey?: string
     duration: number
     version: string
 }

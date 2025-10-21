@@ -5,4 +5,6 @@
     background-color: var(--secondary-500-color);
     color: var(--secondary-100-color);
     box-shadow: var(--shadow-small);
+    display: inline-flex;
+    align-items: center;
 }

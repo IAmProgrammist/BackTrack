@@ -1,17 +1,15 @@
 import { useMutation } from "@tanstack/react-query";
-import { PLAYLIST_QUERY_KEY } from "entities/playlist/model/query-key";
-import { usePlaylistsService } from "features/playlists/lib/usePlaylistsService";
 import { useNavigate } from "react-router"
 import { Card } from "shared/ui/Card";
 import "./song-header.css"
 import { Button } from "shared/ui/Button";
-import type { PlaylistHeaderProps } from "./types";
+import type { SongHeaderProps } from "./types";
 import { Chip } from "shared/ui/Chip";
 import { msToMMSS } from "entities/song/model/helpers";
 import { useSongsService } from "features/song/lib/useSongsService";
 import { SONG_QUERY_KEY } from "entities/song/model/query-key";
 
-export const PlaylistHeader = ({id,
+export const SongHeader = ({id,
     name,
     description, 
     tag,
@@ -20,7 +18,7 @@ export const PlaylistHeader = ({id,
     songKey,
     duration,
     version
-}: PlaylistHeaderProps) => {
+}: SongHeaderProps) => {
     const {service} = useSongsService();
     const {mutate: deleteSong} = useMutation({
         mutationKey: [SONG_QUERY_KEY, id],
@@ -31,24 +29,24 @@ export const PlaylistHeader = ({id,
     })
     const navigate = useNavigate();
     
-    return <Card className="song-header">
-        <img src={imageURL} className="song-header-image"/>
-        <div className="song-header-info">
-            <h3 className="song-header-title">
-                {name}
+    return <Card className="songheader">
+        {imageURL && <img src={imageURL} className="songheader-image"/>}
+        <div className="songheader-info">
+            <div className="songheader-title">
+                <h3>{name}</h3>
                 {tag ? <Chip>Черновик</Chip> : null}
-            </h3>
-            <p className="song-header-description">
+            </div>
+            <p className="songheader-description">
                 {description}
             </p>
-            <h4 className="song-header-meta">
-                BPM: {bpm}
-                <br/>
-                Тональность: {songKey}
-                <br/>
+            <h5 className="songheader-meta">
+                {bpm && <>BPM: {bpm}
+                <br/></>}
+                {songKey && <>Тональность: {songKey}
+                <br/></>}
                 Длительность: {msToMMSS(duration)}
-            </h4>
-            <div className="song-header-actions">
+            </h5>
+            <div className="songheader-actions">
                 <Button onClick={() => navigate(`/songs/release/${id}?version=${version}`)}>Выпустить версию</Button>
                 <Button onClick={() => deleteSong()}>Удалить</Button>
             </div>

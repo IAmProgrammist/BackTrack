@@ -44,8 +44,8 @@ export interface ISongResponseExtendedDTO {
     songKey: string
     duration: number
     lyrics: string
-    authors: {id: string, name: string}[]
-    groups: {id: string, name: string}[]
+    authors: {id: string, name: string, imageURL: string}[]
+    groups: {id: string, name: string, imageURL: string}[]
     files: {url: string, mime: string, leading: boolean, name: string}[]
 }
 

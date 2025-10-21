@@ -9,7 +9,7 @@ export const Song = ({id, name, authors, groups, duration, redirect = false}: So
     return <Card clickable={redirect} onClick={() => {
         if (!redirect) return;
 
-        navigate(`/authors/${id}/view`)
+        navigate(`/songs/view/${id}`)
     }} className="song">
         <CardHeader className="song-header">
             {name}
