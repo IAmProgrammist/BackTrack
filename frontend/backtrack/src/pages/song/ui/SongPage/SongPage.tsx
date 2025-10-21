@@ -7,10 +7,12 @@ import { SongHeader } from "widgets/song/ui/SongHeader";
 import { Lyrics } from "entities/song/ui/Lyrics";
 import { SongVersionsTable } from "widgets/song/ui/SongVersionsTable";
 import { Card, CardContent, CardTitle } from "shared/ui/Card";
-import { GroupItem } from "entities/group/ui/SongItem";
+import { GroupItem } from "entities/group/ui/GroupItem";
 import { AuthorItem } from "entities/author/ui/AuthorItem";
-import { File } from "shared/ui/File/File";
 import { FileGrid } from "widgets/file/ui/FileGrid/FileGrid";
+import { PlaylistItem } from "entities/playlist/ui/PlaylistItem";
+import { Comment } from "entities/comment/ui/Comment";
+import { CommentsList } from "widgets/song/ui/CommentsList";
 
 export const SongPage = () => {
     const {songId = ""} = useParams();
@@ -90,7 +92,7 @@ export const SongPage = () => {
                         Плейлисты
                     </CardTitle>
                     <CardContent className="songpage-section-content">
-                        <Lyrics lyrics={songData.lyrics}/>
+                        {songData.playlists.length === 0 ? "Плейлистов нет" : songData.playlists.map((it) => <PlaylistItem key={it.id} imageURL={it.imageURL} name={it.name} id={it.id}/>)}
                     </CardContent>
                 </Card>
                 <Card>
@@ -98,7 +100,7 @@ export const SongPage = () => {
                         Комментарии
                     </CardTitle>
                     <CardContent className="songpage-section-content">
-                        <Lyrics lyrics={songData.lyrics}/>
+                        <CommentsList id={songId}/>
                     </CardContent>
                 </Card>
             </div>

@@ -46,6 +46,7 @@ export interface ISongResponseExtendedDTO {
     lyrics: string
     authors: {id: string, name: string, imageURL: string}[]
     groups: {id: string, name: string, imageURL: string}[]
+    playlists: {id: string, name: string, imageURL: string}[]
     files: {url: string, mime: string, leading: boolean, name: string}[]
 }
 

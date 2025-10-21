@@ -1,9 +1,9 @@
-.select {
+.textarea {
   display: flex;
   flex-direction: column;
   gap: var(--spaces-x2);
 
-  .select-field {
+  .textarea-field {
     appearance: none;
     background-color: var(--grey-100-color);
     border: 1px solid rgba(from var(--grey-700-color) r g b / 0.15);
@@ -23,45 +23,46 @@
     vertical-align: middle;
     white-space: nowrap;
     word-wrap: break-word;
+    resize: vertical;
   }
 
-  .select-field:hover {
+  .textarea-field:hover {
     background-color: var(--white-color);
     text-decoration: none;
   }
 
-  .select-field:disabled {
+  .textarea-field:disabled {
     background-color: var(--white-color);
     border-color: rgba(from var(--grey-700-color) r g b / 0.15);
     color: var(--grey-500-color);
     cursor: default;
   }
 
-  .select-field:active {
+  .textarea-field:active {
     background-color: var(--white-color);
     box-shadow: var(--shadow-medium);
   }
 
-  .select-field:focus {
+  .textarea-field:focus {
     outline: 1px transparent;
   }
 
-  .select-field:before {
+  .textarea-field:before {
     display: none;
   }
 
-  .select-field:-webkit-details-marker {
+  .textarea-field:-webkit-details-marker {
     display: none;
   }
 }
 
-.select.select--error {
-  .select-field {
+.textarea.textarea--error {
+  .textarea-field {
     border-color: var(--error-color);
     color: var(--error-color);
   }
 
-  .select-sub {
+  .textarea-sub {
     color: var(--error-color);
   }
 }

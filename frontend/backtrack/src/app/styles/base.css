@@ -2,8 +2,12 @@ body {
     background-color: var(--grey-100-color);
 }
 
+html {
+    font-size: 16px;
+}
+
 #root {
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
 }
@@ -11,4 +15,16 @@ body {
 * {
     font: var(--font-p1);
     color: var(--grey-700-color);
+}
+
+@media screen and (max-width: 1024px) {
+    html {
+        font-size: 13px;
+    }
+}
+
+@media screen and (max-width: 720px) {
+    html {
+        font-size: 11px;
+    }
 }

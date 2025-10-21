@@ -28,5 +28,5 @@
 }
 
 .card--outlined {
-    border: solid 1px var(--grey-700);
+    border: solid 1px var(--grey-200-color);
 }

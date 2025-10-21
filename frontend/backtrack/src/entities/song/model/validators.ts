@@ -1,6 +1,5 @@
 import { array, boolean, mixed, number, object, string } from "yup";
 
-export const COMMENT_CONTENT_VALIDATOR = string().required().trim().min(1, "Комментарий не может быть пустым").max(8192, "Комментарий слишком длинный")
 export const SONG_NAME_VALIDATOR = string().required().trim().min(1, "Имя песни не может быть пустым").max(1024, "Имя песни слишком длинное")
 export const SONG_TAG_VALIDATOR = string().required().trim().min(0).max(256, "Имя тэга слишком длинное")
 export const SONG_DESCRIPTION_VALIDATOR = string().trim().min(0).max(8192, "Описание слишком длинное")

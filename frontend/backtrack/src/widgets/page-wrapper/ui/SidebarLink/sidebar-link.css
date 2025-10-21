@@ -1,13 +1,13 @@
 .sidebar-link {
   appearance: none;
   background-color: var(--white-color);
-  border-radius: 6px;
+  border-radius: var(--spaces-x3);
   color: var(--grey-700-color);
   cursor: pointer;
   display: inline-block;
   font: var(--font-p1);
   list-style: none;
-  padding: 6px 16px;
+  padding: var(--spaces-x3) var(--spaces-x8);
   position: relative;
   transition: background-color var(--transition-fast);
   user-select: none;

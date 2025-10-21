@@ -21,6 +21,7 @@ export interface ISongResponseExtendedDTO {
     files: {url: string, mime: string, leading: boolean, name: string}[]
     authors: {id: string, name: string, imageURL: string}[]
     groups: {id: string, name: string, imageURL: string}[]
+    playlists: {id: string, name: string, imageURL: string}[]
 }
 
 export interface ISongResponseVersionDTO {

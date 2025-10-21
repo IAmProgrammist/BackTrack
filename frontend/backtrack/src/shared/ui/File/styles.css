@@ -1,14 +1,14 @@
 .file {
     display: flex;
     flex-direction: column;
-    max-width: 150px;
+    max-width: 10rem;
     gap: var(--spaces-x8);
 }
 
 .file-preview {
     display: block;
-    width: 150px;
-    height: 150px;
+    width: 10rem;
+    height: 10rem;
     position: relative;
     border-radius: var(--spaces-x8);
     overflow: hidden;

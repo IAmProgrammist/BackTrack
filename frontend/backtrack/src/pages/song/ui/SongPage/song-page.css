@@ -7,7 +7,7 @@
 .songpage-sections {
     display: flex;
     flex-direction: row;
-    gap: 16px;
+    gap: var(--spaces-x8);
     flex-wrap: wrap;
 }
 
@@ -15,7 +15,7 @@
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: var(--spaces-x8);
 }
 
 .songpage-section-title {

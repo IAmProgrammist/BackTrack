@@ -1,0 +1,24 @@
+.songcomments {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spaces-x12);
+}
+
+.songcomments-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spaces-x5);
+    max-height: 20rem;
+    overflow: auto;
+}
+
+.songcomments-controls {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spaces-x5);
+}
+
+.songcomments-input {
+    flex-grow: 1;
+    width: 100%;
+}

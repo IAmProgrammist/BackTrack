@@ -1,0 +1,19 @@
+.comment-title {
+    padding-top: var(--spaces-x6);
+    padding-left: var(--spaces-x6);
+    padding-right: var(--spaces-x6);
+    display: flex;
+    flex-direction: row;
+    gap: var(--spaces-x2);
+    justify-content: space-between;
+}
+
+.comment-author {
+    font: var(--font-h5);
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.comment-content {
+    word-wrap: break-word;
+}

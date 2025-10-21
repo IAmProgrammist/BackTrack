@@ -65,6 +65,7 @@ export class MockSongApi implements ISongApi {
             name: "Midnight City",
             authors: [{id: "2", name: "Paul McCartney", imageURL: "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=400&h=400&fit=crop"}],
             groups: [{id: "2", name: "The Beatles", imageURL: "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=400&h=400&fit=crop"}],
+            playlists: [{id: "2", name: "Chill Out", imageURL: "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=400&h=400&fit=crop"}],
             duration: 284000,
             description: "An atmospheric track with dreamy synth layers and driving rhythm section",
             bpm: 128,

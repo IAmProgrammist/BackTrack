@@ -1,15 +1,15 @@
 .songheader {
     display: flex;
     flex-direction: row;
-    gap: 12px;
+    gap: var(--spaces-x6);
     align-items: center;
     padding: var(--spaces-x12);
 
     .songheader-image {
-        height: 200px;
-        width: 200px;
+        height: 12.5rem;
+        width: 12.5rem;
         object-fit: cover;
-        border-radius: 20px;
+        border-radius: 1.25rem;
     }
     .songheader-info {
         display: flex;
@@ -21,7 +21,7 @@
     .songheader-actions {
         display: flex;
         flex-direction: row;
-        gap: 8px;
+        gap: var(--spaces-x4);
     }
     .songheader-title {
         display: flex;

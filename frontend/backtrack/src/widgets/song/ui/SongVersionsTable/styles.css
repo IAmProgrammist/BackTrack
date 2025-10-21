@@ -1,7 +1,7 @@
 .songversionstable {
     max-height: 500px;
     overflow-y: auto;
-    grid-template-columns: 75px 100px 100px 1fr 50px;
+    grid-template-columns: 5rem 6.25rem 6.25rem 1fr 3.125rem;
 
     .songversionstable-hr {
         grid-column: span 5;

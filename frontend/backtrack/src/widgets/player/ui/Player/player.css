@@ -1,8 +1,8 @@
 .player {
-    height: 175px;
+    height: 11rem;
     left: auto;
     right: auto;
-    max-width: 720px;
+    max-width: 45rem;
     width: 100%;
     margin: var(--spaces-x0) var(--spaces-x12) ;
     box-shadow: var(--shadow-big);
@@ -10,7 +10,7 @@
 
 .player-container {
     position: fixed;
-    bottom: 20px;
+    bottom: 1.25rem;
     width: 100%;
     display: flex;
     align-items: center;
@@ -46,5 +46,5 @@
 }
 
 .player-extra {
-    width: 100px;
+    width: 7rem;
 }

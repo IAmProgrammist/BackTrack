@@ -1,5 +1,5 @@
 .header {
-    height: 64px;
+    height: 4rem;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -19,6 +19,6 @@
     }
 
     .header-search {
-        width: 175px;
+        width: 10rem;
     }
 }

@@ -8,12 +8,14 @@ import { Player } from "widgets/player/ui/Player/Player"
 export const PageWrapper = () => {
     return <>
         <Header/>
-        <div className="page-wrapper">
-            <Suspense fallback="Загрузка...">
-                <Outlet/>
-            </Suspense>
+        <div className="page">
+            <div className="page-wrapper">
+                <Suspense fallback="Загрузка...">
+                    <Outlet/>
+                </Suspense>
+            </div>
+            <Footer/>
         </div>
-        <Footer/>
         <Player/>
     </>
 }

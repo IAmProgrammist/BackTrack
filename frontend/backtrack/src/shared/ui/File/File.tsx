@@ -11,7 +11,7 @@ export const File = ({
         ...props
 }: FileProps) => {
         return <div {...props} className={clsx("file", className)}>
-            <a download href={url} className="file-preview">
+            <a target="_blank" download href={url} className="file-preview">
                 <MdDownload className="file-preview-downloader"/>
                 {mimeType.startsWith("image") ? <img className="file-preview-image" src={url}/> : <MdFileCopy className="file-preview-image"/>}
             </a>

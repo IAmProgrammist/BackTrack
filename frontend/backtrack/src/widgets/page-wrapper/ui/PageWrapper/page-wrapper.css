@@ -1,4 +1,5 @@
 .page-wrapper {
+    flex-grow: 1;
     padding: var(--spaces-x12);
     max-width: 1400px;
     width: 100%;
@@ -6,7 +7,14 @@
     margin-right: auto;
 }
 
-@media screen and (max-width: 400px) {
+.page {
+    overflow: auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+@media screen and (max-width: 720px) {
     .page-wrapper {
         padding: var(--spaces-x12) var(--spaces-x0);
     }
