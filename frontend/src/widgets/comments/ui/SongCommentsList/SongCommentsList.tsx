@@ -3,13 +3,13 @@ import "./styles.css"
 import { useState } from "react"
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { SONG_COMMENT_KEY } from "entities/song/model/query-key";
-import type { CommentsListProps } from "./types";
+import type { SongCommentsListProps } from "./types";
 import { useSongsService } from "features/song/lib/useSongsService";
 import { Comment } from "entities/comment/ui/Comment";
 import { Button } from "shared/ui/Button";
 import { MdSend } from "react-icons/md";
 
-export const CommentsList = ({id}: CommentsListProps) => {
+export const CommentsList = ({id}: SongCommentsListProps) => {
     const [comment, setComment] = useState("");
     const {service} = useSongsService();
     const {data: comments, isError, isLoading} = useQuery({

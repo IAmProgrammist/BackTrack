@@ -10,7 +10,7 @@ import { ControlledTextInput } from "shared/ui/ControlledTextInput/ControlledTex
 import { ControlledAuthorSelect } from "widgets/author/ui/ControlledAuthorSelect";
 import { ControlledGroupSelect } from "widgets/group/ui/ControlledGroupSelect";
 import { Mutate } from "widgets/mutate/ui/Mutate"
-import { ControlledFileWithLeadingSelect } from "widgets/song/ui/ControlledFileWithLeadingSelect/ControlledFileWithLeadingSelect";
+import { ControlledFileWithLeadingSelect } from "widgets/file/ui/ControlledFileWithLeadingSelect/ControlledFileWithLeadingSelect";
 
 export const ReleaseSongVersionPage = () =>  {
     const {songId = ""} = useParams();
