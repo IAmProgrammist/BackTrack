@@ -17,7 +17,7 @@ export const AddGroupPage = () =>  {
         >
         <ControlledTextInput controlProps={{name: "name"}} inputProps={{subText: "Имя"}}/>
         <ControlledTextInput controlProps={{name: "description"}} inputProps={{subText: "Описание"}}/>
-        <ControlledAuthorSelect controlProps={{name: "participants"}} selectProps={{subText: "Участники"}}/>
+        <ControlledAuthorSelect controlProps={{name: "participants"}} selectProps={{subText: "Участники", multiple: true}}/>
         <ControlledFileInput controlProps={{name: "icon"}} inputProps={{subText: "Картинка", type: "file"}}/>
 
         <div><Button type="submit">Создать</Button></div>
