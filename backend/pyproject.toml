@@ -1,0 +1,57 @@
+[project]
+name = "BackTrack"
+version = "0.1.0"
+description = "A backend for managing your musical tracks development"
+authors = [
+    {name = "BackTrack", email = "vladislav.pakhomov@bk.ru"},
+]
+dependencies = [
+    "fastapi>=0.122.0",
+    "uvicorn[standard]>=0.38.0",
+    "sqlalchemy>=2.0.44",
+    "alembic>=1.17.2",
+    "psycopg2-binary>=2.9.11",
+    "python-dotenv>=1.2.1",
+    "pydantic>=2.12.5",
+]
+requires-python = ">=3.11"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=9.0.1",
+    "pytest-asyncio>=1.3.0",
+    "black>=25.11.0",
+    "isort>=7.0.0",
+    "flake8>=7.3.0",
+]
+
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["*"]
+
+# Optional: Tool configurations
+[tool.black]
+line-length = 88
+target-version = ['py311']
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+# Alembic configuration can also be moved here
+[tool.alembic]
+script_location = "alembic"
+prepend_sys_path = "."
+version_path_separator = "os"
+sqlalchemy.url = "postgresql://appuser:apppassword@localhost:5432/appdb"
