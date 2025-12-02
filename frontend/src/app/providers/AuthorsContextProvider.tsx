@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react"
-import { AuthorsContextProvider as LibAuthorsContextProvider } from "features/authors/lib/AuthorsContextProvider"
+import { AuthorsContextProvider as LibAuthorsContextProvider } from "features/authors/ui/AuthorsContextProvider"
 import { AuthorService } from "features/authors/model/authorservice"
 import { MockAuthorApi } from "features/authors/model/mockauthorapi";
 

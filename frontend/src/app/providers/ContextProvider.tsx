@@ -6,21 +6,24 @@ import { QueryClientProvider } from "./QueryClientProvider";
 import { BrowserRouter } from "react-router";
 import { SongsContextProvider } from "./SongsContextProvider";
 import { PlaylistContextProvider } from "./PlaylistContextProvider";
+import { AuthContextProvider } from "./AuthContextProvider";
 
 export const ContextProvider = ({children}: {children: ReactNode}) => {
     return <BrowserRouter>
-        <QueryClientProvider>
-            <HeaderContextProvider>
-                <GroupsContextProvider>
-                    <AuthorsContextProvider>
-                        <SongsContextProvider>
-                            <PlaylistContextProvider>
-                                {children}
-                            </PlaylistContextProvider>
-                        </SongsContextProvider>
-                    </AuthorsContextProvider>
-                </GroupsContextProvider>
-            </HeaderContextProvider>
-        </QueryClientProvider>
+        <AuthContextProvider>
+            <QueryClientProvider>
+                <HeaderContextProvider>
+                    <GroupsContextProvider>
+                        <AuthorsContextProvider>
+                            <SongsContextProvider>
+                                <PlaylistContextProvider>
+                                    {children}
+                                </PlaylistContextProvider>
+                            </SongsContextProvider>
+                        </AuthorsContextProvider>
+                    </GroupsContextProvider>
+                </HeaderContextProvider>
+            </QueryClientProvider>
+        </AuthContextProvider>
     </BrowserRouter>
 }

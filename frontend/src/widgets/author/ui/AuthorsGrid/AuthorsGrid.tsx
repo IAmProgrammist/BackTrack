@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 import "./authors-grid.css"
-import { useAuthorsService } from "features/authors/lib/useAuthorsService";
+import { useAuthorsService } from "features/authors/ui/useAuthorsService";
 import { AUTHOR_QUERY_KEY } from "entities/author/model/query-key";
 import { Author } from "entities/author/ui/Author";
 import { Button } from "shared/ui/Button";

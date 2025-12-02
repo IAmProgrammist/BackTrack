@@ -1,4 +1,4 @@
-import { useAuthorsService } from "features/authors/lib/useAuthorsService"
+import { useAuthorsService } from "features/authors/ui/useAuthorsService"
 import { useNavigate } from "react-router";
 import { Button } from "shared/ui/Button";
 import { ControlledFileInput } from "shared/ui/ControlledFileInput/ControlledFileInput";

@@ -5,7 +5,7 @@ import "./author-header.css"
 import type { AuthorHeaderProps } from "./types"
 import { useMutation } from "@tanstack/react-query"
 import { AUTHOR_QUERY_KEY } from "entities/author/model/query-key"
-import { useAuthorsService } from "features/authors/lib/useAuthorsService"
+import { useAuthorsService } from "features/authors/ui/useAuthorsService"
 import { useNavigate } from "react-router"
 
 export const AuthorHeader = ({name, imageURL, description, id}: AuthorHeaderProps) => {

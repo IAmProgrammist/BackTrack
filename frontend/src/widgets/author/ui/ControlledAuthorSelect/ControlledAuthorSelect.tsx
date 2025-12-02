@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 import { AUTHOR_QUERY_KEY } from "entities/author/model/query-key";
-import { useAuthorsService } from "features/authors/lib/useAuthorsService"
+import { useAuthorsService } from "features/authors/ui/useAuthorsService"
 import { ControlledSelectInput } from "shared/ui/ControlledSelectInput";
 import type { ControlledAuthorSelectProps } from "./types";
 
