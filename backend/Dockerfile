@@ -1,28 +1,33 @@
-FROM python:3.11-slim
-
-WORKDIR /app
+FROM python:3.12.2-slim as base
+LABEL maintainer="hello@beerjoa.dev"
+LABEL build_date="2024-03-13"
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    gcc \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update \
+    && apt-get -y install libpq-dev gcc
 
-# Copy pyproject.toml and install Python dependencies
-COPY pyproject.toml .
-RUN pip install --no-cache-dir .
+# Configure Poetry
+ENV POETRY_VERSION=1.8.2
+ENV POETRY_HOME=/opt/poetry
+ENV POETRY_VENV=/opt/poetry-venv
+ENV POETRY_CACHE_DIR=/opt/.cache
 
-# Copy application code
-COPY . .
+# Install Poetry
+RUN python3 -m venv $POETRY_VENV && \
+    $POETRY_VENV/bin/pip install -U pip setuptools && \
+    $POETRY_VENV/bin/pip install "poetry==$POETRY_VERSION"
 
-# Create non-root user
-RUN useradd --create-home --shell /bin/bash app \
-    && chown -R app:app /app
-USER app
+# Add Poetry to PATH
+ENV PATH="${PATH}:$POETRY_VENV/bin"
 
-# Health check using Python
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"
+# Set workdir
+WORKDIR /data/backend
+COPY . /data/backend
+
+# Install service dependencies
+COPY poetry.lock pyproject.toml ./
+RUN poetry install --no-interaction
 
 EXPOSE 8000
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["poetry", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
