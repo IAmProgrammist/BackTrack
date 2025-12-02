@@ -66,10 +66,10 @@ services:
 
   # Frontend Service
   frontend:
-    image: nginx:alpine
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     container_name: app_frontend
-    expose:
-      - "80"
     networks:
       - app-network
     healthcheck:
