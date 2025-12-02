@@ -1,0 +1,33 @@
+.signpage {
+    height: 100%;
+    background: linear-gradient(-45deg, 
+    var(--primary-300-color), 
+    var(--secondary-600-color), 
+    var(--primary-600-color), 
+    var(--secondary-300-color)
+    );
+	background-size: 400% 400%;
+	animation: signpage-gradient 15s ease infinite;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.signpage-logincard {
+	max-width: 40rem;
+	width: 100%;
+	padding: var(--spaces-x12) var(--spaces-x12);
+	margin: var(--spaces-x0) var(--spaces-x6);
+}
+
+@keyframes signpage-gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}

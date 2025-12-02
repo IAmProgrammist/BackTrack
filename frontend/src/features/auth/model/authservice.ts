@@ -1,8 +1,8 @@
 import { EventListener } from "shared/model/eventHandler"
 import type { AuthServiceEvents, IAuthService, LoginRequest, RegisterRequest } from "./iauthservice"
 import type { IAuthRepository } from "./iauthrepository"
-import { object } from "yup";
-import { EMAIL_VALIDATOR, PASSWORD_VALIDATOR, USERNAME_VALIDATOR } from "entities/auth/model/validator";
+import { object, ObjectSchema, ref, string, type AnyObject } from "yup";
+import { EMAIL_VALIDATOR, PASSWORD_CONFIRM_VALIDATOR, PASSWORD_VALIDATOR, REMEMBER_VALIDATOR, USERNAME_VALIDATOR } from "entities/auth/model/validator";
 import { authApi, getAxiosConf } from "shared/api/api";
 
 export class AuthService extends EventListener<AuthServiceEvents> implements IAuthService {
@@ -13,11 +13,8 @@ export class AuthService extends EventListener<AuthServiceEvents> implements IAu
         this.repository = repository;
     }
 
-    login(data: LoginRequest) {
-        const schema = object().shape({
-            email: EMAIL_VALIDATOR,
-            password: PASSWORD_VALIDATOR
-        })
+    login(data: unknown) {
+        const schema = this.loginSchema();
         const that = this;
 
         return async () => {
@@ -28,7 +25,13 @@ export class AuthService extends EventListener<AuthServiceEvents> implements IAu
             });
 
             const token = loginData.data.data.token?.access_token || "";
-            that.repository.setAuthToken(token);
+            if (validatedData.remember) {
+                that.repository.cleanAuthTokenTemporary();
+                that.repository.setAuthToken(token);
+            } else {
+                that.repository.cleanAuthToken();
+                that.repository.setAuthTokenTemporary(token);
+            }
             that.eventHandler("tokenupdated", {token});
 
             return {
@@ -41,12 +44,8 @@ export class AuthService extends EventListener<AuthServiceEvents> implements IAu
             }
         }
     }
-    register(data: RegisterRequest) {
-        const schema = object().shape({
-            username: USERNAME_VALIDATOR,
-            email: EMAIL_VALIDATOR,
-            password: PASSWORD_VALIDATOR
-        })
+    register(data: unknown) {
+        const schema = this.registerSchema();
         const that = this;
 
         return async () => {
@@ -58,7 +57,13 @@ export class AuthService extends EventListener<AuthServiceEvents> implements IAu
             });
 
             const token = registerData.data.data.token?.access_token || "";
-            that.repository.setAuthToken(token);
+            if (validatedData.remember) {
+                that.repository.cleanAuthTokenTemporary();
+                that.repository.setAuthToken(token);
+            } else {
+                that.repository.cleanAuthToken();
+                that.repository.setAuthTokenTemporary(token);
+            }
             that.eventHandler("tokenupdated", {token});
 
             return {
@@ -84,5 +89,21 @@ export class AuthService extends EventListener<AuthServiceEvents> implements IAu
     }
     getToken() {
         return this.repository.getAuthToken();
+    }
+    loginSchema() {
+        return object<LoginRequest>().shape({
+            email: EMAIL_VALIDATOR,
+            password: PASSWORD_VALIDATOR,
+            remember: REMEMBER_VALIDATOR
+        })
+    }
+    registerSchema() {
+        return object<RegisterRequest>().shape({
+            username: USERNAME_VALIDATOR,
+            email: EMAIL_VALIDATOR,
+            password: PASSWORD_VALIDATOR,
+            confirm: PASSWORD_CONFIRM_VALIDATOR,
+            remember: REMEMBER_VALIDATOR
+        })
     }
 }

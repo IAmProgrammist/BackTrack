@@ -17,9 +17,22 @@ import { EditPlaylistPage } from "pages/playlist/ui/EditPlaylistPage/EditPlaylis
 import { SongPage } from "pages/song/ui/SongPage"
 import { AddSongPage } from "pages/song/ui/AddSongPage"
 import { ReleaseSongVersionPage } from "pages/song/ui/ReleaseSongVersionPage"
+import { SignWrapper } from "widgets/auth/ui/SignWrapper"
+import { Signin } from "pages/auth/ui/Signin"
+import { Signup } from "pages/auth/ui/Signup"
 
 export const Router = () => {
     const routes = useRoutes([
+    {
+      path: '/sign',
+      element: <SignWrapper/>,
+      children: [
+        {path: '/sign', element: <Navigate to='/sign/signin'/>},
+        {path: '/sign/signin', element: <Signin/>},
+        {path: '/sign/signup', element: <Signup/>},
+        {path: '/sign/*', element: <Navigate to='/sign/signin'/>}
+      ]
+    },
     {
       path: '/',
       element: <PageWrapper />,

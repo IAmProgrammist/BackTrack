@@ -1,8 +1,10 @@
 import type { EventListener } from "shared/model/eventHandler"
+import type { AnyObject, ObjectSchema } from "yup"
 
 export interface LoginRequest {
     email: string
     password: string
+    remember: boolean
 }
 
 export interface LoginResponse {
@@ -18,6 +20,7 @@ export interface RegisterRequest {
     username: string
     email: string
     password: string
+    remember: boolean
 }
 
 export interface RegisterResponse {
@@ -43,8 +46,10 @@ export type AuthServiceEvents = {
 }
 
 export interface IAuthService extends EventListener<AuthServiceEvents> {
-    login: (data: LoginRequest) => () => Promise<LoginResponse>
-    register: (data: RegisterRequest) => () => Promise<RegisterResponse>
+    login: (data: unknown) => () => Promise<LoginResponse>
+    register: (data: unknown) => () => Promise<RegisterResponse>
     getUserinfo: () => () => Promise<UserInfo>
     getToken: () => string | null
+    loginSchema: () => ObjectSchema<AnyObject, LoginRequest>
+    registerSchema: () => ObjectSchema<AnyObject, RegisterRequest>
 }

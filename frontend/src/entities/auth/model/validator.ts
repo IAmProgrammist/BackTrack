@@ -1,4 +1,4 @@
-import { string } from "yup";
+import { boolean, ref, string } from "yup";
 
 export const PASSWORD_VALIDATOR = string()
     .required('Пароль обязателен')
@@ -10,3 +10,5 @@ export const PASSWORD_VALIDATOR = string()
     .matches(/[^a-zA-Z0-9]/, 'Пароль должен содержать как минимум один специальный символ (такие как !@#$%^&*)')
 export const EMAIL_VALIDATOR = string().email("Строка должна быть валидной электронной почтой").required("Поле обязательно")
 export const USERNAME_VALIDATOR = string().min(3, "Имя пользователя слишком короткое").required("Логин обязателен")
+export const REMEMBER_VALIDATOR = boolean()
+export const PASSWORD_CONFIRM_VALIDATOR = string().required("Поле обязательно").oneOf([ref("password")], "Пароли не совпадают")

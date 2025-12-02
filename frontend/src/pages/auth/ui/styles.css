@@ -1,0 +1,20 @@
+.sign {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spaces-x12);
+}
+
+.sign-header {
+    font: var(--font-h2);
+    color: var(--grey-700-color);
+}
+
+.sign-divider {
+
+}
+
+.sign-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spaces-x6);
+}
