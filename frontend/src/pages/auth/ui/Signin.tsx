@@ -12,7 +12,7 @@ export const Signin = () => {
     const signinMutationParams = useLogin();
     const authService = useAuthService();
 
-    return <Mutate {...signinMutationParams} yupSchema={authService.loginSchema()} title="Войти в аккаунт">
+    return <Mutate {...signinMutationParams} yupSchema={authService.loginSchema()} title="Войти в аккаунт" onSuccess={() => navigate("/")}>
         <ControlledTextInput controlProps={{name: "email"}} inputProps={{placeholder: "Электронная почта", type: "email"}}/>
         <ControlledTextInput controlProps={{name: "password"}} inputProps={{placeholder: "Пароль", type: "password"}}/>
         <ControlledCheckboxInput inputProps={{subText: "Запомнить меня"}} controlProps={{name: "remember"}}/>

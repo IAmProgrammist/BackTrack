@@ -48,7 +48,7 @@ services:
       dockerfile: Dockerfile
     container_name: app_backend
     environment:
-      - DATABASE_URL=postgresql://${POSTGRES_USER:-appuser}:${POSTGRES_PASSWORD:-apppassword}@postgres:5432/${POSTGRES_DB:-appdb}
+      - DB_URL=postgresql+asyncpg://${POSTGRES_USER:-appuser}:${POSTGRES_PASSWORD:-apppassword}@postgres:5432/${POSTGRES_DB:-appdb}
       - APP_ENV=${APP_ENV:-dev}
     expose:
       - "8000"

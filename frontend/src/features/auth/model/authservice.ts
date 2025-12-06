@@ -1,7 +1,7 @@
 import { EventListener } from "shared/model/eventHandler"
 import type { AuthServiceEvents, IAuthService, LoginRequest, RegisterRequest } from "./iauthservice"
 import type { IAuthRepository } from "./iauthrepository"
-import { object, ObjectSchema, ref, string, type AnyObject } from "yup";
+import { object } from "yup";
 import { EMAIL_VALIDATOR, PASSWORD_CONFIRM_VALIDATOR, PASSWORD_VALIDATOR, REMEMBER_VALIDATOR, USERNAME_VALIDATOR } from "entities/auth/model/validator";
 import { authApi, getAxiosConf } from "shared/api/api";
 
