@@ -57,6 +57,9 @@ services:
         condition: service_healthy
     networks:
       - app-network
+    volumes:
+      - ./backend:/app:delegated
+      - backend_statics:${STATIC_DIR:-/home/backtrack}
     healthcheck:
       test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')\""]
       interval: 30s
@@ -81,6 +84,8 @@ services:
 
 volumes:
   postgres_data:
+    driver: local
+  backend_statics:
     driver: local
 
 networks:

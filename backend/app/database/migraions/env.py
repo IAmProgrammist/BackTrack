@@ -7,6 +7,7 @@ from alembic import context
 from sqlalchemy import engine_from_config, pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import AsyncEngine
+from app.models.rwmodel import RWModel
 
 from app.core.config import get_app_settings
 
@@ -19,7 +20,7 @@ config = context.config
 
 fileConfig(config.config_file_name)
 
-target_metadata = None
+target_metadata = RWModel.metadata
 
 config.set_main_option("sqlalchemy.url", str(DATABASE_URL))
 

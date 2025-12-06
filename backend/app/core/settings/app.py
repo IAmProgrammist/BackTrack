@@ -18,6 +18,7 @@ class AppSettings(BaseAppSettings):
     redoc_url: str = "/redoc"
     title: str = "FastAPI example application"
     version: str = "0.3.0"
+    static_dir: str = "/app/static"
 
     # back-end app settings
     api_v1_prefix: str = "/api/v1"

@@ -21,8 +21,8 @@ RUN python3 -m venv $POETRY_VENV && \
 ENV PATH="${PATH}:$POETRY_VENV/bin"
 
 # Set workdir
-WORKDIR /data/backend
-COPY . /data/backend
+WORKDIR /app
+COPY . /app
 
 # Install service dependencies
 COPY poetry.lock pyproject.toml ./
@@ -30,4 +30,4 @@ RUN poetry install --no-interaction
 
 EXPOSE 8000
 
-CMD ["poetry", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["poetry", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

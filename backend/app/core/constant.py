@@ -23,4 +23,6 @@ FAIL_AUTH_CHECK = "Authentication required."
 FAIL_AUTH_INVALID_TOKEN_PREFIX = "Invalid Token prefix."
 FAIL_AUTH_VALIDATION_CREDENTIAL = "Couldn't validate credentials."
 
+FAIL_FILE_NOT_FOUND = "Файл не существует."
+
 # --------
