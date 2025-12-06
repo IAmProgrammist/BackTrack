@@ -42,12 +42,13 @@ export interface UserInfo {
 }
 
 export type AuthServiceEvents = {
-    "tokenupdated": {token: string}
+    "tokenupdated": {token: string | null}
 }
 
 export interface IAuthService extends EventListener<AuthServiceEvents> {
     login: (data: unknown) => () => Promise<LoginResponse>
     register: (data: unknown) => () => Promise<RegisterResponse>
+    logout: () => void
     getUserinfo: () => () => Promise<UserInfo>
     getToken: () => string | null
     loginSchema: () => ObjectSchema<AnyObject, LoginRequest>

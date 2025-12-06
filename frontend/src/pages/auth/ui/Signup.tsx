@@ -15,9 +15,9 @@ export const Signup = () => {
 
     return <Mutate {...signupMutationParams} yupSchema={authService.registerSchema()} title="Регистрация" onSuccess={() => navigate("/")}>
         <ControlledTextInput controlProps={{name: "username"}} inputProps={{placeholder: "Имя пользователя", type: "text"}}/>
-        <ControlledTextInput controlProps={{name: "email"}} inputProps={{placeholder: "Электронная почта", type: "email"}}/>
-        <ControlledTextInput controlProps={{name: "password"}} inputProps={{placeholder: "Пароль", type: "password"}}/>
-        <ControlledTextInput controlProps={{name: "confirm"}} inputProps={{placeholder: "Подтверждение пароля", type: "password"}}/>
+        <ControlledTextInput controlProps={{name: "email"}} inputProps={{placeholder: "Электронная почта", type: "email", autoComplete: "email"}}/>
+        <ControlledTextInput controlProps={{name: "password"}} inputProps={{placeholder: "Пароль", type: "password", autoComplete: "new-password"}}/>
+        <ControlledTextInput controlProps={{name: "confirm"}} inputProps={{placeholder: "Подтверждение пароля", type: "password", autoComplete: "new-password"}}/>
         <ControlledCheckboxInput inputProps={{subText: "Запомнить меня"}} controlProps={{name: "remember"}}/>
         <div className="sign-actions">
             <Button type="submit">Зарегистрироваться</Button>

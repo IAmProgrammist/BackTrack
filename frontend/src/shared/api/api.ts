@@ -8,7 +8,7 @@ export const axiosClient = axios.create({})
 export const getAxiosConf = (token?: string | null): RawAxiosRequestConfig => {
     if (token) {
         return {headers: {
-            Authorization: token
+            Authorization: `bearer ${token}`
         }}
     }
 

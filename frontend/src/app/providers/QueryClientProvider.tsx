@@ -7,7 +7,7 @@ export const QueryClientProvider = ({children}: {children: ReactNode}) => {
     const authToken = useAuthToken();
     useEffect(() => {
         console.log("A token reset detected. Resetting all query client caches.");
-        queryClient.clear();
+        queryClient.invalidateQueries();
     }, [authToken, queryClient])
     
     return <LibQueryClientProvider client={queryClient}>

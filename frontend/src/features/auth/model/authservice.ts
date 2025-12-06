@@ -76,6 +76,11 @@ export class AuthService extends EventListener<AuthServiceEvents> implements IAu
             }
         }
     }
+    logout() {
+        this.repository.cleanAuthToken();
+        this.repository.cleanAuthTokenTemporary();
+        this.eventHandler("tokenupdated", {token: null});
+    }
     getUserinfo() {
         const that = this;
         return async () => authApi.authInfoApiV1AuthInfoGet(getAxiosConf(that.getToken())).then((data) => ({
