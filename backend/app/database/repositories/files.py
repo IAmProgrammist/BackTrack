@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncConnection
 from app.database.repositories.base import BaseRepository, db_error_handler
 from app.models.file import File
 from uuid import UUID
+from app.schemas.files import FileInDB
 
 
 class FilesRepository(BaseRepository):
@@ -18,3 +19,11 @@ class FilesRepository(BaseRepository):
         result = raw_result.fetchone()
 
         return result.File if result is not None else result
+
+    @db_error_handler
+    async def create_file(self, *, file_in: FileInDB) -> File:
+        created_file = File(**file_in.model_dump(exclude_none=True))
+        self.connection.add(created_file)
+        await self.connection.commit()
+        await self.connection.refresh(created_file)
+        return created_file

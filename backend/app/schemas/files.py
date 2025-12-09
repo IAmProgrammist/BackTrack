@@ -19,6 +19,9 @@ class FileBase(BaseModel):
 class FileOutMetadata(FileBase):
     pass
 
+class FileInDB(FileBase):
+    pass
+
 class FilesResponse(ApiResponse):
     message: str = "File API Response"
     data: FileOutMetadata | list[FileOutMetadata]
