@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, Form
-from fastapi.responses import FileResponse
 from pydantic_filters.plugins.fastapi import FilterDepends, PaginationDepends, SortDepends
-from starlette.status import HTTP_200_OK, HTTP_201_CREATED
+from starlette.status import HTTP_200_OK
 from typing import Annotated
 from uuid import UUID
 
@@ -12,7 +11,6 @@ from app.core.config import get_app_settings
 from app.core.settings.app import AppSettings
 from app.database.repositories.authors import AuthorsRepository
 from app.database.repositories.files import FilesRepository
-from app.models.file import File
 from app.models.user import User
 from app.schemas.author import (
     AuthorFilter,
@@ -24,7 +22,7 @@ from app.schemas.author import (
 from app.schemas.author import AuthorResponse
 from app.services.authors import AuthorsService
 from app.services.files import FileService
-from app.utils import ERROR_RESPONSES, ServiceResult, handle_result
+from app.utils import ERROR_RESPONSES, handle_result
 
 router = APIRouter()
 
@@ -99,7 +97,7 @@ async def create_author(*,
 
 
 @router.put(
-    "/{user_id}",
+    "/{author_id}",
     status_code=HTTP_200_OK,
     responses=ERROR_RESPONSES,
     name="update_author",
@@ -113,7 +111,7 @@ async def update_author(*,
                         file_repository: FilesRepository = Depends(get_repository(FilesRepository)),
                         settings: AppSettings = Depends(get_app_settings),
                         token_user: User = Depends(get_current_user_auth()),
-                        user_id: UUID
+                        author_id: UUID
                         ) -> AuthorResponse:
     response = await author_service.update_author(
         author_in=author_in,
@@ -122,7 +120,7 @@ async def update_author(*,
         file_repository=file_repository,
         settings=settings,
         token_user=token_user,
-        user_id=user_id
+        author_id=author_id
     )
 
     return await handle_result(response)

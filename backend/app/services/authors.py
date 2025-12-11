@@ -120,7 +120,7 @@ class AuthorsService(BaseService):
             )
 
         author = await author_repo.create_author(
-            author_in=AuthorInDB(name=author_in.name, desctiption=author_in.description, file_id=stored_file.id))
+            author_in=AuthorInDB(name=author_in.name, description=author_in.description, file_id=stored_file.id))
         if not author:
             logger.error("Failed to create author")
             return response_4xx(
@@ -183,7 +183,7 @@ class AuthorsService(BaseService):
 
         author = await author_repo.update_author(
             author=author,
-            author_in=AuthorInDB(name=author_in.name, desctiption=author_in.description, file_id=stored_file.id)
+            author_in=AuthorInDB(name=author_in.name, description=author_in.description, file_id=stored_file.id)
         )
         if not author:
             logger.error("Failed to create author")

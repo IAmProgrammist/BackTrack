@@ -12,13 +12,12 @@ class FileBase(BaseModel):
         from_attributes=True,
     )
 
-    id: UUID | None = None
     mime: str
     original_name: str
 
 
 class FileOutMetadata(FileBase):
-    pass
+    id: UUID | None = None
 
 
 class FileInDB(FileBase):

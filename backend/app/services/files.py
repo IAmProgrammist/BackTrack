@@ -88,15 +88,15 @@ class FileService(BaseService):
             return None
 
         # Step 1: create file in repository database
-        file = await file_repository.create_file(FileInDB(mime=file.content_type, original_name=file.filename))
-        if not file:
+        file_metadata = await file_repository.create_file(file_in=FileInDB(mime=file.content_type, original_name=file.filename))
+        if not file_metadata:
             return None
 
         # Step 2: store file in a filesystem
-        path = f"{settings.static_dir}/{file.id}"
+        path = f"{settings.static_dir}/{file_metadata.id}"
         Path(settings.static_dir).mkdir(parents=True, exist_ok=True)
         async with aiofiles.open(path, 'wb') as out_file:
             content = await file.read()
             await out_file.write(content)
 
-        return file
+        return file_metadata

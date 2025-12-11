@@ -34,7 +34,7 @@ class AuthorsRepository(BaseRepository):
             sort=sort
         )
 
-        authors = await self.connection.execute(query)
+        authors = (await self.connection.execute(query)).scalars()
 
         return authors
 

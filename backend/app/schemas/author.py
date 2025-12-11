@@ -1,8 +1,8 @@
 from enum import Enum
 from fastapi import UploadFile
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 from pydantic_filters import BaseFilter, SearchField, PagePagination, BaseSort
-from typing import Any, Optional
+from typing import Any, Optional, Literal
 from uuid import UUID
 
 from app.schemas.message import ApiResponse
@@ -14,7 +14,6 @@ class AuthorBase(BaseModel):
         str_strip_whitespace=True
     )
 
-    id: UUID | None = None
     name: str = Field(min_length=1, max_length=1024)
     description: str = Field(min_length=0, max_length=1024)
 
@@ -42,17 +41,16 @@ class AuthorPagination(PagePagination):
     pass
 
 
-class AuthorOrderByEnum(str, Enum):
-    id = "id"
-    name = "name"
+AuthorOrderByLiteral = Literal["id", "name"]
 
 
 class AuthorSort(BaseSort):
-    sort_by: Optional[AuthorOrderByEnum] = None
+    sort_by: Optional[AuthorOrderByLiteral] = None
 
 
 # Модели для ответа
 class AuthorOutData(AuthorBase):
+    id: UUID | None = None
     file_id: UUID
 
 
