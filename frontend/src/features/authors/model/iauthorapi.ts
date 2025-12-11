@@ -1,6 +1,14 @@
-export type AuthorCreateDTO = FormData
+export interface AuthorCreateDTO {
+    name: string
+    description: string
+    icon: File
+}
 
-export type AuthorUpdateDTO = FormData
+export interface AuthorUpdateDTO {
+    name: string
+    description: string
+    icon: File
+}
 
 export interface AuthorResponseDTO {
     id: string
@@ -10,9 +18,9 @@ export interface AuthorResponseDTO {
 }
 
 export interface IAuthorApi {
-    getAuthors: () => () => Promise<AuthorResponseDTO[]>
-    getAuthor: (id: string) => () => Promise<AuthorResponseDTO>
-    updateAuthor: (id: string, data: AuthorUpdateDTO) => () => Promise<AuthorResponseDTO>
-    deleteAuthor: (id: string) => () => Promise<unknown>
-    createAuthor: (data: AuthorCreateDTO) => () => Promise<AuthorResponseDTO>
+    getAuthors: (token?: string | null) => () => Promise<AuthorResponseDTO[]>
+    getAuthor: (id: string, token?: string | null) => () => Promise<AuthorResponseDTO>
+    updateAuthor: (id: string, data: AuthorUpdateDTO, token?: string | null) => () => Promise<AuthorResponseDTO>
+    deleteAuthor: (id: string, token?: string | null) => () => Promise<unknown>
+    createAuthor: (data: AuthorCreateDTO, token?: string | null) => () => Promise<AuthorResponseDTO>
 }

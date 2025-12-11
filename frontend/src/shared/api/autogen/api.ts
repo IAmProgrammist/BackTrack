@@ -23,7 +23,29 @@ import type { RequestArgs } from './base';
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerMap } from './base';
 
+export interface AuthorOutData {
+    'name': string;
+    'description': string;
+    'id'?: string | null;
+    'file_id': string;
+}
+export interface AuthorResponse {
+    'message'?: string;
+    'data': Data;
+    'detail'?: { [key: string]: any; } | null;
+}
 export interface Data {
+    'name': string;
+    'description': string;
+    'id'?: string;
+    'file_id': string;
+}
+export interface Data1 {
+    'mime': string;
+    'original_name': string;
+    'id'?: string;
+}
+export interface Data2 {
     'id'?: number;
     'username': string;
     'email': string;
@@ -34,11 +56,30 @@ export interface Data {
 }
 export interface ErrorResponse {
     'app_exception'?: string;
-    'context'?: object | null;
+    'context'?: { [key: string]: any; } | null;
+}
+export interface FileOutMetadata {
+    'mime': string;
+    'original_name': string;
+    'id'?: string | null;
+}
+export interface FilesResponse {
+    'message'?: string;
+    'data': Data1;
+    'detail'?: { [key: string]: any; } | null;
 }
 export interface HTTPValidationError {
     'detail'?: Array<ValidationError>;
 }
+
+export const SortByOrder = {
+    Asc: 'asc',
+    Desc: 'desc'
+} as const;
+
+export type SortByOrder = typeof SortByOrder[keyof typeof SortByOrder];
+
+
 export interface UserAuthOutData {
     'id'?: number | null;
     'username': string;
@@ -72,8 +113,8 @@ export interface UserOutData {
 }
 export interface UserResponse {
     'message'?: string;
-    'data': Data;
-    'detail'?: object | null;
+    'data': Data2;
+    'detail'?: { [key: string]: any; } | null;
 }
 export interface UserTokenData {
     'access_token'?: string | null;
@@ -325,18 +366,117 @@ export class AuthApi extends BaseAPI {
 
 
 /**
- * UsersApi - axios parameter creator
+ * AuthorsApi - axios parameter creator
  */
-export const UsersApiAxiosParamCreator = function (configuration?: Configuration) {
+export const AuthorsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
-         * @summary Hello
+         * @summary Create Author
+         * @param {string} name 
+         * @param {string} description 
+         * @param {File} file 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        helloApiV1UsersHelloGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v1/users/hello`;
+        createAuthorApiV1AuthorsPost: async (name: string, description: string, file: File, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'name' is not null or undefined
+            assertParamExists('createAuthorApiV1AuthorsPost', 'name', name)
+            // verify required parameter 'description' is not null or undefined
+            assertParamExists('createAuthorApiV1AuthorsPost', 'description', description)
+            // verify required parameter 'file' is not null or undefined
+            assertParamExists('createAuthorApiV1AuthorsPost', 'file', file)
+            const localVarPath = `/api/v1/authors`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+            const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
+
+            // authentication RWAPIKeyHeader required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+            if (name !== undefined) { 
+                localVarFormParams.append('name', name as any);
+            }
+    
+            if (description !== undefined) { 
+                localVarFormParams.append('description', description as any);
+            }
+    
+            if (file !== undefined) { 
+                localVarFormParams.append('file', file as any);
+            }
+    
+    
+            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = localVarFormParams;
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Delete Author
+         * @param {string} authorId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteAuthorApiV1AuthorsAuthorIdDelete: async (authorId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'authorId' is not null or undefined
+            assertParamExists('deleteAuthorApiV1AuthorsAuthorIdDelete', 'authorId', authorId)
+            const localVarPath = `/api/v1/authors/{author_id}`
+                .replace(`{${"author_id"}}`, encodeURIComponent(String(authorId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication RWAPIKeyHeader required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get Author
+         * @param {string} authorId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAuthorApiV1AuthorsAuthorIdGet: async (authorId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'authorId' is not null or undefined
+            assertParamExists('getAuthorApiV1AuthorsAuthorIdGet', 'authorId', authorId)
+            const localVarPath = `/api/v1/authors/{author_id}`
+                .replace(`{${"author_id"}}`, encodeURIComponent(String(authorId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -359,6 +499,535 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @summary Get Authors
+         * @param {Array<string>} [idIn] 
+         * @param {string} [q] 
+         * @param {number} [page] 
+         * @param {number} [perPage] 
+         * @param {GetAuthorsApiV1AuthorsGetSortByEnum} [sortBy] 
+         * @param {SortByOrder} [sortByOrder] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAuthorsApiV1AuthorsGet: async (idIn?: Array<string>, q?: string, page?: number, perPage?: number, sortBy?: GetAuthorsApiV1AuthorsGetSortByEnum, sortByOrder?: SortByOrder, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v1/authors`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (idIn) {
+                localVarQueryParameter['id__in'] = idIn;
+            }
+
+            if (q !== undefined) {
+                localVarQueryParameter['q'] = q;
+            }
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (perPage !== undefined) {
+                localVarQueryParameter['per_page'] = perPage;
+            }
+
+            if (sortBy !== undefined) {
+                localVarQueryParameter['sort_by'] = sortBy;
+            }
+
+            if (sortByOrder !== undefined) {
+                localVarQueryParameter['sort_by_order'] = sortByOrder;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Update Author
+         * @param {string} authorId 
+         * @param {string} name 
+         * @param {string} description 
+         * @param {File} file 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateAuthorApiV1AuthorsAuthorIdPut: async (authorId: string, name: string, description: string, file: File, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'authorId' is not null or undefined
+            assertParamExists('updateAuthorApiV1AuthorsAuthorIdPut', 'authorId', authorId)
+            // verify required parameter 'name' is not null or undefined
+            assertParamExists('updateAuthorApiV1AuthorsAuthorIdPut', 'name', name)
+            // verify required parameter 'description' is not null or undefined
+            assertParamExists('updateAuthorApiV1AuthorsAuthorIdPut', 'description', description)
+            // verify required parameter 'file' is not null or undefined
+            assertParamExists('updateAuthorApiV1AuthorsAuthorIdPut', 'file', file)
+            const localVarPath = `/api/v1/authors/{author_id}`
+                .replace(`{${"author_id"}}`, encodeURIComponent(String(authorId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+            const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
+
+            // authentication RWAPIKeyHeader required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+            if (name !== undefined) { 
+                localVarFormParams.append('name', name as any);
+            }
+    
+            if (description !== undefined) { 
+                localVarFormParams.append('description', description as any);
+            }
+    
+            if (file !== undefined) { 
+                localVarFormParams.append('file', file as any);
+            }
+    
+    
+            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = localVarFormParams;
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * AuthorsApi - functional programming interface
+ */
+export const AuthorsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = AuthorsApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Create Author
+         * @param {string} name 
+         * @param {string} description 
+         * @param {File} file 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createAuthorApiV1AuthorsPost(name: string, description: string, file: File, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthorResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createAuthorApiV1AuthorsPost(name, description, file, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AuthorsApi.createAuthorApiV1AuthorsPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Delete Author
+         * @param {string} authorId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteAuthorApiV1AuthorsAuthorIdDelete(authorId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthorResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteAuthorApiV1AuthorsAuthorIdDelete(authorId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AuthorsApi.deleteAuthorApiV1AuthorsAuthorIdDelete']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Get Author
+         * @param {string} authorId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAuthorApiV1AuthorsAuthorIdGet(authorId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthorResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAuthorApiV1AuthorsAuthorIdGet(authorId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AuthorsApi.getAuthorApiV1AuthorsAuthorIdGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Get Authors
+         * @param {Array<string>} [idIn] 
+         * @param {string} [q] 
+         * @param {number} [page] 
+         * @param {number} [perPage] 
+         * @param {GetAuthorsApiV1AuthorsGetSortByEnum} [sortBy] 
+         * @param {SortByOrder} [sortByOrder] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAuthorsApiV1AuthorsGet(idIn?: Array<string>, q?: string, page?: number, perPage?: number, sortBy?: GetAuthorsApiV1AuthorsGetSortByEnum, sortByOrder?: SortByOrder, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthorResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAuthorsApiV1AuthorsGet(idIn, q, page, perPage, sortBy, sortByOrder, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AuthorsApi.getAuthorsApiV1AuthorsGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Update Author
+         * @param {string} authorId 
+         * @param {string} name 
+         * @param {string} description 
+         * @param {File} file 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateAuthorApiV1AuthorsAuthorIdPut(authorId: string, name: string, description: string, file: File, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthorResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateAuthorApiV1AuthorsAuthorIdPut(authorId, name, description, file, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AuthorsApi.updateAuthorApiV1AuthorsAuthorIdPut']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * AuthorsApi - factory interface
+ */
+export const AuthorsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = AuthorsApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Create Author
+         * @param {string} name 
+         * @param {string} description 
+         * @param {File} file 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createAuthorApiV1AuthorsPost(name: string, description: string, file: File, options?: RawAxiosRequestConfig): AxiosPromise<AuthorResponse> {
+            return localVarFp.createAuthorApiV1AuthorsPost(name, description, file, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Delete Author
+         * @param {string} authorId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteAuthorApiV1AuthorsAuthorIdDelete(authorId: string, options?: RawAxiosRequestConfig): AxiosPromise<AuthorResponse> {
+            return localVarFp.deleteAuthorApiV1AuthorsAuthorIdDelete(authorId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get Author
+         * @param {string} authorId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAuthorApiV1AuthorsAuthorIdGet(authorId: string, options?: RawAxiosRequestConfig): AxiosPromise<AuthorResponse> {
+            return localVarFp.getAuthorApiV1AuthorsAuthorIdGet(authorId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get Authors
+         * @param {Array<string>} [idIn] 
+         * @param {string} [q] 
+         * @param {number} [page] 
+         * @param {number} [perPage] 
+         * @param {GetAuthorsApiV1AuthorsGetSortByEnum} [sortBy] 
+         * @param {SortByOrder} [sortByOrder] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAuthorsApiV1AuthorsGet(idIn?: Array<string>, q?: string, page?: number, perPage?: number, sortBy?: GetAuthorsApiV1AuthorsGetSortByEnum, sortByOrder?: SortByOrder, options?: RawAxiosRequestConfig): AxiosPromise<AuthorResponse> {
+            return localVarFp.getAuthorsApiV1AuthorsGet(idIn, q, page, perPage, sortBy, sortByOrder, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Update Author
+         * @param {string} authorId 
+         * @param {string} name 
+         * @param {string} description 
+         * @param {File} file 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateAuthorApiV1AuthorsAuthorIdPut(authorId: string, name: string, description: string, file: File, options?: RawAxiosRequestConfig): AxiosPromise<AuthorResponse> {
+            return localVarFp.updateAuthorApiV1AuthorsAuthorIdPut(authorId, name, description, file, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * AuthorsApi - object-oriented interface
+ */
+export class AuthorsApi extends BaseAPI {
+    /**
+     * 
+     * @summary Create Author
+     * @param {string} name 
+     * @param {string} description 
+     * @param {File} file 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public createAuthorApiV1AuthorsPost(name: string, description: string, file: File, options?: RawAxiosRequestConfig) {
+        return AuthorsApiFp(this.configuration).createAuthorApiV1AuthorsPost(name, description, file, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Delete Author
+     * @param {string} authorId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public deleteAuthorApiV1AuthorsAuthorIdDelete(authorId: string, options?: RawAxiosRequestConfig) {
+        return AuthorsApiFp(this.configuration).deleteAuthorApiV1AuthorsAuthorIdDelete(authorId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get Author
+     * @param {string} authorId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public getAuthorApiV1AuthorsAuthorIdGet(authorId: string, options?: RawAxiosRequestConfig) {
+        return AuthorsApiFp(this.configuration).getAuthorApiV1AuthorsAuthorIdGet(authorId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get Authors
+     * @param {Array<string>} [idIn] 
+     * @param {string} [q] 
+     * @param {number} [page] 
+     * @param {number} [perPage] 
+     * @param {GetAuthorsApiV1AuthorsGetSortByEnum} [sortBy] 
+     * @param {SortByOrder} [sortByOrder] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public getAuthorsApiV1AuthorsGet(idIn?: Array<string>, q?: string, page?: number, perPage?: number, sortBy?: GetAuthorsApiV1AuthorsGetSortByEnum, sortByOrder?: SortByOrder, options?: RawAxiosRequestConfig) {
+        return AuthorsApiFp(this.configuration).getAuthorsApiV1AuthorsGet(idIn, q, page, perPage, sortBy, sortByOrder, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Update Author
+     * @param {string} authorId 
+     * @param {string} name 
+     * @param {string} description 
+     * @param {File} file 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public updateAuthorApiV1AuthorsAuthorIdPut(authorId: string, name: string, description: string, file: File, options?: RawAxiosRequestConfig) {
+        return AuthorsApiFp(this.configuration).updateAuthorApiV1AuthorsAuthorIdPut(authorId, name, description, file, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+export const GetAuthorsApiV1AuthorsGetSortByEnum = {
+    Id: 'id',
+    Name: 'name'
+} as const;
+export type GetAuthorsApiV1AuthorsGetSortByEnum = typeof GetAuthorsApiV1AuthorsGetSortByEnum[keyof typeof GetAuthorsApiV1AuthorsGetSortByEnum];
+
+
+/**
+ * FilesApi - axios parameter creator
+ */
+export const FilesApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Download File
+         * @param {string} fileId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        downloadFileApiV1FilesFileIdDownloadGet: async (fileId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'fileId' is not null or undefined
+            assertParamExists('downloadFileApiV1FilesFileIdDownloadGet', 'fileId', fileId)
+            const localVarPath = `/api/v1/files/{file_id}/download`
+                .replace(`{${"file_id"}}`, encodeURIComponent(String(fileId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get File
+         * @param {string} fileId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getFileApiV1FilesFileIdGet: async (fileId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'fileId' is not null or undefined
+            assertParamExists('getFileApiV1FilesFileIdGet', 'fileId', fileId)
+            const localVarPath = `/api/v1/files/{file_id}`
+                .replace(`{${"file_id"}}`, encodeURIComponent(String(fileId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * FilesApi - functional programming interface
+ */
+export const FilesApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = FilesApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Download File
+         * @param {string} fileId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async downloadFileApiV1FilesFileIdDownloadGet(fileId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.downloadFileApiV1FilesFileIdDownloadGet(fileId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FilesApi.downloadFileApiV1FilesFileIdDownloadGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Get File
+         * @param {string} fileId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getFileApiV1FilesFileIdGet(fileId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FilesResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getFileApiV1FilesFileIdGet(fileId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FilesApi.getFileApiV1FilesFileIdGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * FilesApi - factory interface
+ */
+export const FilesApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = FilesApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Download File
+         * @param {string} fileId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        downloadFileApiV1FilesFileIdDownloadGet(fileId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.downloadFileApiV1FilesFileIdDownloadGet(fileId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get File
+         * @param {string} fileId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getFileApiV1FilesFileIdGet(fileId: string, options?: RawAxiosRequestConfig): AxiosPromise<FilesResponse> {
+            return localVarFp.getFileApiV1FilesFileIdGet(fileId, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * FilesApi - object-oriented interface
+ */
+export class FilesApi extends BaseAPI {
+    /**
+     * 
+     * @summary Download File
+     * @param {string} fileId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public downloadFileApiV1FilesFileIdDownloadGet(fileId: string, options?: RawAxiosRequestConfig) {
+        return FilesApiFp(this.configuration).downloadFileApiV1FilesFileIdDownloadGet(fileId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get File
+     * @param {string} fileId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public getFileApiV1FilesFileIdGet(fileId: string, options?: RawAxiosRequestConfig) {
+        return FilesApiFp(this.configuration).getFileApiV1FilesFileIdGet(fileId, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * UsersApi - axios parameter creator
+ */
+export const UsersApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
         /**
          * 
          * @summary User:Delete-By-Id
@@ -519,18 +1188,6 @@ export const UsersApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @summary Hello
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async helloApiV1UsersHelloGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.helloApiV1UsersHelloGet(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['UsersApi.helloApiV1UsersHelloGet']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
          * @summary User:Delete-By-Id
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -592,15 +1249,6 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
     return {
         /**
          * 
-         * @summary Hello
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        helloApiV1UsersHelloGet(options?: RawAxiosRequestConfig): AxiosPromise<any> {
-            return localVarFp.helloApiV1UsersHelloGet(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @summary User:Delete-By-Id
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -646,16 +1294,6 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
  * UsersApi - object-oriented interface
  */
 export class UsersApi extends BaseAPI {
-    /**
-     * 
-     * @summary Hello
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    public helloApiV1UsersHelloGet(options?: RawAxiosRequestConfig) {
-        return UsersApiFp(this.configuration).helloApiV1UsersHelloGet(options).then((request) => request(this.axios, this.basePath));
-    }
-
     /**
      * 
      * @summary User:Delete-By-Id

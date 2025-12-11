@@ -1,21 +1,23 @@
-# ErrorResponse
+# Data1
 
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**app_exception** | **string** |  | [optional] [default to 'FailToSendAlert']
-**context** | **{ [key: string]: any; }** |  | [optional] [default to undefined]
+**mime** | **string** |  | [default to undefined]
+**original_name** | **string** |  | [default to undefined]
+**id** | **string** |  | [optional] [default to undefined]
 
 ## Example
 
 ```typescript
-import { ErrorResponse } from './api';
+import { Data1 } from './api';
 
-const instance: ErrorResponse = {
-    app_exception,
-    context,
+const instance: Data1 = {
+    mime,
+    original_name,
+    id,
 };
 ```
 

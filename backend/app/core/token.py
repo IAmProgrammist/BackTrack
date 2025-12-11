@@ -32,7 +32,8 @@ def create_token_for_user(user: User, secret_key: str) -> UserTokenData:
     created_token = create_token(
         content=token_user_dict,
         secret_key=secret_key,
-        expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
+        # TODO: add expires
+        # expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
     )
     return UserTokenData(access_token=created_token, token_type=TOKEN_TYPE)
 

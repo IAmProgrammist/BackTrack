@@ -1,4 +1,4 @@
-# Data
+# AuthorOutData
 
 
 ## Properties
@@ -13,9 +13,9 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { Data } from './api';
+import { AuthorOutData } from './api';
 
-const instance: Data = {
+const instance: AuthorOutData = {
     name,
     description,
     id,

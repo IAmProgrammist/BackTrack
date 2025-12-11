@@ -1,4 +1,4 @@
-# UserResponse
+# AuthorResponse
 
 
 ## Properties
@@ -6,15 +6,15 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **message** | **string** |  | [optional] [default to 'User API Response']
-**data** | [**Data2**](Data2.md) |  | [default to undefined]
+**data** | [**Data**](Data.md) |  | [default to undefined]
 **detail** | **{ [key: string]: any; }** |  | [optional] [default to undefined]
 
 ## Example
 
 ```typescript
-import { UserResponse } from './api';
+import { AuthorResponse } from './api';
 
-const instance: UserResponse = {
+const instance: AuthorResponse = {
     message,
     data,
     detail,

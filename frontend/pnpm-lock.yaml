@@ -78,9 +78,6 @@ importers:
       globals:
         specifier: ^16.4.0
         version: 16.4.0
-      openapi-generator-cli:
-        specifier: ^1.0.0
-        version: 1.0.0
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
@@ -1361,10 +1358,6 @@ packages:
   onetime@5.1.2:
     resolution: {integrity: sha512-kbpaSSGJTWdAY5KPVeMOKXSrPtr8C8C7wodJbcsd51jRnmD+GZu8Y0VoU6Dm5Z4vWr0Ig/1NKuWRKf7j5aaYSg==}
     engines: {node: '>=6'}
-
-  openapi-generator-cli@1.0.0:
-    resolution: {integrity: sha512-gJ6YXQAkmoTYZ6kPG3rX9lHvVTh/bnWxfr6pDxjUfx+vSoE+JsuR4LDw+MrgH/7ezsJRFaljR66k0AlOXDW/eQ==}
-    hasBin: true
 
   optionator@0.9.4:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
@@ -2958,8 +2951,6 @@ snapshots:
   onetime@5.1.2:
     dependencies:
       mimic-fn: 2.1.0
-
-  openapi-generator-cli@1.0.0: {}
 
   optionator@0.9.4:
     dependencies:

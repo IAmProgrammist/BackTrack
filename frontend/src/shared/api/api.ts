@@ -1,6 +1,6 @@
 import axios, { type RawAxiosRequestConfig } from "axios";
 import { BASE_URL } from "shared/config/constants";
-import { AuthApi, UsersApi } from "./autogen";
+import { AuthApi, AuthorsApi, UsersApi } from "./autogen";
 
 
 export const axiosClient = axios.create({})
@@ -17,3 +17,4 @@ export const getAxiosConf = (token?: string | null): RawAxiosRequestConfig => {
 
 export const authApi = new AuthApi(undefined, BASE_URL, axiosClient);
 export const usersApi = new UsersApi(undefined, BASE_URL, axiosClient);
+export const authorsApi = new AuthorsApi(undefined, BASE_URL, axiosClient);

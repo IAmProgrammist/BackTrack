@@ -124,3 +124,25 @@ async def update_author(*,
     )
 
     return await handle_result(response)
+
+
+@router.delete(
+    "/{author_id}",
+    status_code=HTTP_200_OK,
+    responses=ERROR_RESPONSES,
+    name="delete_author",
+    response_model=AuthorResponse
+)
+async def delete_author(*,
+                        author_service: AuthorsService = Depends(get_service(AuthorsService)),
+                        author_repo: AuthorsRepository = Depends(get_repository(AuthorsRepository)),
+                        token_user: User = Depends(get_current_user_auth()),
+                        author_id: UUID
+                        ) -> AuthorResponse:
+    response = await author_service.delete_author(
+        author_repo=author_repo,
+        token_user=token_user,
+        author_id=author_id
+    )
+
+    return await handle_result(response)

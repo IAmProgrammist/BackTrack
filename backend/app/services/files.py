@@ -48,13 +48,14 @@ class FileService(BaseService):
             )
 
         logger.error(f"File {file_id} found successfully")
-        response = FileResponse(
+        return FileResponse(
+            headers={
+                "Cache-Control": "public, max-age=360000"
+            },
             path=path,
             media_type=file_data.mime,
             filename=file_data.original_name
         )
-        response["Cache-Control"] = "public, max-age=360000"
-        return response
 
     @return_service
     async def get_file_metadata_by_id(self,

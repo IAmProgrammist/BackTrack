@@ -69,5 +69,5 @@ class AuthorsRepository(BaseRepository):
 
     @db_error_handler
     async def delete_author(self, *, author: Author):
-        self.connection.delete(author)
+        await self.connection.delete(author)
         await self.connection.commit()
