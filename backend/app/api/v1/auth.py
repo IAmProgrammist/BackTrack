@@ -23,9 +23,9 @@ router = APIRouter()
     name="auth:info",
 )
 async def get_user_by_token(
-    *,
-    users_service: UsersService = Depends(get_service(UsersService)),
-    token_user: User = Depends(get_current_user_auth()),
+        *,
+        users_service: UsersService = Depends(get_service(UsersService)),
+        token_user: User = Depends(get_current_user_auth()),
 ) -> ServiceResult:
     """
     Create new users.
@@ -45,11 +45,11 @@ async def get_user_by_token(
     name="auth:signup",
 )
 async def signup_user(
-    *,
-    users_service: UsersService = Depends(get_service(UsersService)),
-    users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
-    user_in: UserInCreate,
-    settings: AppSettings = Depends(get_app_settings),
+        *,
+        users_service: UsersService = Depends(get_service(UsersService)),
+        users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
+        user_in: UserInCreate,
+        settings: AppSettings = Depends(get_app_settings),
 ) -> ServiceResult:
     """
     Signup new users.
@@ -68,11 +68,11 @@ async def signup_user(
     name="auth:signin",
 )
 async def signin_user(
-    *,
-    users_service: UsersService = Depends(get_service(UsersService)),
-    users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
-    user_in: UserInSignIn,
-    settings: AppSettings = Depends(get_app_settings),
+        *,
+        users_service: UsersService = Depends(get_service(UsersService)),
+        users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
+        user_in: UserInSignIn,
+        settings: AppSettings = Depends(get_app_settings),
 ) -> ServiceResult:
     """
     Create new users.

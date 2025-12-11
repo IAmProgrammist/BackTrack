@@ -1,11 +1,11 @@
-from uuid import UUID
+import uuid
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.sql.schema import ForeignKey
-
-import uuid
 from typing import TYPE_CHECKING
+from uuid import UUID
 
 from app.models.rwmodel import RWModel
+
 if TYPE_CHECKING:
     from app.models.file import File
 

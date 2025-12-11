@@ -22,10 +22,10 @@ router = APIRouter()
     name="users:all",
 )
 async def read_users(
-    *,
-    users_service: UsersService = Depends(get_service(UsersService)),
-    users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
-    users_filters: UsersFilters = Depends(get_users_filters),
+        *,
+        users_service: UsersService = Depends(get_service(UsersService)),
+        users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
+        users_filters: UsersFilters = Depends(get_users_filters),
 ):
     result = await users_service.get_users(
         users_repo=users_repo,
@@ -43,11 +43,11 @@ async def read_users(
     name="user:info-by-id",
 )
 async def read_user_by_id(
-    *,
-    user: User = Depends(get_current_user_auth()),
-    users_service: UsersService = Depends(get_service(UsersService)),
-    users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
-    user_id: int,
+        *,
+        user: User = Depends(get_current_user_auth()),
+        users_service: UsersService = Depends(get_service(UsersService)),
+        users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
+        user_id: int,
 ) -> UserResponse:
     result = await users_service.get_user_by_id(users_repo=users_repo, user_id=user_id)
 
@@ -62,11 +62,11 @@ async def read_user_by_id(
     name="user:patch-by-id",
 )
 async def update_user(
-    *,
-    users_service: UsersService = Depends(get_service(UsersService)),
-    users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
-    user_in: UserInUpdate,
-    token_user: User = Depends(get_current_user_auth()),
+        *,
+        users_service: UsersService = Depends(get_service(UsersService)),
+        users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
+        user_in: UserInUpdate,
+        token_user: User = Depends(get_current_user_auth()),
 ) -> UserResponse:
     result = await users_service.update_user(users_repo=users_repo, token_user=token_user, user_in=user_in)
     return await handle_result(result)
@@ -80,10 +80,10 @@ async def update_user(
     name="user:delete-by-id",
 )
 async def delete_user(
-    *,
-    users_service: UsersService = Depends(get_service(UsersService)),
-    users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
-    token_user: User = Depends(get_current_user_auth()),
+        *,
+        users_service: UsersService = Depends(get_service(UsersService)),
+        users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
+        token_user: User = Depends(get_current_user_auth()),
 ) -> UserResponse:
     result = await users_service.delete_user(users_repo=users_repo, token_user=token_user)
     return await handle_result(result)

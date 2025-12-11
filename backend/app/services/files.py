@@ -1,35 +1,34 @@
+import aiofiles
 import logging
-
 from fastapi import Depends, UploadFile
 from fastapi.encoders import jsonable_encoder
+from fastapi.responses import FileResponse
+from pathlib import Path
 from starlette.status import (
     HTTP_400_BAD_REQUEST,
     HTTP_200_OK
 )
-from fastapi.responses import FileResponse
+from uuid import UUID
 
 from app.api.dependencies.database import get_repository
 from app.core import constant
 from app.core.config import get_app_settings
 from app.core.settings.app import AppSettings
 from app.database.repositories.files import FilesRepository
+from app.models.file import File
 from app.schemas.files import FileInDB, FileOutMetadata, FilesResponse
 from app.services.base import BaseService
 from app.utils import response_4xx, return_service
-from uuid import UUID
-from pathlib import Path
-from app.models.file import File
-import aiofiles
 
 logger = logging.getLogger(__name__)
 
 
 class FileService(BaseService):
     async def download_file_by_id(self,
-                            file_id: UUID,
-                            file_repository: FilesRepository = Depends(get_repository(FilesRepository)),
-                            settings: AppSettings = Depends(get_app_settings)
-    ) -> FileResponse:
+                                  file_id: UUID,
+                                  file_repository: FilesRepository = Depends(get_repository(FilesRepository)),
+                                  settings: AppSettings = Depends(get_app_settings)
+                                  ) -> FileResponse:
         logger.info(f"Downloading file {file_id}")
         file_data = await file_repository.get_file_by_id(file_id=file_id)
         path = f"{settings.static_dir}/{file_id}"
@@ -59,10 +58,10 @@ class FileService(BaseService):
 
     @return_service
     async def get_file_metadata_by_id(self,
-                            file_id: UUID,
-                            file_repository: FilesRepository = Depends(get_repository(FilesRepository)),
-                            settings: AppSettings = Depends(get_app_settings)
-    ) -> FilesResponse:
+                                      file_id: UUID,
+                                      file_repository: FilesRepository = Depends(get_repository(FilesRepository)),
+                                      settings: AppSettings = Depends(get_app_settings)
+                                      ) -> FilesResponse:
         logger.info(f"Getting file metadata {file_id}")
         file_data = await file_repository.get_file_by_id(file_id=file_id)
         if not file_data:
@@ -71,7 +70,7 @@ class FileService(BaseService):
                 status_code=HTTP_400_BAD_REQUEST,
                 context={"reason": constant.FAIL_FILE_NOT_FOUND},
             )
-        
+
         return dict(
             status_code=HTTP_200_OK,
             content={
@@ -81,10 +80,10 @@ class FileService(BaseService):
         )
 
     async def create_file(self,
-        file_repository: FilesRepository = Depends(get_repository(FilesRepository)),
-        settings: AppSettings = Depends(get_app_settings),
-        file: UploadFile = None
-    ) -> File | None:
+                          file_repository: FilesRepository = Depends(get_repository(FilesRepository)),
+                          settings: AppSettings = Depends(get_app_settings),
+                          file: UploadFile = None
+                          ) -> File | None:
         if not file:
             return None
 

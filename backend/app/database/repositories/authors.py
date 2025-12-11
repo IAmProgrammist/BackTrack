@@ -1,11 +1,11 @@
+from pydantic_filters.drivers.sqlalchemy import append_to_statement
 from sqlalchemy import and_, func, or_, select
 from sqlalchemy.ext.asyncio import AsyncConnection
+from uuid import UUID
 
 from app.database.repositories.base import BaseRepository, db_error_handler
-from app.schemas.author import AuthorFilter, AuthorPagination, AuthorSort, AuthorInDB
-from uuid import UUID
 from app.models.author import Author
-from pydantic_filters.drivers.sqlalchemy import append_to_statement
+from app.schemas.author import AuthorFilter, AuthorPagination, AuthorSort, AuthorInDB
 
 
 class AuthorsRepository(BaseRepository):
@@ -20,11 +20,11 @@ class AuthorsRepository(BaseRepository):
 
     @db_error_handler
     async def get_authors(
-        self,
-        *,
-        filter_: AuthorFilter,
-        pagination: AuthorPagination,
-        sort: AuthorSort
+            self,
+            *,
+            filter_: AuthorFilter,
+            pagination: AuthorPagination,
+            sort: AuthorSort
     ) -> list[Author]:
         query = append_to_statement(
             statement=select(Author),
@@ -40,9 +40,9 @@ class AuthorsRepository(BaseRepository):
 
     @db_error_handler
     async def create_author(
-        self,
-        *,
-        author_in: AuthorInDB
+            self,
+            *,
+            author_in: AuthorInDB
     ) -> Author:
         created_author = Author(**author_in.model_dump(exclude_none=True))
         self.connection.add(created_author)
@@ -52,10 +52,10 @@ class AuthorsRepository(BaseRepository):
 
     @db_error_handler
     async def update_author(
-        self,
-        *,
-        author: Author,
-        author_in: AuthorInDB
+            self,
+            *,
+            author: Author,
+            author_in: AuthorInDB
     ) -> Author:
         author_in_obj = author_in.model_dump(exclude_unset=True)
 

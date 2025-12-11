@@ -1,11 +1,11 @@
 from datetime import datetime
-from typing import Any
-
 from pydantic import BaseModel, ConfigDict
+from typing import Any
+from uuid import UUID
 
 from app.core import security
 from app.schemas.message import ApiResponse
-from uuid import UUID
+
 
 class FileBase(BaseModel):
     model_config = ConfigDict(
@@ -16,11 +16,14 @@ class FileBase(BaseModel):
     mime: str
     original_name: str
 
+
 class FileOutMetadata(FileBase):
     pass
 
+
 class FileInDB(FileBase):
     pass
+
 
 class FilesResponse(ApiResponse):
     message: str = "File API Response"

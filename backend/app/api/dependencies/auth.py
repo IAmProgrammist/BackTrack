@@ -1,5 +1,4 @@
 from collections.abc import Callable
-
 from fastapi import Depends, Request, Security
 from fastapi.exceptions import HTTPException
 from fastapi.security import APIKeyHeader
@@ -28,15 +27,15 @@ class RWAPIKeyHeader(APIKeyHeader):
 
 
 def _get_auth_header_retriever(
-    *,
-    required: bool = True,
+        *,
+        required: bool = True,
 ) -> Callable:
     return _get_auth_from_header if required else _get_auth_from_header_optional
 
 
 def _get_auth_from_header(
-    api_key: str = Security(RWAPIKeyHeader(name=AUTH_HEADER_KEY)),
-    settings: AppSettings = Depends(get_app_settings),
+        api_key: str = Security(RWAPIKeyHeader(name=AUTH_HEADER_KEY)),
+        settings: AppSettings = Depends(get_app_settings),
 ) -> str:
     try:
         token_prefix, token = api_key.split(" ")
@@ -56,8 +55,8 @@ def _get_auth_from_header(
 
 
 def _get_auth_from_header_optional(
-    auth: str | None = Security(RWAPIKeyHeader(name=AUTH_HEADER_KEY, auto_error=False)),
-    settings: AppSettings = Depends(get_app_settings),
+        auth: str | None = Security(RWAPIKeyHeader(name=AUTH_HEADER_KEY, auto_error=False)),
+        settings: AppSettings = Depends(get_app_settings),
 ) -> str:
     if auth:
         return _get_auth_from_header(api_key=auth, settings=settings)
@@ -66,9 +65,9 @@ def _get_auth_from_header_optional(
 
 
 async def _get_current_user(
-    users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
-    token: str = Depends(_get_auth_header_retriever()),
-    settings: AppSettings = Depends(get_app_settings),
+        users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
+        token: str = Depends(_get_auth_header_retriever()),
+        settings: AppSettings = Depends(get_app_settings),
 ) -> User:
     try:
         secret_key = str(settings.secret_key.get_secret_value())
@@ -99,9 +98,9 @@ async def _get_current_user(
 
 
 async def _get_current_user_optional(
-    users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
-    token: str = Depends(_get_auth_header_retriever()),
-    settings: AppSettings = Depends(get_app_settings),
+        users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
+        token: str = Depends(_get_auth_header_retriever()),
+        settings: AppSettings = Depends(get_app_settings),
 ) -> User | None:
     if token:
         return await _get_current_user(users_repo=users_repo, token=token, settings=settings)
@@ -110,7 +109,7 @@ async def _get_current_user_optional(
 
 
 def get_current_user_auth(
-    *,
-    required: bool = True,
+        *,
+        required: bool = True,
 ) -> Callable:
     return _get_current_user if required else _get_current_user_optional
