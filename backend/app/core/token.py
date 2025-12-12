@@ -17,7 +17,7 @@ def create_token(
     *,
     content: dict[str, str],
     secret_key: str,
-    expires_delta: timedelta | None = timedelta(minutes=15),
+    expires_delta: timedelta | None = timedelta(minutes=36000),
 ):
     to_encode = content.copy()
     expire = datetime.now(UTC) + expires_delta
