@@ -18,6 +18,9 @@ from app.schemas.group import (
     GroupPagination,
     GroupSort,
     GroupResponse,
+    GroupDetailedResponse,
+    GroupEmptyResponse,
+    GroupListResponse,
     GroupInCreate
 )
 from app.schemas.group import GroupResponse
@@ -33,13 +36,13 @@ router = APIRouter()
     status_code=HTTP_200_OK,
     responses=ERROR_RESPONSES,
     name="get_group",
-    response_model=GroupResponse
+    response_model=GroupDetailedResponse
 )
 async def get_group(*,
                     group_service: GroupsService = Depends(get_service(GroupsService)),
                     group_repository: GroupsRepository = Depends(get_repository(GroupsRepository)),
                     group_id: UUID
-                    ) -> GroupResponse:
+                    ) -> GroupDetailedResponse:
     response = await group_service.get_group_by_id(group_id=group_id, group_repo=group_repository)
 
     return await handle_result(response)
@@ -50,7 +53,7 @@ async def get_group(*,
     status_code=HTTP_200_OK,
     responses=ERROR_RESPONSES,
     name="get_groups",
-    response_model=GroupResponse
+    response_model=GroupListResponse
 )
 async def get_groups(*,
                      group_service: GroupsService = Depends(get_service(GroupsService)),
@@ -58,7 +61,7 @@ async def get_groups(*,
                      groups_pagination: GroupPagination = PaginationDepends(GroupPagination),
                      groups_sort: GroupSort = SortDepends(GroupSort),
                      group_repo: GroupsRepository = Depends(get_repository(GroupsRepository)),
-                     ) -> GroupResponse:
+                     ) -> GroupListResponse:
     response = await group_service.get_groups(
         groups_filters=groups_filters,
         groups_pagination=groups_pagination,
@@ -136,14 +139,14 @@ async def update_group(*,
     status_code=HTTP_200_OK,
     responses=ERROR_RESPONSES,
     name="delete_group",
-    response_model=GroupResponse
+    response_model=GroupEmptyResponse
 )
 async def delete_group(*,
                        group_service: GroupsService = Depends(get_service(GroupsService)),
                        group_repo: GroupsRepository = Depends(get_repository(GroupsRepository)),
                        token_user: User = Depends(get_current_user_auth()),
                        group_id: UUID
-                       ) -> GroupResponse:
+                       ) -> GroupEmptyResponse:
     response = await group_service.delete_group(
         group_repo=group_repo,
         token_user=token_user,

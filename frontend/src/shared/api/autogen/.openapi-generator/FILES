@@ -15,6 +15,14 @@ docs/ErrorResponse.md
 docs/FileOutMetadata.md
 docs/FilesApi.md
 docs/FilesResponse.md
+docs/GroupDetailedResponse.md
+docs/GroupEmptyResponse.md
+docs/GroupListResponse.md
+docs/GroupOutData.md
+docs/GroupOutDataDetailed.md
+docs/GroupParticipant.md
+docs/GroupResponse.md
+docs/GroupsApi.md
 docs/HTTPValidationError.md
 docs/SortByOrder.md
 docs/UserAuthOutData.md

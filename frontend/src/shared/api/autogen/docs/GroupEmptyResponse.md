@@ -1,0 +1,24 @@
+# GroupEmptyResponse
+
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**message** | **string** |  | [optional] [default to 'Group API Response']
+**data** | **object** |  | [default to undefined]
+**detail** | **{ [key: string]: any; }** |  | [optional] [default to undefined]
+
+## Example
+
+```typescript
+import { GroupEmptyResponse } from './api';
+
+const instance: GroupEmptyResponse = {
+    message,
+    data,
+    detail,
+};
+```
+
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

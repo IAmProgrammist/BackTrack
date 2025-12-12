@@ -5,6 +5,7 @@ from uuid import UUID
 
 from app.database.repositories.base import BaseRepository, db_error_handler
 from app.models.group import Group
+from app.models.author import Author
 from app.schemas.group import GroupFilter, GroupPagination, GroupSort, GroupInDB
 
 
@@ -14,7 +15,8 @@ class GroupsRepository(BaseRepository):
 
     @db_error_handler
     async def get_group_by_id(self, *, group_id: UUID) -> Group:
-        group = await self.connection.get(Group, group_id)
+        group = (await self.connection.execute(select(Group).join(Group.authors, isouter=True).filter(Group.id == group_id).limit(1))).scalar()
+        print(group)
 
         return group
 
@@ -27,7 +29,7 @@ class GroupsRepository(BaseRepository):
             sort: GroupSort
     ) -> list[Group]:
         query = append_to_statement(
-            statement=select(Group).join(Group.authors),
+            statement=select(Group).join(Group.authors, isouter=True),
             model=Group,
             filter_=filter_,
             pagination=pagination,
@@ -42,9 +44,10 @@ class GroupsRepository(BaseRepository):
     async def create_group(
             self,
             *,
-            group_in: GroupInDB
+            group_in: GroupInDB,
+            authors: Author
     ) -> Group:
-        created_group = Group(**group_in.model_dump(exclude_none=True))
+        created_group = Group(**group_in.model_dump(exclude_none=True), authors=authors)
         self.connection.add(created_group)
         await self.connection.commit()
         await self.connection.refresh(created_group)

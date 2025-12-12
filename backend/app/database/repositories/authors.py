@@ -39,6 +39,16 @@ class AuthorsRepository(BaseRepository):
         return authors
 
     @db_error_handler
+    async def get_authors_with_ids(
+            self,
+            *,
+            ids: list[UUID]
+    ) -> list[Author]:
+        authors = (await self.connection.execute(select(Author).filter(Author.id.in_(ids)))).scalars().all()
+
+        return authors
+
+    @db_error_handler
     async def create_author(
             self,
             *,

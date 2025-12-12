@@ -22,7 +22,9 @@ from app.database.repositories.files import FilesRepository
 from app.database.repositories.groups import GroupsRepository
 from app.models.user import User
 from app.schemas.author import (
-    AuthorFilter
+    AuthorFilter,
+    AuthorPagination,
+    AuthorSort
 )
 from app.schemas.group import (
     GroupInCreate,
@@ -31,6 +33,9 @@ from app.schemas.group import (
     GroupFilter,
     GroupPagination,
     GroupSort,
+    GroupDetailedResponse,
+    GroupEmptyResponse,
+    GroupListResponse,
     GroupResponse,
     GroupOutData,
     GroupOutDataDetailed,
@@ -49,7 +54,7 @@ class GroupsService(BaseService):
             self,
             group_id: UUID,
             group_repo: GroupsRepository = Depends(get_repository(GroupsRepository)),
-    ) -> GroupResponse:
+    ) -> GroupDetailedResponse:
         group = await group_repo.get_group_by_id(group_id=group_id)
         if not group:
             return response_4xx(
@@ -84,7 +89,7 @@ class GroupsService(BaseService):
             groups_pagination: GroupPagination = PaginationDepends(GroupPagination),
             groups_sort: GroupSort = SortDepends(GroupSort),
             group_repo: GroupsRepository = Depends(get_repository(GroupsRepository)),
-    ) -> GroupResponse:
+    ) -> GroupListResponse:
         groups = await group_repo.get_groups_with_participants(filter_=groups_filters, pagination=groups_pagination,
                                                                sort=groups_sort)
 
@@ -135,7 +140,7 @@ class GroupsService(BaseService):
                 context={"reason": constant.FAIL_GROUP_FILE_NOT_IMAGE},
             )
 
-        authors = await author_repo.get_authors(filter_=AuthorFilter(id__in=group_in.authors))
+        authors = await author_repo.get_authors_with_ids(ids=group_in.authors)
 
         stored_file = await files_service.create_file(file_repository=file_repository, settings=settings,
                                                       file=group_in.file)
@@ -147,8 +152,9 @@ class GroupsService(BaseService):
             )
 
         group = await group_repo.create_group(
-            group_in=GroupInDB(name=group_in.name, description=group_in.description, file_id=stored_file.id,
-                               authors=authors))
+            group_in=GroupInDB(name=group_in.name, description=group_in.description, file_id=stored_file.id),
+            authors=authors
+        )
         if not group:
             logger.error("Failed to create group")
             return response_4xx(
@@ -165,7 +171,7 @@ class GroupsService(BaseService):
                     name=group.name,
                     description=group.description,
                     file_id=group.file_id,
-                    authors=[author.name for author in group.authors]
+                    authors=[author.name for author in authors]
                 )),
             },
         )
@@ -207,7 +213,7 @@ class GroupsService(BaseService):
                 context={"reason": constant.FAIL_GROUP_FILE_NOT_IMAGE},
             )
 
-        authors = await author_repo.get_authors(filter_=AuthorFilter(id__in=group_in.authors))
+        authors = await author_repo.get_authors_with_ids(ids=group_in.authors)
 
         stored_file = await files_service.create_file(file_repository=file_repository, settings=settings,
                                                       file=group_in.file)
@@ -239,7 +245,7 @@ class GroupsService(BaseService):
                     name=group.name,
                     description=group.description,
                     file_id=group.file_id,
-                    authors=[author.name for author in group.authors]
+                    authors=[author.name for author in authors]
                 )),
             },
         )
@@ -250,7 +256,7 @@ class GroupsService(BaseService):
             group_repo: GroupsRepository = Depends(get_repository(GroupsRepository)),
             token_user: User = None,
             group_id: UUID = None
-    ) -> ServiceResult:
+    ) -> GroupEmptyResponse:
         logger.info("Delete group")
 
         if not token_user:

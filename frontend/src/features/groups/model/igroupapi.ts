@@ -1,6 +1,16 @@
-export type GroupCreateDTO = FormData
+export interface GroupCreateDTO {
+    name: string
+    description: string
+    icon: File
+    participants: string[]
+}
 
-export type GroupUpdateDTO = FormData
+export interface GroupUpdateDTO {
+    name: string
+    description: string
+    icon: File
+    participants: string[]
+}
 
 export interface GroupResponseShortDTO {
     id: string
@@ -19,9 +29,9 @@ export interface GroupResponseExpandedDTO {
 }
 
 export interface IGroupApi {
-    getGroups: () => () => Promise<GroupResponseShortDTO[]>
-    getGroup: (id: string) => () => Promise<GroupResponseExpandedDTO>
-    updateGroup: (id: string, data: GroupUpdateDTO) => () => Promise<GroupResponseShortDTO>
-    deleteGroup: (id: string) => () => Promise<unknown>
-    createGroup: (data: GroupCreateDTO) => () => Promise<GroupResponseShortDTO>
+    getGroups: (token?: string | null) => () => Promise<GroupResponseShortDTO[]>
+    getGroup: (id: string, token?: string | null) => () => Promise<GroupResponseExpandedDTO>
+    updateGroup: (id: string, data: GroupUpdateDTO, token?: string | null) => () => Promise<GroupResponseShortDTO>
+    deleteGroup: (id: string, token?: string | null) => () => Promise<unknown>
+    createGroup: (data: GroupCreateDTO, token?: string | null) => () => Promise<GroupResponseShortDTO>
 }

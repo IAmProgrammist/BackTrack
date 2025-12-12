@@ -68,6 +68,45 @@ export interface FilesResponse {
     'data': Data1;
     'detail'?: { [key: string]: any; } | null;
 }
+export interface GroupDetailedResponse {
+    'message'?: string;
+    'data': GroupOutDataDetailed;
+    'detail'?: { [key: string]: any; } | null;
+}
+export interface GroupEmptyResponse {
+    'message'?: string;
+    'data': object;
+    'detail'?: { [key: string]: any; } | null;
+}
+export interface GroupListResponse {
+    'message'?: string;
+    'data': Array<GroupOutData>;
+    'detail'?: { [key: string]: any; } | null;
+}
+export interface GroupOutData {
+    'name': string;
+    'description': string;
+    'id'?: string | null;
+    'authors': Array<string>;
+    'file_id': string;
+}
+export interface GroupOutDataDetailed {
+    'name': string;
+    'description': string;
+    'id'?: string | null;
+    'authors': Array<GroupParticipant>;
+    'file_id': string;
+}
+export interface GroupParticipant {
+    'id': string;
+    'name': string;
+    'file_id': string;
+}
+export interface GroupResponse {
+    'message'?: string;
+    'data': GroupOutData;
+    'detail'?: { [key: string]: any; } | null;
+}
 export interface HTTPValidationError {
     'detail'?: Array<ValidationError>;
 }
@@ -1021,6 +1060,515 @@ export class FilesApi extends BaseAPI {
     }
 }
 
+
+
+/**
+ * GroupsApi - axios parameter creator
+ */
+export const GroupsApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Create Group
+         * @param {string} name 
+         * @param {string} description 
+         * @param {Array<string>} authors 
+         * @param {File} file 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createGroupApiV1GroupsPost: async (name: string, description: string, authors: Array<string>, file: File, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'name' is not null or undefined
+            assertParamExists('createGroupApiV1GroupsPost', 'name', name)
+            // verify required parameter 'description' is not null or undefined
+            assertParamExists('createGroupApiV1GroupsPost', 'description', description)
+            // verify required parameter 'authors' is not null or undefined
+            assertParamExists('createGroupApiV1GroupsPost', 'authors', authors)
+            // verify required parameter 'file' is not null or undefined
+            assertParamExists('createGroupApiV1GroupsPost', 'file', file)
+            const localVarPath = `/api/v1/groups`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+            const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
+
+            // authentication RWAPIKeyHeader required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+            if (name !== undefined) { 
+                localVarFormParams.append('name', name as any);
+            }
+    
+            if (description !== undefined) { 
+                localVarFormParams.append('description', description as any);
+            }
+                if (authors) {
+                localVarFormParams.append('authors', authors.join(COLLECTION_FORMATS.csv));
+            }
+
+    
+            if (file !== undefined) { 
+                localVarFormParams.append('file', file as any);
+            }
+    
+    
+            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = localVarFormParams;
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Delete Group
+         * @param {string} groupId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteGroupApiV1GroupsGroupIdDelete: async (groupId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'groupId' is not null or undefined
+            assertParamExists('deleteGroupApiV1GroupsGroupIdDelete', 'groupId', groupId)
+            const localVarPath = `/api/v1/groups/{group_id}`
+                .replace(`{${"group_id"}}`, encodeURIComponent(String(groupId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication RWAPIKeyHeader required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get Group
+         * @param {string} groupId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getGroupApiV1GroupsGroupIdGet: async (groupId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'groupId' is not null or undefined
+            assertParamExists('getGroupApiV1GroupsGroupIdGet', 'groupId', groupId)
+            const localVarPath = `/api/v1/groups/{group_id}`
+                .replace(`{${"group_id"}}`, encodeURIComponent(String(groupId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get Groups
+         * @param {Array<string>} [idIn] 
+         * @param {string} [q] 
+         * @param {number} [page] 
+         * @param {number} [perPage] 
+         * @param {GetGroupsApiV1GroupsGetSortByEnum} [sortBy] 
+         * @param {SortByOrder} [sortByOrder] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getGroupsApiV1GroupsGet: async (idIn?: Array<string>, q?: string, page?: number, perPage?: number, sortBy?: GetGroupsApiV1GroupsGetSortByEnum, sortByOrder?: SortByOrder, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v1/groups`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (idIn) {
+                localVarQueryParameter['id__in'] = idIn;
+            }
+
+            if (q !== undefined) {
+                localVarQueryParameter['q'] = q;
+            }
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (perPage !== undefined) {
+                localVarQueryParameter['per_page'] = perPage;
+            }
+
+            if (sortBy !== undefined) {
+                localVarQueryParameter['sort_by'] = sortBy;
+            }
+
+            if (sortByOrder !== undefined) {
+                localVarQueryParameter['sort_by_order'] = sortByOrder;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Update Group
+         * @param {string} groupId 
+         * @param {string} name 
+         * @param {string} description 
+         * @param {Array<string>} authors 
+         * @param {File} file 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateGroupApiV1GroupsGroupIdPut: async (groupId: string, name: string, description: string, authors: Array<string>, file: File, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'groupId' is not null or undefined
+            assertParamExists('updateGroupApiV1GroupsGroupIdPut', 'groupId', groupId)
+            // verify required parameter 'name' is not null or undefined
+            assertParamExists('updateGroupApiV1GroupsGroupIdPut', 'name', name)
+            // verify required parameter 'description' is not null or undefined
+            assertParamExists('updateGroupApiV1GroupsGroupIdPut', 'description', description)
+            // verify required parameter 'authors' is not null or undefined
+            assertParamExists('updateGroupApiV1GroupsGroupIdPut', 'authors', authors)
+            // verify required parameter 'file' is not null or undefined
+            assertParamExists('updateGroupApiV1GroupsGroupIdPut', 'file', file)
+            const localVarPath = `/api/v1/groups/{group_id}`
+                .replace(`{${"group_id"}}`, encodeURIComponent(String(groupId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+            const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
+
+            // authentication RWAPIKeyHeader required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+            if (name !== undefined) { 
+                localVarFormParams.append('name', name as any);
+            }
+    
+            if (description !== undefined) { 
+                localVarFormParams.append('description', description as any);
+            }
+                if (authors) {
+                localVarFormParams.append('authors', authors.join(COLLECTION_FORMATS.csv));
+            }
+
+    
+            if (file !== undefined) { 
+                localVarFormParams.append('file', file as any);
+            }
+    
+    
+            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = localVarFormParams;
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * GroupsApi - functional programming interface
+ */
+export const GroupsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = GroupsApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Create Group
+         * @param {string} name 
+         * @param {string} description 
+         * @param {Array<string>} authors 
+         * @param {File} file 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createGroupApiV1GroupsPost(name: string, description: string, authors: Array<string>, file: File, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GroupResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createGroupApiV1GroupsPost(name, description, authors, file, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GroupsApi.createGroupApiV1GroupsPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Delete Group
+         * @param {string} groupId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteGroupApiV1GroupsGroupIdDelete(groupId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GroupEmptyResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteGroupApiV1GroupsGroupIdDelete(groupId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GroupsApi.deleteGroupApiV1GroupsGroupIdDelete']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Get Group
+         * @param {string} groupId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getGroupApiV1GroupsGroupIdGet(groupId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GroupDetailedResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getGroupApiV1GroupsGroupIdGet(groupId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GroupsApi.getGroupApiV1GroupsGroupIdGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Get Groups
+         * @param {Array<string>} [idIn] 
+         * @param {string} [q] 
+         * @param {number} [page] 
+         * @param {number} [perPage] 
+         * @param {GetGroupsApiV1GroupsGetSortByEnum} [sortBy] 
+         * @param {SortByOrder} [sortByOrder] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getGroupsApiV1GroupsGet(idIn?: Array<string>, q?: string, page?: number, perPage?: number, sortBy?: GetGroupsApiV1GroupsGetSortByEnum, sortByOrder?: SortByOrder, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GroupListResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getGroupsApiV1GroupsGet(idIn, q, page, perPage, sortBy, sortByOrder, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GroupsApi.getGroupsApiV1GroupsGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Update Group
+         * @param {string} groupId 
+         * @param {string} name 
+         * @param {string} description 
+         * @param {Array<string>} authors 
+         * @param {File} file 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateGroupApiV1GroupsGroupIdPut(groupId: string, name: string, description: string, authors: Array<string>, file: File, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GroupResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateGroupApiV1GroupsGroupIdPut(groupId, name, description, authors, file, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['GroupsApi.updateGroupApiV1GroupsGroupIdPut']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * GroupsApi - factory interface
+ */
+export const GroupsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = GroupsApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Create Group
+         * @param {string} name 
+         * @param {string} description 
+         * @param {Array<string>} authors 
+         * @param {File} file 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createGroupApiV1GroupsPost(name: string, description: string, authors: Array<string>, file: File, options?: RawAxiosRequestConfig): AxiosPromise<GroupResponse> {
+            return localVarFp.createGroupApiV1GroupsPost(name, description, authors, file, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Delete Group
+         * @param {string} groupId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteGroupApiV1GroupsGroupIdDelete(groupId: string, options?: RawAxiosRequestConfig): AxiosPromise<GroupEmptyResponse> {
+            return localVarFp.deleteGroupApiV1GroupsGroupIdDelete(groupId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get Group
+         * @param {string} groupId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getGroupApiV1GroupsGroupIdGet(groupId: string, options?: RawAxiosRequestConfig): AxiosPromise<GroupDetailedResponse> {
+            return localVarFp.getGroupApiV1GroupsGroupIdGet(groupId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get Groups
+         * @param {Array<string>} [idIn] 
+         * @param {string} [q] 
+         * @param {number} [page] 
+         * @param {number} [perPage] 
+         * @param {GetGroupsApiV1GroupsGetSortByEnum} [sortBy] 
+         * @param {SortByOrder} [sortByOrder] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getGroupsApiV1GroupsGet(idIn?: Array<string>, q?: string, page?: number, perPage?: number, sortBy?: GetGroupsApiV1GroupsGetSortByEnum, sortByOrder?: SortByOrder, options?: RawAxiosRequestConfig): AxiosPromise<GroupListResponse> {
+            return localVarFp.getGroupsApiV1GroupsGet(idIn, q, page, perPage, sortBy, sortByOrder, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Update Group
+         * @param {string} groupId 
+         * @param {string} name 
+         * @param {string} description 
+         * @param {Array<string>} authors 
+         * @param {File} file 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateGroupApiV1GroupsGroupIdPut(groupId: string, name: string, description: string, authors: Array<string>, file: File, options?: RawAxiosRequestConfig): AxiosPromise<GroupResponse> {
+            return localVarFp.updateGroupApiV1GroupsGroupIdPut(groupId, name, description, authors, file, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * GroupsApi - object-oriented interface
+ */
+export class GroupsApi extends BaseAPI {
+    /**
+     * 
+     * @summary Create Group
+     * @param {string} name 
+     * @param {string} description 
+     * @param {Array<string>} authors 
+     * @param {File} file 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public createGroupApiV1GroupsPost(name: string, description: string, authors: Array<string>, file: File, options?: RawAxiosRequestConfig) {
+        return GroupsApiFp(this.configuration).createGroupApiV1GroupsPost(name, description, authors, file, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Delete Group
+     * @param {string} groupId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public deleteGroupApiV1GroupsGroupIdDelete(groupId: string, options?: RawAxiosRequestConfig) {
+        return GroupsApiFp(this.configuration).deleteGroupApiV1GroupsGroupIdDelete(groupId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get Group
+     * @param {string} groupId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public getGroupApiV1GroupsGroupIdGet(groupId: string, options?: RawAxiosRequestConfig) {
+        return GroupsApiFp(this.configuration).getGroupApiV1GroupsGroupIdGet(groupId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get Groups
+     * @param {Array<string>} [idIn] 
+     * @param {string} [q] 
+     * @param {number} [page] 
+     * @param {number} [perPage] 
+     * @param {GetGroupsApiV1GroupsGetSortByEnum} [sortBy] 
+     * @param {SortByOrder} [sortByOrder] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public getGroupsApiV1GroupsGet(idIn?: Array<string>, q?: string, page?: number, perPage?: number, sortBy?: GetGroupsApiV1GroupsGetSortByEnum, sortByOrder?: SortByOrder, options?: RawAxiosRequestConfig) {
+        return GroupsApiFp(this.configuration).getGroupsApiV1GroupsGet(idIn, q, page, perPage, sortBy, sortByOrder, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Update Group
+     * @param {string} groupId 
+     * @param {string} name 
+     * @param {string} description 
+     * @param {Array<string>} authors 
+     * @param {File} file 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public updateGroupApiV1GroupsGroupIdPut(groupId: string, name: string, description: string, authors: Array<string>, file: File, options?: RawAxiosRequestConfig) {
+        return GroupsApiFp(this.configuration).updateGroupApiV1GroupsGroupIdPut(groupId, name, description, authors, file, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+export const GetGroupsApiV1GroupsGetSortByEnum = {
+    Id: 'id',
+    Name: 'name'
+} as const;
+export type GetGroupsApiV1GroupsGetSortByEnum = typeof GetGroupsApiV1GroupsGetSortByEnum[keyof typeof GetGroupsApiV1GroupsGetSortByEnum];
 
 
 /**

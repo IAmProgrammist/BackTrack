@@ -1,6 +1,5 @@
-import { authorsApi, getAxiosConf } from "shared/api/api";
+import { authorsApi, getAxiosConf, getImageUrlFromFileId } from "shared/api/api";
 import type { AuthorCreateDTO, AuthorUpdateDTO, IAuthorApi } from "./iauthorapi";
-import { BASE_URL } from "shared/config/constants";
 import type { Data } from "shared/api/autogen";
 
 export class AuthorApi implements IAuthorApi {
@@ -10,7 +9,7 @@ export class AuthorApi implements IAuthorApi {
                 id: author.id || "",
                 name: author.name,
                 description: author.description,
-                imageURL: `${BASE_URL}/api/v1/files/${author.file_id}/download`
+                imageURL: getImageUrlFromFileId(author.file_id)
             }))
         })
     }
@@ -20,7 +19,7 @@ export class AuthorApi implements IAuthorApi {
                 id: authorResponse.data.data.id || "",
                 name: authorResponse.data.data.name,
                 description: authorResponse.data.data.description,
-                imageURL: `${BASE_URL}/api/v1/files/${authorResponse.data.data.file_id}/download`
+                imageURL: getImageUrlFromFileId(authorResponse.data.data.file_id)
             }
         })
     }
@@ -30,7 +29,7 @@ export class AuthorApi implements IAuthorApi {
                 id: authorResponse.data.data.id || "",
                 name: authorResponse.data.data.name,
                 description: authorResponse.data.data.description,
-                imageURL: `${BASE_URL}/api/v1/files/${authorResponse.data.data.file_id}/download`
+                imageURL: getImageUrlFromFileId(authorResponse.data.data.file_id)
             }
         })
     }
@@ -43,7 +42,7 @@ export class AuthorApi implements IAuthorApi {
                 id: authorResponse.data.data.id || "",
                 name: authorResponse.data.data.name,
                 description: authorResponse.data.data.description,
-                imageURL: `${BASE_URL}/api/v1/files/${authorResponse.data.data.file_id}/download`
+                imageURL: getImageUrlFromFileId(authorResponse.data.data.file_id)
             }
         })
     }

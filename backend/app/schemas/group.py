@@ -30,7 +30,6 @@ class GroupInUpdate(GroupInCreate):
 
 
 class GroupInDB(GroupBase):
-    authors: list[Author]
     file_id: UUID
 
 
@@ -71,7 +70,24 @@ class GroupOutDataDetailed(GroupBase):
 
 
 # Модель-оркестратор
+class GroupListResponse(ApiResponse):
+    message: str = "Group API Response"
+    data: list[GroupOutData]
+    detail: dict[str, Any] | None = {"key": "val"}
+
+
 class GroupResponse(ApiResponse):
     message: str = "Group API Response"
-    data: GroupOutDataDetailed | list[GroupOutData]
+    data: GroupOutData
+    detail: dict[str, Any] | None = {"key": "val"}
+
+
+class GroupDetailedResponse(ApiResponse):
+    message: str = "Group API Response"
+    data: GroupOutDataDetailed
+    detail: dict[str, Any] | None = {"key": "val"}
+
+
+class GroupEmptyResponse(ApiResponse):
+    message: str = "Group API Response"
     detail: dict[str, Any] | None = {"key": "val"}

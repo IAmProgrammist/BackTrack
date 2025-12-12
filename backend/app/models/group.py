@@ -1,5 +1,5 @@
 import uuid
-from sqlalchemy import Table, Column
+from app.models.group_author import group_author
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql.schema import ForeignKey
 from typing import TYPE_CHECKING
@@ -11,14 +11,6 @@ if TYPE_CHECKING:
     from app.models.file import File
     from app.models.author import Author
 
-group_author = Table(
-    "author_group",
-    RWModel.metadata,
-    Column("author_id", ForeignKey("author.id"), primary_key=True),
-    Column("group_id", ForeignKey("group.id"), primary_key=True),
-)
-
-
 class Group(RWModel):
     __tablename__ = "group"
 
@@ -26,6 +18,6 @@ class Group(RWModel):
     name: Mapped[str]
     description: Mapped[str]
     authors: Mapped[list["Author"]] = relationship(
-        secondary=group_author, lazy="select"
+        secondary=group_author, lazy="selectin"
     )
     file_id: Mapped[UUID] = mapped_column(ForeignKey("file.id"))
