@@ -28,8 +28,15 @@ class GroupsRepository(BaseRepository):
             pagination: GroupPagination,
             sort: GroupSort
     ) -> list[Group]:
+        # We should filter this manually. Ugh.
+        authors_filter_data = filter_.authors
+        filter_.authors = None
+        query = select(Group).join(Group.authors, isouter=True)
+        if authors_filter_data:
+            query = query.filter(Author.id.in_(authors_filter_data.id))
+
         query = append_to_statement(
-            statement=select(Group).join(Group.authors, isouter=True),
+            statement=query,
             model=Group,
             filter_=filter_,
             pagination=pagination,

@@ -3,7 +3,7 @@ import type { GroupCreateDTO, GroupUpdateDTO, IGroupApi } from "./igroupapi";
 
 export class GroupApi implements IGroupApi {
     getGroups(token?: string | null) {
-        return async () => groupApi.getGroupsApiV1GroupsGet(undefined, undefined, undefined, undefined, undefined, undefined, getAxiosConf(token)).then((groupResponse) => 
+        return async () => groupApi.getGroupsApiV1GroupsGet(undefined, undefined, undefined, undefined, undefined, undefined, undefined, getAxiosConf(token)).then((groupResponse) => 
         groupResponse.data.data.map((group) => ({
             id: group.id || "",
             participants: group.authors,

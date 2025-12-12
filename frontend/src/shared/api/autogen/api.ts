@@ -1208,6 +1208,7 @@ export const GroupsApiAxiosParamCreator = function (configuration?: Configuratio
          * @summary Get Groups
          * @param {Array<string>} [idIn] 
          * @param {string} [q] 
+         * @param {Array<string>} [authorsId] 
          * @param {number} [page] 
          * @param {number} [perPage] 
          * @param {GetGroupsApiV1GroupsGetSortByEnum} [sortBy] 
@@ -1215,7 +1216,7 @@ export const GroupsApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getGroupsApiV1GroupsGet: async (idIn?: Array<string>, q?: string, page?: number, perPage?: number, sortBy?: GetGroupsApiV1GroupsGetSortByEnum, sortByOrder?: SortByOrder, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getGroupsApiV1GroupsGet: async (idIn?: Array<string>, q?: string, authorsId?: Array<string>, page?: number, perPage?: number, sortBy?: GetGroupsApiV1GroupsGetSortByEnum, sortByOrder?: SortByOrder, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v1/groups`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1234,6 +1235,10 @@ export const GroupsApiAxiosParamCreator = function (configuration?: Configuratio
 
             if (q !== undefined) {
                 localVarQueryParameter['q'] = q;
+            }
+
+            if (authorsId) {
+                localVarQueryParameter['authors__id'] = authorsId;
             }
 
             if (page !== undefined) {
@@ -1388,6 +1393,7 @@ export const GroupsApiFp = function(configuration?: Configuration) {
          * @summary Get Groups
          * @param {Array<string>} [idIn] 
          * @param {string} [q] 
+         * @param {Array<string>} [authorsId] 
          * @param {number} [page] 
          * @param {number} [perPage] 
          * @param {GetGroupsApiV1GroupsGetSortByEnum} [sortBy] 
@@ -1395,8 +1401,8 @@ export const GroupsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getGroupsApiV1GroupsGet(idIn?: Array<string>, q?: string, page?: number, perPage?: number, sortBy?: GetGroupsApiV1GroupsGetSortByEnum, sortByOrder?: SortByOrder, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GroupListResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getGroupsApiV1GroupsGet(idIn, q, page, perPage, sortBy, sortByOrder, options);
+        async getGroupsApiV1GroupsGet(idIn?: Array<string>, q?: string, authorsId?: Array<string>, page?: number, perPage?: number, sortBy?: GetGroupsApiV1GroupsGetSortByEnum, sortByOrder?: SortByOrder, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GroupListResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getGroupsApiV1GroupsGet(idIn, q, authorsId, page, perPage, sortBy, sortByOrder, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['GroupsApi.getGroupsApiV1GroupsGet']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -1465,6 +1471,7 @@ export const GroupsApiFactory = function (configuration?: Configuration, basePat
          * @summary Get Groups
          * @param {Array<string>} [idIn] 
          * @param {string} [q] 
+         * @param {Array<string>} [authorsId] 
          * @param {number} [page] 
          * @param {number} [perPage] 
          * @param {GetGroupsApiV1GroupsGetSortByEnum} [sortBy] 
@@ -1472,8 +1479,8 @@ export const GroupsApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getGroupsApiV1GroupsGet(idIn?: Array<string>, q?: string, page?: number, perPage?: number, sortBy?: GetGroupsApiV1GroupsGetSortByEnum, sortByOrder?: SortByOrder, options?: RawAxiosRequestConfig): AxiosPromise<GroupListResponse> {
-            return localVarFp.getGroupsApiV1GroupsGet(idIn, q, page, perPage, sortBy, sortByOrder, options).then((request) => request(axios, basePath));
+        getGroupsApiV1GroupsGet(idIn?: Array<string>, q?: string, authorsId?: Array<string>, page?: number, perPage?: number, sortBy?: GetGroupsApiV1GroupsGetSortByEnum, sortByOrder?: SortByOrder, options?: RawAxiosRequestConfig): AxiosPromise<GroupListResponse> {
+            return localVarFp.getGroupsApiV1GroupsGet(idIn, q, authorsId, page, perPage, sortBy, sortByOrder, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1537,6 +1544,7 @@ export class GroupsApi extends BaseAPI {
      * @summary Get Groups
      * @param {Array<string>} [idIn] 
      * @param {string} [q] 
+     * @param {Array<string>} [authorsId] 
      * @param {number} [page] 
      * @param {number} [perPage] 
      * @param {GetGroupsApiV1GroupsGetSortByEnum} [sortBy] 
@@ -1544,8 +1552,8 @@ export class GroupsApi extends BaseAPI {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public getGroupsApiV1GroupsGet(idIn?: Array<string>, q?: string, page?: number, perPage?: number, sortBy?: GetGroupsApiV1GroupsGetSortByEnum, sortByOrder?: SortByOrder, options?: RawAxiosRequestConfig) {
-        return GroupsApiFp(this.configuration).getGroupsApiV1GroupsGet(idIn, q, page, perPage, sortBy, sortByOrder, options).then((request) => request(this.axios, this.basePath));
+    public getGroupsApiV1GroupsGet(idIn?: Array<string>, q?: string, authorsId?: Array<string>, page?: number, perPage?: number, sortBy?: GetGroupsApiV1GroupsGetSortByEnum, sortByOrder?: SortByOrder, options?: RawAxiosRequestConfig) {
+        return GroupsApiFp(this.configuration).getGroupsApiV1GroupsGet(idIn, q, authorsId, page, perPage, sortBy, sortByOrder, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

@@ -195,6 +195,7 @@ const apiInstance = new GroupsApi(configuration);
 
 let idIn: Array<string>; // (optional) (default to undefined)
 let q: string; // (optional) (default to undefined)
+let authorsId: Array<string>; // (optional) (default to undefined)
 let page: number; // (optional) (default to 1)
 let perPage: number; // (optional) (default to 100)
 let sortBy: 'id' | 'name'; // (optional) (default to undefined)
@@ -203,6 +204,7 @@ let sortByOrder: SortByOrder; // (optional) (default to undefined)
 const { status, data } = await apiInstance.getGroupsApiV1GroupsGet(
     idIn,
     q,
+    authorsId,
     page,
     perPage,
     sortBy,
@@ -216,6 +218,7 @@ const { status, data } = await apiInstance.getGroupsApiV1GroupsGet(
 |------------- | ------------- | ------------- | -------------|
 | **idIn** | **Array&lt;string&gt;** |  | (optional) defaults to undefined|
 | **q** | [**string**] |  | (optional) defaults to undefined|
+| **authorsId** | **Array&lt;string&gt;** |  | (optional) defaults to undefined|
 | **page** | [**number**] |  | (optional) defaults to 1|
 | **perPage** | [**number**] |  | (optional) defaults to 100|
 | **sortBy** | [**&#39;id&#39; | &#39;name&#39;**]**Array<&#39;id&#39; &#124; &#39;name&#39;>** |  | (optional) defaults to undefined|

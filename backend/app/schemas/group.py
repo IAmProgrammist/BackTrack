@@ -34,8 +34,13 @@ class GroupInDB(GroupBase):
 
 
 # Модели для выбора листа
+class AuthorNestedFilter(BaseFilter):
+    id: list[UUID]
+
+
 class GroupFilter(BaseFilter):
     id__in: list[UUID]
+    authors: AuthorNestedFilter
     q: str = SearchField(target=["name"])
 
 
