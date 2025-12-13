@@ -36,6 +36,7 @@ pydantic-settings = "^2.2.1"
 passlib = {extras=["bcrypt"], version = "^1.7.4"}
 pydantic-filters = "^0.3.5"
 aiofiles = "^25.1.0"
+librosa = "^0.11.0"
 
 [tool.poetry.group.dev.dependencies]
 coverage = "^7.4.3"

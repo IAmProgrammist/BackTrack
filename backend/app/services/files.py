@@ -19,11 +19,15 @@ from app.models.file import File
 from app.schemas.files import FileInDB, FileOutMetadata, FilesResponse
 from app.services.base import BaseService
 from app.utils import response_4xx, return_service
+import librosa
 
 logger = logging.getLogger(__name__)
 
 
 class FileService(BaseService):
+    def get_file_path(self, file_id: str, settings: AppSettings):
+        return f"{settings.static_dir}/{file_id}"
+    
     async def download_file_by_id(self,
                                   file_id: UUID,
                                   file_repository: FilesRepository = Depends(get_repository(FilesRepository)),
@@ -31,7 +35,7 @@ class FileService(BaseService):
                                   ) -> FileResponse:
         logger.info(f"Downloading file {file_id}")
         file_data = await file_repository.get_file_by_id(file_id=file_id)
-        path = f"{settings.static_dir}/{file_id}"
+        path = self.get_file_path(file_id, settings)
 
         if not Path(path).exists():
             logger.error(f"File {file_id} doesn't exists in filesystem")
@@ -94,10 +98,17 @@ class FileService(BaseService):
             return None
 
         # Step 2: store file in a filesystem
-        path = f"{settings.static_dir}/{file_metadata.id}"
+        path = self.get_file_path(file_metadata.id, settings)
         Path(settings.static_dir).mkdir(parents=True, exist_ok=True)
         async with aiofiles.open(path, 'wb') as out_file:
             content = await file.read()
             await out_file.write(content)
+
+        # Step 3: attempt to get duration of a file, if it is an audio file.
+        if not file_metadata.mime.startswith("audio/"):
+            return file_metadata
+
+        audio_duration = librosa.get_duration(path=path) * 60 * 1000
+        file_metadata = await file_repository.update_file_duration(file=file_metadata, new_duration=audio_duration)
 
         return file_metadata

@@ -2,3 +2,9 @@ from .user import User
 from .file import File
 from .author import Author
 from .group import Group
+from .song_release_author import song_release_author
+from .song_release_file import SongReleaseFile
+from .song_release_group import song_release_group
+from .song_release import SongRelease
+from .song import Song
+from .group_author import group_author

@@ -21,6 +21,15 @@ class FilesRepository(BaseRepository):
         return result.File if result is not None else result
 
     @db_error_handler
+    async def update_file_duration(self, *, file: File, new_duration: int | None) -> File:
+        file.duration = new_duration
+
+        self.connection.add(file)
+        await self.connection.commit()
+        await self.connection.refresh(file)
+        return file
+
+    @db_error_handler
     async def create_file(self, *, file_in: FileInDB) -> File:
         created_file = File(**file_in.model_dump(exclude_none=True))
         self.connection.add(created_file)
