@@ -4,10 +4,8 @@ from fastapi.encoders import jsonable_encoder
 from pydantic_filters.plugins.fastapi import FilterDepends, PaginationDepends, SortDepends
 from starlette.status import (
     HTTP_200_OK,
-    HTTP_201_CREATED,
     HTTP_400_BAD_REQUEST,
     HTTP_404_NOT_FOUND,
-    HTTP_500_INTERNAL_SERVER_ERROR
 )
 from typing import Annotated
 from uuid import UUID
@@ -21,38 +19,36 @@ from app.database.repositories.authors import AuthorsRepository
 from app.database.repositories.files import FilesRepository
 from app.database.repositories.groups import GroupsRepository
 from app.models.user import User
-from app.schemas.author import (
-    AuthorFilter,
-    AuthorPagination,
-    AuthorSort
-)
-from app.schemas.group import (
-    GroupInCreate,
-    GroupInUpdate,
-    GroupInDB,
-    GroupFilter,
-    GroupPagination,
-    GroupSort,
-    GroupDetailedResponse,
-    GroupEmptyResponse,
-    GroupListResponse,
-    GroupResponse,
-    GroupOutData,
-    GroupOutDataDetailed,
-    GroupParticipant
-)
 from app.services.base import BaseService
 from app.services.files import FileService
-from app.utils import ServiceResult, response_4xx, return_service
+from app.utils import response_4xx, return_service
 from app.schemas.song import (
-    SongDetailedResponse, 
+    SongDetailedResponse,
     SongOutData,
     FileOutNested,
     AuthorOutNested,
     GroupOutNested,
+    SongFilter,
+    SongSort,
+    SongPagination,
+    SongListResponse,
+    SongShortOutData,
+    AuthorShortOutNested,
+    GroupShortOutNested,
+    SongReleaseFilter,
+    SongReleasePagination,
+    SongReleaseSort,
+    SongReleaseResponse,
+    SongReleaseOutData,
+    SongShortResponse,
+    SongInCreate,
+    SongReleaseInDB,
+    SongEmptyResponse
 )
 from app.database.repositories.songs import SongsRepository
 from app.models.song_release_file import SongReleaseFile
+from app.models.song_release import SongRelease
+from app.database.repositories.groups import GroupsRepository
 
 logger = logging.getLogger(__name__)
 
@@ -62,17 +58,17 @@ class SongsService(BaseService):
         return next((x for x in files if x.leading and x.mime.startswith("audio/")), None)
 
     @return_service
-    async def get_song_by_id_and_release_id(
+    async def get_song_releases_by_id_and_release_id(
             self,
             song_id: UUID,
             release_id: UUID | None,
             song_repo: SongsRepository = Depends(get_repository(SongsRepository)),
     ) -> SongDetailedResponse:
-        song = await song_repo.get_song_by_song_id_and_tag_filter(song_id=song_id, release_id=release_id)
+        song = await song_repo.get_song_releases_by_song_id_and_tag_filter(song_id=song_id, release_id=release_id)
         if not song:
             return response_4xx(
                 status_code=HTTP_404_NOT_FOUND,
-                context={"reason": "Couldn't find song"},
+                context={"reason": "Не удалось найти песню"},
             )
         leading_audio_file = self.get_leading_audio_file(song.files)
 
@@ -97,201 +93,182 @@ class SongsService(BaseService):
             },
         )
 
-    '''
     @return_service
-    async def get_groups(
-            self,
-            groups_filters: GroupFilter = FilterDepends(GroupFilter),
-            groups_pagination: GroupPagination = PaginationDepends(GroupPagination),
-            groups_sort: GroupSort = SortDepends(GroupSort),
-            group_repo: GroupsRepository = Depends(get_repository(GroupsRepository)),
-    ) -> GroupListResponse:
-        groups = await group_repo.get_groups_with_participants(filter_=groups_filters, pagination=groups_pagination,
-                                                               sort=groups_sort)
+    async def get_song_releases(
+        self,
+        song_repo: SongsRepository = Depends(get_repository(SongsRepository)),
+        filter_: SongFilter = FilterDepends(SongFilter),
+        pagination: SongPagination = PaginationDepends(SongPagination),
+        sort: SongSort = SortDepends(SongSort)
+    ) -> SongListResponse:
+        songs = song_repo.get_song_releases(
+            filter_=filter_,
+            pagination=pagination,
+            sort=sort
+        )
 
-        if not groups:
+        def mapper_function(song: SongRelease) -> SongShortOutData:
+            primary_song_file = self.get_leading_audio_file(song.files)
+
+            return SongShortOutData(
+                song_id=song.song.id,
+                id=song.id,
+                tag=song.tag,
+                name=song.name,
+                authors=[AuthorShortOutNested(id=author.id, name=author.name) for author in song.authors],
+                groups=[GroupShortOutNested(id=author.id, name=author.name) for author in song.authors],
+                duration=primary_song_file.duration if primary_song_file else None
+            )
+
+        return dict(
+            status_code=HTTP_200_OK,
+            content={
+                "message": constant.SUCCESS_GROUP_FOUND,
+                "data": jsonable_encoder([mapper_function(song) for song in songs]),
+            },
+        )
+
+
+    @return_service
+    async def get_song_releases_minified(
+        self,
+        song_repo: SongsRepository = Depends(get_repository(SongsRepository)),
+        filter_: SongReleaseFilter = FilterDepends(SongReleaseFilter),
+        pagination: SongReleasePagination = PaginationDepends(SongReleasePagination),
+        sort: SongReleaseSort = SortDepends(SongReleaseSort),
+        song_id: UUID = None
+    ) -> SongReleaseResponse:
+        if not song_id:
             return response_4xx(
                 status_code=HTTP_404_NOT_FOUND,
-                context={"reason": constant.FAIL_VALIDATION_MATCHED_FILTERED_USERS},
+                context={"reason": "Айди песни не указан."},
             )
 
-        return dict(
-            status_code=HTTP_200_OK,
-            content={
-                "message": constant.SUCCESS_GET_USERS,
-                "data": jsonable_encoder([GroupOutData(
-                    id=group.id,
-                    name=group.name,
-                    description=group.description,
-                    file_id=group.file_id,
-                    authors=[author.name for author in group.authors]
-                ) for group in groups]),
-            },
+        songs = song_repo.get_song_releases_short(
+            filter_=filter_,
+            pagination=pagination,
+            sort=sort,
+            song_id=song_id
         )
-
-    @return_service
-    async def create_group(
-            self,
-            group_in: Annotated[GroupInCreate, Form(media_type="multipart/form-data")],
-            group_repo: GroupsRepository = Depends(get_repository(GroupsRepository)),
-            files_service: FileService = Depends(get_service(FileService)),
-            file_repository: FilesRepository = Depends(get_repository(FilesRepository)),
-            settings: AppSettings = Depends(get_app_settings),
-            author_repo: AuthorsRepository = Depends(get_repository(AuthorsRepository)),
-            token_user: User = None,
-    ) -> GroupResponse:
-        logger.info("Creating group")
-
-        if not token_user:
-            logger.error("Failed to create group: you need to be authorized for this action")
-            return response_4xx(
-                status_code=HTTP_400_BAD_REQUEST,
-                context={"reason": constant.FAIL_AUTH_CHECK},
-            )
-
-        if not group_in.file.content_type.startswith("image/"):
-            logger.error("Failed to create group: invalid image")
-            return response_4xx(
-                status_code=HTTP_400_BAD_REQUEST,
-                context={"reason": constant.FAIL_GROUP_FILE_NOT_IMAGE},
-            )
-
-        authors = await author_repo.get_authors_with_ids(ids=group_in.authors)
-
-        stored_file = await files_service.create_file(file_repository=file_repository, settings=settings,
-                                                      file=group_in.file)
-        if not stored_file:
-            logger.error("Failed to create group: failed to save file")
-            return response_4xx(
-                status_code=HTTP_500_INTERNAL_SERVER_ERROR,
-                context={"reason": constant.FAIL_GROUP_COULDNT_SAVE_FILE},
-            )
-
-        group = await group_repo.create_group(
-            group_in=GroupInDB(name=group_in.name, description=group_in.description, file_id=stored_file.id),
-            authors=authors
-        )
-        if not group:
-            logger.error("Failed to create group")
-            return response_4xx(
-                status_code=HTTP_500_INTERNAL_SERVER_ERROR,
-                context={"reason": constant.FAIL_GROUP_COULDNT_SAVE},
-            )
 
         return dict(
             status_code=HTTP_200_OK,
             content={
                 "message": constant.SUCCESS_GROUP_FOUND,
-                "data": jsonable_encoder(GroupOutData(
-                    id=group.id,
-                    name=group.name,
-                    description=group.description,
-                    file_id=group.file_id,
-                    authors=[author.name for author in authors]
-                )),
+                "data": jsonable_encoder([SongReleaseOutData(
+                        id=song.id,
+                        created_at=song.created_at,
+                        description=song.description,
+                        tag=song.tag
+                    ) for song in songs]),
             },
         )
 
     @return_service
-    async def update_group(
-            self,
-            group_in: Annotated[GroupInUpdate, Form(media_type="multipart/form-data")],
-            group_repo: GroupsRepository = Depends(get_repository(GroupsRepository)),
-            files_service: FileService = Depends(get_service(FileService)),
-            file_repository: FilesRepository = Depends(get_repository(FilesRepository)),
-            settings: AppSettings = Depends(get_app_settings),
-            author_repo: AuthorsRepository = Depends(get_repository(AuthorsRepository)),
-            token_user: User = None,
-            group_id: UUID = None
-    ) -> GroupResponse:
-        logger.info("Update group")
+    async def create_song(
+        self,
+        song_in: Annotated[SongInCreate, Form(media_type="multipart/form-data")],
+        song_repo: SongsRepository = Depends(get_repository(SongsRepository)),
+        author_repo: AuthorsRepository = Depends(get_repository(AuthorsRepository)),
+        group_repo: GroupsRepository = Depends(get_repository(GroupsRepository)),
+        song_id: UUID | None = None,
+        files_service: FileService = Depends(get_service(FileService)),
+        file_repository: FilesRepository = Depends(get_repository(FilesRepository)),
+        settings: AppSettings = Depends(get_app_settings),
+        token_user: User = None,
+    ) -> SongShortResponse:
+        song = None
 
-        if not token_user:
-            logger.error("Failed to update group: you need to be groupized for this action")
+        if not song_id:
+            song = await song_repo.get_song(song_id=song_id)
+        else:
+            song = await song_repo.create_song()
+
+        if not song:
             return response_4xx(
-                status_code=HTTP_400_BAD_REQUEST,
-                context={"reason": constant.FAIL_AUTH_CHECK},
+                status_code=HTTP_404_NOT_FOUND,
+                context={"reason": "Не удалось найти или создать песню."},
             )
 
-        group = await group_repo.get_group_by_id(group_id=group_id)
+        authors = await author_repo.get_authors_with_ids(song_in.authors)
+        groups = await group_repo.get_groups_with_ids(song_in.groups)
 
-        if group is None:
-            logger.error("Failed to update group: failed to find group")
+        song_release = await song_repo.create_song_release(song_in=SongReleaseInDB(
+            name=song_in.name,
+            tag=song_in.tag,
+            description=song_in.description,
+            bpm=song_in.bpm,
+            key=song_in.key,
+            lyrics=song_in.lyrics,
+        ), song=song, authors=authors, groups=groups)
+
+        if not song_release:
             return response_4xx(
-                status_code=HTTP_400_BAD_REQUEST,
-                context={"reason": constant.FAIL_GROUP_NOT_FOUND},
+                status_code=HTTP_404_NOT_FOUND,
+                context={"reason": "Не удалось создать релиз песни."},
             )
 
-        if not group_in.file.content_type.startswith("image/"):
-            logger.error("Failed to update group: invalid image")
-            return response_4xx(
-                status_code=HTTP_400_BAD_REQUEST,
-                context={"reason": constant.FAIL_GROUP_FILE_NOT_IMAGE},
-            )
+        files = []
+        for request_file in song_in.files_file:
+            file = await files_service.create_file(file_repository=file_repository, settings=settings, file=request_file)
+            files.append(file)
 
-        authors = await author_repo.get_authors_with_ids(ids=group_in.authors)
-
-        stored_file = await files_service.create_file(file_repository=file_repository, settings=settings,
-                                                      file=group_in.file)
-        if not stored_file:
-            logger.error("Failed to update group: failed to save file")
-            return response_4xx(
-                status_code=HTTP_500_INTERNAL_SERVER_ERROR,
-                context={"reason": constant.FAIL_GROUP_COULDNT_SAVE_FILE},
-            )
-
-        group = await group_repo.update_group(
-            group=group,
-            group_in=GroupInDB(name=group_in.name, description=group_in.description, file_id=stored_file.id,
-                               authors=authors)
+        await song_repo.attach_files_to_song_release(
+            song_release=song_release,
+            files=files,
+            leading=song_in.files_leading
         )
-        if not group:
-            logger.error("Failed to create group")
+
+        song_release = await song_repo.get_song_releases_by_song_id_and_tag_filter(song_id=song.id, release_id=song_release.id)
+        if not song_release:
             return response_4xx(
-                status_code=HTTP_500_INTERNAL_SERVER_ERROR,
-                context={"reason": constant.FAIL_GROUP_COULDNT_SAVE},
+                status_code=HTTP_404_NOT_FOUND,
+                context={"reason": "Не удалось создать релиз песни."},
             )
+        leading_audio_file = self.get_leading_audio_file(song_release.files)
 
         return dict(
             status_code=HTTP_200_OK,
             content={
                 "message": constant.SUCCESS_GROUP_FOUND,
-                "data": jsonable_encoder(GroupOutData(
-                    id=group.id,
-                    name=group.name,
-                    description=group.description,
-                    file_id=group.file_id,
-                    authors=[author.name for author in authors]
+                "data": jsonable_encoder(SongShortOutData(
+                    song_id=song_release.song.id,
+                    id=song_release.id,
+                    tag=song_release.tag,
+                    name=song_release.name,
+                    authors=[AuthorShortOutNested(id=author.id, name=author.name) for author in song_release.authors],
+                    groups=[GroupShortOutNested(id=author.id, name=author.name) for author in song_release.authors],
+                    duration=leading_audio_file.duration if leading_audio_file else None
                 )),
             },
         )
-
+    
     @return_service
-    async def delete_group(
+    async def delete_song(
             self,
-            group_repo: GroupsRepository = Depends(get_repository(GroupsRepository)),
+            song_repo: SongsRepository = Depends(get_repository(SongsRepository)),
             token_user: User = None,
-            group_id: UUID = None
-    ) -> GroupEmptyResponse:
-        logger.info("Delete group")
+            song_id: UUID = None
+    ) -> SongEmptyResponse:
+        logger.info("Delete song")
 
         if not token_user:
-            logger.error("Failed to delete group: you need to be groupized for this action")
+            logger.error("Failed to delete song: you need to be authorized for this action")
             return response_4xx(
                 status_code=HTTP_400_BAD_REQUEST,
                 context={"reason": constant.FAIL_AUTH_CHECK},
             )
 
-        group = await group_repo.get_group_by_id(group_id=group_id)
+        song = await song_repo.get_song(song_id=song_id)
 
-        if group is None:
-            logger.error("Failed to delete group: failed to find group")
+        if song is None:
+            logger.error("Failed to delete song: failed to find song")
             return response_4xx(
                 status_code=HTTP_400_BAD_REQUEST,
                 context={"reason": constant.FAIL_GROUP_NOT_FOUND},
             )
 
-        await group_repo.delete_group(group=group)
+        await song_id.delete_song(song=song)
 
         return dict(
             status_code=HTTP_200_OK,
@@ -299,4 +276,3 @@ class SongsService(BaseService):
                 "message": constant.SUCCESS_DELETE_GROUP,
             },
         )
-    '''

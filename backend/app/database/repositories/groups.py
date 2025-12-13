@@ -16,7 +16,6 @@ class GroupsRepository(BaseRepository):
     @db_error_handler
     async def get_group_by_id(self, *, group_id: UUID) -> Group:
         group = (await self.connection.execute(select(Group).join(Group.authors, isouter=True).filter(Group.id == group_id).limit(1))).scalar()
-        print(group)
 
         return group
 
@@ -76,6 +75,16 @@ class GroupsRepository(BaseRepository):
         await self.connection.commit()
         await self.connection.refresh(group)
         return group
+
+    @db_error_handler
+    async def get_groups_with_ids(
+        self,
+        *,
+        ids: list[UUID]
+    ) -> list[Group]:
+        groups = (await self.connection.execute(select(Group).filter(Group.id.in_(ids)))).scalars().all()
+
+        return groups
 
     @db_error_handler
     async def delete_group(self, *, group: Group):

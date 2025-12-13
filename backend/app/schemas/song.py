@@ -38,6 +38,15 @@ class SongInCreate(SongBase):
     groups: list[UUID]
 
 
+class SongReleaseInDB(SongBase):
+    name: str = SongName
+    tag: Optional[str] = SongTag
+    description: str = SongDescription
+    bpm: Optional[int] = SongBPM
+    key: Optional[str] = SongKey
+    lyrics: Optional[str] = SongLyrics
+
+
 class SongInRelease(SongInCreate):
     pass
 
@@ -48,10 +57,10 @@ class SongFilter(BaseFilter):
     id__in: list[UUID]
     tag__in: list[str]
     bpm__in: list[int]
-    key__in: list[int]
+    key__in: list[str]
     authors_id__in: list[UUID]
     groups_id__in: list[UUID]
-    q: str = SearchField(target=["name", "tag", "bpm", "key"])
+    q: str = SearchField(target=["name", "tag", "key"])
 
 
 class SongPagination(PagePagination):
@@ -139,6 +148,12 @@ class SongReleaseOutData(BaseModel):
 class SongListResponse(ApiResponse):
     message: str = "Song API Response"
     data: list[SongShortOutData]
+    detail: dict[str, Any] | None = {"key": "val"}
+
+
+class SongShortResponse(ApiResponse):
+    message: str = "Song API Response"
+    data: SongShortOutData
     detail: dict[str, Any] | None = {"key": "val"}
 
 

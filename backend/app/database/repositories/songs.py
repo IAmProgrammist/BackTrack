@@ -9,7 +9,16 @@ from app.models.group import Group
 from app.models.song import Song
 from app.models.song_release import SongRelease
 from app.models.song_release_file import SongReleaseFile
-from app.schemas.group import GroupFilter, GroupPagination, GroupSort, GroupInDB
+from app.schemas.song import (
+    SongFilter, 
+    SongPagination, 
+    SongSort, 
+    SongReleaseSort, 
+    SongReleasePagination, 
+    SongReleaseFilter,
+    SongReleaseInDB
+)
+from app.models.file import File
 
 
 class SongsRepository(BaseRepository):
@@ -17,7 +26,7 @@ class SongsRepository(BaseRepository):
         super().__init__(conn)
 
     @db_error_handler
-    async def get_song_by_song_id_and_tag_filter(self, *, song_id: UUID, release_id: UUID | None) -> SongRelease:
+    async def get_song_releases_by_song_id_and_tag_filter(self, *, song_id: UUID, release_id: UUID | None) -> SongRelease:
         # Holy cow, that's a lot! Definetely need to cache this... This.
         # Do not forget to add Cache-Control for everything that uses this
         # method!
@@ -50,66 +59,132 @@ class SongsRepository(BaseRepository):
 
         return song_release
 
-    '''
     @db_error_handler
-    async def get_groups_with_participants(
-            self,
-            *,
-            filter_: GroupFilter,
-            pagination: GroupPagination,
-            sort: GroupSort
-    ) -> list[Group]:
-        # We should filter this manually. Ugh.
-        authors_filter_data = filter_.authors
-        filter_.authors = None
-        query = select(Group).join(Group.authors, isouter=True)
+    async def get_song_releases(
+        self,
+        *,
+        filter_: SongFilter,
+        pagination: SongPagination,
+        sort: SongSort
+    ) -> list[Song]:
+        authors_filter_data = filter_.authors_id__in
+        groups_filter_data = filter_.groups_id__in
+        id_filter_data = filter_.id__in
+
+        filter_.authors_id__in = None
+        filter_.groups_id__in = None
+        filter_.id__in = None
+
+        query = (
+            select(SongRelease)
+                .join(SongRelease.song)
+                .join(SongRelease.authors)
+                .join(SongRelease.groups)
+                .join(SongRelease.files)
+                .join(SongReleaseFile.file)
+        )
+
         if authors_filter_data:
-            query = query.filter(Author.id.in_(authors_filter_data.id))
+            query = query.filter(Author.id.in_(authors_filter_data))
+
+        if groups_filter_data:
+            query = query.filter(Group.id.in_(groups_filter_data))
+
+        if id_filter_data:
+            query = query.filter(Song.id.in_(id_filter_data))
 
         query = append_to_statement(
             statement=query,
-            model=Group,
+            model=SongRelease,
             filter_=filter_,
             pagination=pagination,
             sort=sort
         )
 
-        groups = (await self.connection.execute(query)).scalars()
+        songs = (await self.connection.execute(query)).scalars()
 
-        return groups
+        return songs
 
-    @db_error_handler
-    async def create_group(
-            self,
-            *,
-            group_in: GroupInDB,
-            authors: Author
-    ) -> Group:
-        created_group = Group(**group_in.model_dump(exclude_none=True), authors=authors)
-        self.connection.add(created_group)
-        await self.connection.commit()
-        await self.connection.refresh(created_group)
-        return created_group
 
     @db_error_handler
-    async def update_group(
-            self,
-            *,
-            group: Group,
-            group_in: GroupInDB
-    ) -> Group:
-        group_in_obj = group_in.model_dump(exclude_unset=True)
+    async def get_song(
+        self,
+        *,
+        song_id: UUID
+    ) -> Song:
+        song = (await self.connection.execute(
+                select(Song)
+                .filter(Song.id == song_id)
+                .limit(1)
+            )).scalar()
 
-        for key, val in group_in_obj.items():
-            setattr(group, key, val)
+        return song
 
-        self.connection.add(group)
-        await self.connection.commit()
-        await self.connection.refresh(group)
-        return group
 
     @db_error_handler
-    async def delete_group(self, *, group: Group):
-        await self.connection.delete(group)
+    async def get_song_releases_short(
+        self,
+        *,
+        filter_: SongFilter,
+        pagination: SongPagination,
+        sort: SongSort,
+        song_id: UUID
+    ) -> list[Song]:
+        query = (
+            select(SongRelease).filter(SongRelease.song_id == song_id)
+        )
+
+        query = append_to_statement(
+            statement=query,
+            model=SongRelease,
+            filter_=filter_,
+            pagination=pagination,
+            sort=sort
+        )
+
+        songs = (await self.connection.execute(query)).scalars()
+
+        return songs
+
+    @db_error_handler
+    async def create_song(
+        self
+    ):
+        created_song = Song()
+        self.connection.add(created_song)
         await self.connection.commit()
-    '''
+        await self.connection.refresh(created_song)
+        return created_song
+
+    @db_error_handler
+    async def create_song_release(
+        self,
+        *,
+        song_in: SongReleaseInDB,
+        song: Song,
+        authors: list[Author],
+        groups: list[Group]
+    ) -> SongRelease:
+        created_release = SongRelease(**song_in.model_dump(exclude_none=True), authors=authors, groups=groups, song=song)
+        self.connection.add(created_release)
+        await self.connection.commit()
+        await self.connection.refresh(created_release)
+        return created_release
+
+    @db_error_handler
+    async def attach_files_to_song_release(
+        self,
+        *,
+        song_release: SongRelease,
+        files: list[File],
+        leading: list[bool]
+    ):
+        files = [SongReleaseFile(song_release=song_release, primary=leading, file=file) for (file, leading) in zip(files, leading)]
+        self.connection.bulk_save_objects(files)
+        await self.connection.commit()
+
+
+    @db_error_handler
+    async def delete_song(self, *, song: Song):
+        await self.connection.delete(song)
+        await self.connection.commit()
