@@ -1,10 +1,17 @@
 import { authorsApi, getAxiosConf, getImageUrlFromFileId } from "shared/api/api";
-import type { AuthorCreateDTO, AuthorUpdateDTO, IAuthorApi } from "./iauthorapi";
+import type { AuthorCreateDTO, AuthorsFilters, AuthorUpdateDTO, IAuthorApi } from "./iauthorapi";
 import type { Data } from "shared/api/autogen";
 
 export class AuthorApi implements IAuthorApi {
-    getAuthors(token?: string | null) {
-        return async () => authorsApi.getAuthorsApiV1AuthorsGet(undefined, undefined, undefined, undefined, undefined, undefined, getAxiosConf(token)).then((authorsResponse) => {
+    getAuthors(token?: string | null, filters?: AuthorsFilters) {
+        return async () => authorsApi.getAuthorsApiV1AuthorsGet(
+            filters?.id || undefined, 
+            filters?.q || undefined, 
+            filters?.page || undefined, 
+            filters?.perPage || undefined, 
+            filters?.sortBy || undefined, 
+            filters?.sortByOrder || undefined, 
+            getAxiosConf(token)).then((authorsResponse) => {
             return (authorsResponse.data.data as unknown as Data[]).map((author) => ({
                 id: author.id || "",
                 name: author.name,

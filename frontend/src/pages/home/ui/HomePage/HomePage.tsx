@@ -7,7 +7,7 @@ import { SongsGrid } from "widgets/song/ui/SongsGrid";
 export const HomePage = () => {
     return <div className="home-page">
         <GroupsGrid/>
-        <AuthorsGrid/>
+        <AuthorsGrid filters={{sortBy: "name", sortByOrder: "asc"}}/>
         <PlaylistsGrid/>
         <SongsGrid/>
     </div>

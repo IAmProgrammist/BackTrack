@@ -5,12 +5,13 @@ import { AUTHOR_QUERY_KEY } from "entities/author/model/query-key";
 import { Author } from "entities/author/ui/Author";
 import { Button } from "shared/ui/Button";
 import { useNavigate } from "react-router";
+import type { AuthorsFilters } from "features/authors/model/iauthorapi";
 
-export const AuthorsGrid = () => {
+export const AuthorsGrid = ({filters}: {filters?: AuthorsFilters}) => {
     const {service} = useAuthorsService();
     const {data: authorsData, isLoading: authorsIsLoading, isError: authorsIsError} = useQuery({
-        queryKey: [AUTHOR_QUERY_KEY],
-        queryFn: service.getAuthors()
+        queryKey: [AUTHOR_QUERY_KEY, filters],
+        queryFn: service.getAuthors(filters)
     })
     const navigate = useNavigate();
 

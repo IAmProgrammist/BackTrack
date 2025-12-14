@@ -1,4 +1,5 @@
 import { ObjectSchema, type AnyObject } from "yup"
+import type { AuthorsFilters } from "./iauthorapi"
 
 export interface AuthorCreateDTO {
     name: string
@@ -21,7 +22,7 @@ export interface AuthorResponseDTO {
 }
 
 export interface IAuthorService {
-    getAuthors: () => () => Promise<AuthorResponseDTO[]>
+    getAuthors: (filters?: AuthorsFilters) => () => Promise<AuthorResponseDTO[]>
     getAuthor: (id: string) => () => Promise<AuthorResponseDTO>
     updateAuthor: (id: string, data: unknown) => () => Promise<AuthorResponseDTO>
     deleteAuthor: (id: string) => () => Promise<unknown>

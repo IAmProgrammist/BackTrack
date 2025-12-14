@@ -1,7 +1,7 @@
 import { object, type AnyObject, type ObjectSchema } from "yup";
 import type { AuthorCreateDTO, AuthorUpdateDTO, IAuthorService } from "./iauthorservice";
 import { AUTHOR_DESCRIPTION_VALIDATION, AUTHOR_IMAGE_VALIDATION, AUTHOR_NAME_VALIDATION } from "entities/author/model/validators";
-import type { IAuthorApi } from "./iauthorapi";
+import type { AuthorsFilters, IAuthorApi } from "./iauthorapi";
 import type { IAuthService } from "features/auth/model/iauthservice";
 
 export class AuthorService implements IAuthorService {
@@ -17,8 +17,8 @@ export class AuthorService implements IAuthorService {
         return this.authorApi.getAuthor(id, this.authService.getToken())
     }
 
-    getAuthors() {
-        return this.authorApi.getAuthors(this.authService.getToken())
+    getAuthors(filters?: AuthorsFilters) {
+        return this.authorApi.getAuthors(this.authService.getToken(), filters)
     }
 
     createAuthor(data: unknown) {
