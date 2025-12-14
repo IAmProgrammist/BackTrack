@@ -1,4 +1,4 @@
-import type { ISongApi, ISongCreateCommentDTO } from "./isongapi";
+import type { ISongApi, ISongCreateCommentDTO, ISongCreateDTO } from "./isongapi";
 
 export class MockSongApi implements ISongApi {
     getSongs() {
@@ -114,7 +114,7 @@ export class MockSongApi implements ISongApi {
             tag: "Черновик"
         }])
     }
-    createSong(_data: FormData) {
+    createSong(_data: ISongCreateDTO) {
         return async () => Promise.resolve({
             id: "7",
             version: "v1.0",
@@ -125,13 +125,15 @@ export class MockSongApi implements ISongApi {
             duration: 210000
         })
     }
-    releaseSongVersion(id: string, _data: FormData) {
+    releaseSongVersion(_id: string, _data: ISongCreateDTO) {
         return async () => Promise.resolve({
-            id,
-            version: "v4.0",
-            createdAt: new Date().toISOString(),
-            changelog: "Final production ready version",
-            tag: "Готово"
+            id: "7",
+            version: "v1.0",
+            tag: "Черновик",
+            name: "New Song",
+            authors: [{id: "1", name: "Bob Dylan"}],
+            groups: [{id: "1", name: "ABBA"}],
+            duration: 210000
         })
     }
     deleteSong(_id: string) {

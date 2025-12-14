@@ -31,7 +31,7 @@ export interface ISongResponseShortDTO {
     name: string
     authors: {id: string, name: string}[]
     groups: {id: string, name: string}[]
-    duration: number
+    duration: number | null
 }
 
 export interface ISongResponseExtendedDTO {
@@ -40,9 +40,9 @@ export interface ISongResponseExtendedDTO {
     name: string
     description: string
     tag: string
-    bpm: number
-    songKey: string
-    duration: number
+    bpm: number | null
+    songKey: string | null
+    duration: number | null
     lyrics: string
     authors: {id: string, name: string, imageURL: string}[]
     groups: {id: string, name: string, imageURL: string}[]
@@ -74,7 +74,7 @@ export interface ISongService {
     getSong: (id: string, version?: string) => () => Promise<ISongResponseExtendedDTO>
     getSongVersions: (id: string) => () => Promise<ISongResponseVersionDTO[]>
     createSong: (data: unknown) => () => Promise<ISongResponseShortDTO>
-    releaseSongVersion: (id: string, data: unknown) => () => Promise<ISongResponseVersionDTO>
+    releaseSongVersion: (id: string, data: unknown) => () => Promise<ISongResponseShortDTO>
     deleteSong: (id: string) => () => Promise<unknown>
     createComment: (id: string, data: unknown) => () => Promise<ISongResponseCommentDTO>
     getComments: (id: string) => () => Promise<ISongResponseCommentDTO[]>

@@ -1,7 +1,7 @@
 export interface SongProps {
     id: string
     name: string
-    duration: number
+    duration?: number | null
     authors: {id: string, name: string}[]
     groups: {id: string, name: string}[]
     redirect?: boolean

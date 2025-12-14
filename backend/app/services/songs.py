@@ -119,7 +119,7 @@ class SongsService(BaseService):
                 tag=song.tag,
                 name=song.name,
                 authors=[AuthorShortOutNested(id=author.id, name=author.name) for author in song.authors],
-                groups=[GroupShortOutNested(id=author.id, name=author.name) for author in song.authors],
+                groups=[GroupShortOutNested(id=group.id, name=group.name) for group in song.groups],
                 duration=primary_song_file.file.duration if primary_song_file else None
             )
 

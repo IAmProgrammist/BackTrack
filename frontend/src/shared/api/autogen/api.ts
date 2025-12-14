@@ -29,10 +29,19 @@ export interface AuthorOutData {
     'id'?: string | null;
     'file_id': string;
 }
+export interface AuthorOutNested {
+    'id': string;
+    'name': string;
+    'file_id': string;
+}
 export interface AuthorResponse {
     'message'?: string;
     'data': Data;
     'detail'?: { [key: string]: any; } | null;
+}
+export interface AuthorShortOutNested {
+    'id': string;
+    'name': string;
 }
 export interface Data {
     'name': string;
@@ -43,6 +52,7 @@ export interface Data {
 export interface Data1 {
     'mime': string;
     'original_name': string;
+    'duration': number;
     'id'?: string;
 }
 export interface Data2 {
@@ -61,7 +71,14 @@ export interface ErrorResponse {
 export interface FileOutMetadata {
     'mime': string;
     'original_name': string;
+    'duration': number | null;
     'id'?: string | null;
+}
+export interface FileOutNested {
+    'id': string;
+    'mime': string;
+    'leading': boolean;
+    'name': string;
 }
 export interface FilesResponse {
     'message'?: string;
@@ -97,6 +114,11 @@ export interface GroupOutDataDetailed {
     'authors': Array<GroupParticipant>;
     'file_id': string;
 }
+export interface GroupOutNested {
+    'id': string;
+    'name': string;
+    'file_id': string;
+}
 export interface GroupParticipant {
     'id': string;
     'name': string;
@@ -107,8 +129,66 @@ export interface GroupResponse {
     'data': GroupOutData;
     'detail'?: { [key: string]: any; } | null;
 }
+export interface GroupShortOutNested {
+    'id': string;
+    'name': string;
+}
 export interface HTTPValidationError {
     'detail'?: Array<ValidationError>;
+}
+export interface SongDetailedResponse {
+    'message'?: string;
+    'data': SongOutData;
+    'detail'?: { [key: string]: any; } | null;
+}
+export interface SongEmptyResponse {
+    'message'?: string;
+    'data': object;
+    'detail'?: { [key: string]: any; } | null;
+}
+export interface SongListResponse {
+    'message'?: string;
+    'data': Array<SongShortOutData>;
+    'detail'?: { [key: string]: any; } | null;
+}
+export interface SongOutData {
+    'song_id': string;
+    'id': string;
+    'name': string;
+    'description': string;
+    'tag': string;
+    'bpm': number | null;
+    'key': string | null;
+    'duration': number | null;
+    'lyrics': string;
+    'files': Array<FileOutNested>;
+    'authors': Array<AuthorOutNested>;
+    'groups': Array<GroupOutNested>;
+}
+export interface SongReleaseOutData {
+    'id': string;
+    'created_at': string;
+    'description': string;
+    'tag': string;
+}
+export interface SongReleaseResponse {
+    'message'?: string;
+    'data': Array<SongReleaseOutData>;
+    'detail'?: { [key: string]: any; } | null;
+}
+export interface SongShortOutData {
+    'song_id': string;
+    'id': string;
+    'tag': string;
+    'name': string;
+    'authors': Array<AuthorShortOutNested>;
+    'groups': Array<GroupShortOutNested>;
+    'duration': number | null;
+}
+export interface SongShortResponse {
+    'message'?: string;
+    'data': SongShortOutData;
+    'detail'?: { [key: string]: any; } | null;
 }
 
 export const SortByOrder = {
@@ -1577,6 +1657,634 @@ export const GetGroupsApiV1GroupsGetSortByEnum = {
     Name: 'name'
 } as const;
 export type GetGroupsApiV1GroupsGetSortByEnum = typeof GetGroupsApiV1GroupsGetSortByEnum[keyof typeof GetGroupsApiV1GroupsGetSortByEnum];
+
+
+/**
+ * SongsApi - axios parameter creator
+ */
+export const SongsApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Create Song
+         * @param {string} name 
+         * @param {string | null} tag 
+         * @param {string} description 
+         * @param {number | null} bpm 
+         * @param {string | null} key 
+         * @param {string | null} lyrics 
+         * @param {Array<File>} filesFile 
+         * @param {Array<boolean>} filesLeading 
+         * @param {Array<string>} authors 
+         * @param {Array<string>} groups 
+         * @param {string | null} [songId] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createSongApiV1SongsPost: async (name: string, tag: string | null, description: string, bpm: number | null, key: string | null, lyrics: string | null, filesFile: Array<File>, filesLeading: Array<boolean>, authors: Array<string>, groups: Array<string>, songId?: string | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'name' is not null or undefined
+            assertParamExists('createSongApiV1SongsPost', 'name', name)
+            // verify required parameter 'tag' is not null or undefined
+            assertParamExists('createSongApiV1SongsPost', 'tag', tag)
+            // verify required parameter 'description' is not null or undefined
+            assertParamExists('createSongApiV1SongsPost', 'description', description)
+            // verify required parameter 'bpm' is not null or undefined
+            assertParamExists('createSongApiV1SongsPost', 'bpm', bpm)
+            // verify required parameter 'key' is not null or undefined
+            assertParamExists('createSongApiV1SongsPost', 'key', key)
+            // verify required parameter 'lyrics' is not null or undefined
+            assertParamExists('createSongApiV1SongsPost', 'lyrics', lyrics)
+            // verify required parameter 'filesFile' is not null or undefined
+            assertParamExists('createSongApiV1SongsPost', 'filesFile', filesFile)
+            // verify required parameter 'filesLeading' is not null or undefined
+            assertParamExists('createSongApiV1SongsPost', 'filesLeading', filesLeading)
+            // verify required parameter 'authors' is not null or undefined
+            assertParamExists('createSongApiV1SongsPost', 'authors', authors)
+            // verify required parameter 'groups' is not null or undefined
+            assertParamExists('createSongApiV1SongsPost', 'groups', groups)
+            const localVarPath = `/api/v1/songs`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+            const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
+
+            // authentication RWAPIKeyHeader required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+            if (songId !== undefined) {
+                localVarQueryParameter['song_id'] = songId;
+            }
+
+
+            if (name !== undefined) { 
+                localVarFormParams.append('name', name as any);
+            }
+    
+            if (tag !== undefined) { 
+                localVarFormParams.append('tag', tag as any);
+            }
+    
+            if (description !== undefined) { 
+                localVarFormParams.append('description', description as any);
+            }
+    
+            if (bpm !== undefined) { 
+                localVarFormParams.append('bpm', bpm as any);
+            }
+    
+            if (key !== undefined) { 
+                localVarFormParams.append('key', key as any);
+            }
+    
+            if (lyrics !== undefined) { 
+                localVarFormParams.append('lyrics', lyrics as any);
+            }
+                if (filesFile) {
+                filesFile.forEach((element) => {
+                    localVarFormParams.append('files_file', element as any);
+                })
+            }
+
+                if (filesLeading) {
+                localVarFormParams.append('files_leading', filesLeading.join(COLLECTION_FORMATS.csv));
+            }
+
+                if (authors) {
+                localVarFormParams.append('authors', authors.join(COLLECTION_FORMATS.csv));
+            }
+
+                if (groups) {
+                localVarFormParams.append('groups', groups.join(COLLECTION_FORMATS.csv));
+            }
+
+    
+    
+            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = localVarFormParams;
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Delete Song
+         * @param {string} songId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteSongApiV1SongsSongIdDelete: async (songId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'songId' is not null or undefined
+            assertParamExists('deleteSongApiV1SongsSongIdDelete', 'songId', songId)
+            const localVarPath = `/api/v1/songs/{song_id}`
+                .replace(`{${"song_id"}}`, encodeURIComponent(String(songId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication RWAPIKeyHeader required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get Song
+         * @param {string} songId 
+         * @param {string | null} [releaseId] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSongApiV1SongsSongIdGet: async (songId: string, releaseId?: string | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'songId' is not null or undefined
+            assertParamExists('getSongApiV1SongsSongIdGet', 'songId', songId)
+            const localVarPath = `/api/v1/songs/{song_id}`
+                .replace(`{${"song_id"}}`, encodeURIComponent(String(songId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (releaseId !== undefined) {
+                localVarQueryParameter['release_id'] = releaseId;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get Song Releases
+         * @param {string} songId 
+         * @param {Array<string>} [tagIn] 
+         * @param {number} [page] 
+         * @param {number} [perPage] 
+         * @param {GetSongReleasesApiV1SongsSongIdReleasesGetSortByEnum} [sortBy] 
+         * @param {SortByOrder} [sortByOrder] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSongReleasesApiV1SongsSongIdReleasesGet: async (songId: string, tagIn?: Array<string>, page?: number, perPage?: number, sortBy?: GetSongReleasesApiV1SongsSongIdReleasesGetSortByEnum, sortByOrder?: SortByOrder, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'songId' is not null or undefined
+            assertParamExists('getSongReleasesApiV1SongsSongIdReleasesGet', 'songId', songId)
+            const localVarPath = `/api/v1/songs/{song_id}/releases`
+                .replace(`{${"song_id"}}`, encodeURIComponent(String(songId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (tagIn) {
+                localVarQueryParameter['tag__in'] = tagIn;
+            }
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (perPage !== undefined) {
+                localVarQueryParameter['per_page'] = perPage;
+            }
+
+            if (sortBy !== undefined) {
+                localVarQueryParameter['sort_by'] = sortBy;
+            }
+
+            if (sortByOrder !== undefined) {
+                localVarQueryParameter['sort_by_order'] = sortByOrder;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get Songs
+         * @param {Array<string> | null} [idIn] 
+         * @param {Array<string> | null} [tagIn] 
+         * @param {Array<number> | null} [bpmIn] 
+         * @param {Array<string> | null} [keyIn] 
+         * @param {Array<string> | null} [authorsIdIn] 
+         * @param {Array<string> | null} [groupsIdIn] 
+         * @param {string | null} [q] 
+         * @param {number} [page] 
+         * @param {number} [perPage] 
+         * @param {GetSongsApiV1SongsGetSortByEnum} [sortBy] 
+         * @param {SortByOrder} [sortByOrder] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSongsApiV1SongsGet: async (idIn?: Array<string> | null, tagIn?: Array<string> | null, bpmIn?: Array<number> | null, keyIn?: Array<string> | null, authorsIdIn?: Array<string> | null, groupsIdIn?: Array<string> | null, q?: string | null, page?: number, perPage?: number, sortBy?: GetSongsApiV1SongsGetSortByEnum, sortByOrder?: SortByOrder, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v1/songs`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (idIn) {
+                localVarQueryParameter['id__in'] = idIn;
+            }
+
+            if (tagIn) {
+                localVarQueryParameter['tag__in'] = tagIn;
+            }
+
+            if (bpmIn) {
+                localVarQueryParameter['bpm__in'] = bpmIn;
+            }
+
+            if (keyIn) {
+                localVarQueryParameter['key__in'] = keyIn;
+            }
+
+            if (authorsIdIn) {
+                localVarQueryParameter['authors_id__in'] = authorsIdIn;
+            }
+
+            if (groupsIdIn) {
+                localVarQueryParameter['groups_id__in'] = groupsIdIn;
+            }
+
+            if (q !== undefined) {
+                localVarQueryParameter['q'] = q;
+            }
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (perPage !== undefined) {
+                localVarQueryParameter['per_page'] = perPage;
+            }
+
+            if (sortBy !== undefined) {
+                localVarQueryParameter['sort_by'] = sortBy;
+            }
+
+            if (sortByOrder !== undefined) {
+                localVarQueryParameter['sort_by_order'] = sortByOrder;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * SongsApi - functional programming interface
+ */
+export const SongsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = SongsApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Create Song
+         * @param {string} name 
+         * @param {string | null} tag 
+         * @param {string} description 
+         * @param {number | null} bpm 
+         * @param {string | null} key 
+         * @param {string | null} lyrics 
+         * @param {Array<File>} filesFile 
+         * @param {Array<boolean>} filesLeading 
+         * @param {Array<string>} authors 
+         * @param {Array<string>} groups 
+         * @param {string | null} [songId] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createSongApiV1SongsPost(name: string, tag: string | null, description: string, bpm: number | null, key: string | null, lyrics: string | null, filesFile: Array<File>, filesLeading: Array<boolean>, authors: Array<string>, groups: Array<string>, songId?: string | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SongShortResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createSongApiV1SongsPost(name, tag, description, bpm, key, lyrics, filesFile, filesLeading, authors, groups, songId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SongsApi.createSongApiV1SongsPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Delete Song
+         * @param {string} songId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteSongApiV1SongsSongIdDelete(songId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SongEmptyResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteSongApiV1SongsSongIdDelete(songId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SongsApi.deleteSongApiV1SongsSongIdDelete']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Get Song
+         * @param {string} songId 
+         * @param {string | null} [releaseId] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getSongApiV1SongsSongIdGet(songId: string, releaseId?: string | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SongDetailedResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getSongApiV1SongsSongIdGet(songId, releaseId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SongsApi.getSongApiV1SongsSongIdGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Get Song Releases
+         * @param {string} songId 
+         * @param {Array<string>} [tagIn] 
+         * @param {number} [page] 
+         * @param {number} [perPage] 
+         * @param {GetSongReleasesApiV1SongsSongIdReleasesGetSortByEnum} [sortBy] 
+         * @param {SortByOrder} [sortByOrder] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getSongReleasesApiV1SongsSongIdReleasesGet(songId: string, tagIn?: Array<string>, page?: number, perPage?: number, sortBy?: GetSongReleasesApiV1SongsSongIdReleasesGetSortByEnum, sortByOrder?: SortByOrder, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SongReleaseResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getSongReleasesApiV1SongsSongIdReleasesGet(songId, tagIn, page, perPage, sortBy, sortByOrder, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SongsApi.getSongReleasesApiV1SongsSongIdReleasesGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Get Songs
+         * @param {Array<string> | null} [idIn] 
+         * @param {Array<string> | null} [tagIn] 
+         * @param {Array<number> | null} [bpmIn] 
+         * @param {Array<string> | null} [keyIn] 
+         * @param {Array<string> | null} [authorsIdIn] 
+         * @param {Array<string> | null} [groupsIdIn] 
+         * @param {string | null} [q] 
+         * @param {number} [page] 
+         * @param {number} [perPage] 
+         * @param {GetSongsApiV1SongsGetSortByEnum} [sortBy] 
+         * @param {SortByOrder} [sortByOrder] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getSongsApiV1SongsGet(idIn?: Array<string> | null, tagIn?: Array<string> | null, bpmIn?: Array<number> | null, keyIn?: Array<string> | null, authorsIdIn?: Array<string> | null, groupsIdIn?: Array<string> | null, q?: string | null, page?: number, perPage?: number, sortBy?: GetSongsApiV1SongsGetSortByEnum, sortByOrder?: SortByOrder, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SongListResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getSongsApiV1SongsGet(idIn, tagIn, bpmIn, keyIn, authorsIdIn, groupsIdIn, q, page, perPage, sortBy, sortByOrder, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SongsApi.getSongsApiV1SongsGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * SongsApi - factory interface
+ */
+export const SongsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = SongsApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Create Song
+         * @param {string} name 
+         * @param {string | null} tag 
+         * @param {string} description 
+         * @param {number | null} bpm 
+         * @param {string | null} key 
+         * @param {string | null} lyrics 
+         * @param {Array<File>} filesFile 
+         * @param {Array<boolean>} filesLeading 
+         * @param {Array<string>} authors 
+         * @param {Array<string>} groups 
+         * @param {string | null} [songId] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createSongApiV1SongsPost(name: string, tag: string | null, description: string, bpm: number | null, key: string | null, lyrics: string | null, filesFile: Array<File>, filesLeading: Array<boolean>, authors: Array<string>, groups: Array<string>, songId?: string | null, options?: RawAxiosRequestConfig): AxiosPromise<SongShortResponse> {
+            return localVarFp.createSongApiV1SongsPost(name, tag, description, bpm, key, lyrics, filesFile, filesLeading, authors, groups, songId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Delete Song
+         * @param {string} songId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteSongApiV1SongsSongIdDelete(songId: string, options?: RawAxiosRequestConfig): AxiosPromise<SongEmptyResponse> {
+            return localVarFp.deleteSongApiV1SongsSongIdDelete(songId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get Song
+         * @param {string} songId 
+         * @param {string | null} [releaseId] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSongApiV1SongsSongIdGet(songId: string, releaseId?: string | null, options?: RawAxiosRequestConfig): AxiosPromise<SongDetailedResponse> {
+            return localVarFp.getSongApiV1SongsSongIdGet(songId, releaseId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get Song Releases
+         * @param {string} songId 
+         * @param {Array<string>} [tagIn] 
+         * @param {number} [page] 
+         * @param {number} [perPage] 
+         * @param {GetSongReleasesApiV1SongsSongIdReleasesGetSortByEnum} [sortBy] 
+         * @param {SortByOrder} [sortByOrder] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSongReleasesApiV1SongsSongIdReleasesGet(songId: string, tagIn?: Array<string>, page?: number, perPage?: number, sortBy?: GetSongReleasesApiV1SongsSongIdReleasesGetSortByEnum, sortByOrder?: SortByOrder, options?: RawAxiosRequestConfig): AxiosPromise<SongReleaseResponse> {
+            return localVarFp.getSongReleasesApiV1SongsSongIdReleasesGet(songId, tagIn, page, perPage, sortBy, sortByOrder, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get Songs
+         * @param {Array<string> | null} [idIn] 
+         * @param {Array<string> | null} [tagIn] 
+         * @param {Array<number> | null} [bpmIn] 
+         * @param {Array<string> | null} [keyIn] 
+         * @param {Array<string> | null} [authorsIdIn] 
+         * @param {Array<string> | null} [groupsIdIn] 
+         * @param {string | null} [q] 
+         * @param {number} [page] 
+         * @param {number} [perPage] 
+         * @param {GetSongsApiV1SongsGetSortByEnum} [sortBy] 
+         * @param {SortByOrder} [sortByOrder] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSongsApiV1SongsGet(idIn?: Array<string> | null, tagIn?: Array<string> | null, bpmIn?: Array<number> | null, keyIn?: Array<string> | null, authorsIdIn?: Array<string> | null, groupsIdIn?: Array<string> | null, q?: string | null, page?: number, perPage?: number, sortBy?: GetSongsApiV1SongsGetSortByEnum, sortByOrder?: SortByOrder, options?: RawAxiosRequestConfig): AxiosPromise<SongListResponse> {
+            return localVarFp.getSongsApiV1SongsGet(idIn, tagIn, bpmIn, keyIn, authorsIdIn, groupsIdIn, q, page, perPage, sortBy, sortByOrder, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * SongsApi - object-oriented interface
+ */
+export class SongsApi extends BaseAPI {
+    /**
+     * 
+     * @summary Create Song
+     * @param {string} name 
+     * @param {string | null} tag 
+     * @param {string} description 
+     * @param {number | null} bpm 
+     * @param {string | null} key 
+     * @param {string | null} lyrics 
+     * @param {Array<File>} filesFile 
+     * @param {Array<boolean>} filesLeading 
+     * @param {Array<string>} authors 
+     * @param {Array<string>} groups 
+     * @param {string | null} [songId] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public createSongApiV1SongsPost(name: string, tag: string | null, description: string, bpm: number | null, key: string | null, lyrics: string | null, filesFile: Array<File>, filesLeading: Array<boolean>, authors: Array<string>, groups: Array<string>, songId?: string | null, options?: RawAxiosRequestConfig) {
+        return SongsApiFp(this.configuration).createSongApiV1SongsPost(name, tag, description, bpm, key, lyrics, filesFile, filesLeading, authors, groups, songId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Delete Song
+     * @param {string} songId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public deleteSongApiV1SongsSongIdDelete(songId: string, options?: RawAxiosRequestConfig) {
+        return SongsApiFp(this.configuration).deleteSongApiV1SongsSongIdDelete(songId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get Song
+     * @param {string} songId 
+     * @param {string | null} [releaseId] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public getSongApiV1SongsSongIdGet(songId: string, releaseId?: string | null, options?: RawAxiosRequestConfig) {
+        return SongsApiFp(this.configuration).getSongApiV1SongsSongIdGet(songId, releaseId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get Song Releases
+     * @param {string} songId 
+     * @param {Array<string>} [tagIn] 
+     * @param {number} [page] 
+     * @param {number} [perPage] 
+     * @param {GetSongReleasesApiV1SongsSongIdReleasesGetSortByEnum} [sortBy] 
+     * @param {SortByOrder} [sortByOrder] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public getSongReleasesApiV1SongsSongIdReleasesGet(songId: string, tagIn?: Array<string>, page?: number, perPage?: number, sortBy?: GetSongReleasesApiV1SongsSongIdReleasesGetSortByEnum, sortByOrder?: SortByOrder, options?: RawAxiosRequestConfig) {
+        return SongsApiFp(this.configuration).getSongReleasesApiV1SongsSongIdReleasesGet(songId, tagIn, page, perPage, sortBy, sortByOrder, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get Songs
+     * @param {Array<string> | null} [idIn] 
+     * @param {Array<string> | null} [tagIn] 
+     * @param {Array<number> | null} [bpmIn] 
+     * @param {Array<string> | null} [keyIn] 
+     * @param {Array<string> | null} [authorsIdIn] 
+     * @param {Array<string> | null} [groupsIdIn] 
+     * @param {string | null} [q] 
+     * @param {number} [page] 
+     * @param {number} [perPage] 
+     * @param {GetSongsApiV1SongsGetSortByEnum} [sortBy] 
+     * @param {SortByOrder} [sortByOrder] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public getSongsApiV1SongsGet(idIn?: Array<string> | null, tagIn?: Array<string> | null, bpmIn?: Array<number> | null, keyIn?: Array<string> | null, authorsIdIn?: Array<string> | null, groupsIdIn?: Array<string> | null, q?: string | null, page?: number, perPage?: number, sortBy?: GetSongsApiV1SongsGetSortByEnum, sortByOrder?: SortByOrder, options?: RawAxiosRequestConfig) {
+        return SongsApiFp(this.configuration).getSongsApiV1SongsGet(idIn, tagIn, bpmIn, keyIn, authorsIdIn, groupsIdIn, q, page, perPage, sortBy, sortByOrder, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+export const GetSongReleasesApiV1SongsSongIdReleasesGetSortByEnum = {
+    Id: 'id',
+    CreatedAt: 'created_at'
+} as const;
+export type GetSongReleasesApiV1SongsSongIdReleasesGetSortByEnum = typeof GetSongReleasesApiV1SongsSongIdReleasesGetSortByEnum[keyof typeof GetSongReleasesApiV1SongsSongIdReleasesGetSortByEnum];
+export const GetSongsApiV1SongsGetSortByEnum = {
+    Id: 'id',
+    Name: 'name',
+    Tag: 'tag',
+    Key: 'key',
+    Bpm: 'bpm'
+} as const;
+export type GetSongsApiV1SongsGetSortByEnum = typeof GetSongsApiV1SongsGetSortByEnum[keyof typeof GetSongsApiV1SongsGetSortByEnum];
 
 
 /**

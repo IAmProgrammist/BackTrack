@@ -1,11 +1,13 @@
 import { useState, type ReactNode } from "react";
 import { SongsContextProvider as LibSongsContextProvider } from "features/song/lib/SongsContextProvider";
-import { MockSongApi } from "features/song/model/mocksongapi";
 import { SongService } from "features/song/model/songservice";
+import { useAuthService } from "features/auth/ui/useAuthService";
+import { SongApi } from "features/song/model/songapi";
 
 export const SongsContextProvider = ({children}: {children: ReactNode}) => {
-    const [api] = useState(new MockSongApi());
-    const [service] = useState(new SongService(api));
+    const authService = useAuthService();
+    const [api] = useState(new SongApi());
+    const [service] = useState(new SongService(api, authService));
     
     return <LibSongsContextProvider service={service}>
         {children}

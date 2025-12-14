@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query"
-import { AUTHOR_QUERY_KEY } from "entities/author/model/query-key";
 import { ControlledSelectInput } from "shared/ui/ControlledSelectInput";
 import type { ControlledGroupSelectProps } from "./types";
 import { useGroupsService } from "features/groups/lib/useGroupsService";
+import { GROUP_QUERY_KEY } from "entities/group/model/query-key";
 
 export const ControlledGroupSelect = ({controlProps, selectProps = {}}: ControlledGroupSelectProps) => {
     const {service} = useGroupsService();
-    const {data: authors} = useQuery({
-        queryKey: [AUTHOR_QUERY_KEY],
+    const {data: groups} = useQuery({
+        queryKey: [GROUP_QUERY_KEY],
         queryFn: service.getGroups()
     })
 
@@ -15,7 +15,7 @@ export const ControlledGroupSelect = ({controlProps, selectProps = {}}: Controll
         {
             ...selectProps,
             options: 
-                authors?.map((author) => ({
+                groups?.map((author) => ({
                     children: author.name,
                     value: author.id
                 }))

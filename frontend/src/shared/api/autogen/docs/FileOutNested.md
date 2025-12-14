@@ -1,25 +1,25 @@
-# FileOutMetadata
+# FileOutNested
 
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**id** | **string** |  | [default to undefined]
 **mime** | **string** |  | [default to undefined]
-**original_name** | **string** |  | [default to undefined]
-**duration** | **number** |  | [default to undefined]
-**id** | **string** |  | [optional] [default to undefined]
+**leading** | **boolean** |  | [default to undefined]
+**name** | **string** |  | [default to undefined]
 
 ## Example
 
 ```typescript
-import { FileOutMetadata } from './api';
+import { FileOutNested } from './api';
 
-const instance: FileOutMetadata = {
-    mime,
-    original_name,
-    duration,
+const instance: FileOutNested = {
     id,
+    mime,
+    leading,
+    name,
 };
 ```
 

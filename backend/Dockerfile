@@ -3,8 +3,11 @@ LABEL maintainer="hello@beerjoa.dev"
 LABEL build_date="2024-03-13"
 
 # Install system dependencies
+## libpq-dev gcc is required for wheel dependency for backend
+## ffmpeg is used for adding some formats for librosa used for audio analysis in backend
 RUN apt-get update \
-    && apt-get -y install libpq-dev gcc
+    && apt-get -y install libpq-dev gcc \
+    && apt-get -y install ffmpeg
 
 # Configure Poetry
 ENV POETRY_VERSION=1.8.2

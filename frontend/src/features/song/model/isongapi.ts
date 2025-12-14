@@ -1,3 +1,15 @@
+export interface ISongCreateDTO {
+    name: string
+    tag: string | null
+    description: string | null
+    bpm: number | null
+    songKey: string | null
+    lyrics: string | null
+    files: {file: File[], leading: boolean}[]
+    authors: string[]
+    groups: string[]
+}
+
 export interface ISongResponseShortDTO {
     id: string
     version: string
@@ -5,7 +17,7 @@ export interface ISongResponseShortDTO {
     name: string
     authors: {id: string, name: string}[]
     groups: {id: string, name: string}[]
-    duration: number
+    duration: number | null
 }
 
 export interface ISongResponseExtendedDTO {
@@ -14,9 +26,9 @@ export interface ISongResponseExtendedDTO {
     name: string
     description: string
     tag: string
-    bpm: number
-    songKey: string
-    duration: number
+    bpm: number | null
+    songKey: string | null
+    duration: number | null
     lyrics: string
     files: {url: string, mime: string, leading: boolean, name: string}[]
     authors: {id: string, name: string, imageURL: string}[]
@@ -44,12 +56,12 @@ export interface ISongCreateCommentDTO {
 }
 
 export interface ISongApi {
-    getSongs: () => () => Promise<ISongResponseShortDTO[]>
-    getSong: (id: string, version?: string) => () => Promise<ISongResponseExtendedDTO>
-    getSongVersions: (id: string) => () => Promise<ISongResponseVersionDTO[]>
-    createSong: (data: FormData) => () => Promise<ISongResponseShortDTO>
-    releaseSongVersion: (id: string, data: FormData) => () => Promise<ISongResponseVersionDTO>
-    deleteSong: (id: string) => () => Promise<unknown>
-    getComments: () => () => Promise<ISongResponseCommentDTO[]>
-    createComment: (id: string, data: ISongCreateCommentDTO) => () => Promise<ISongResponseCommentDTO>
+    getSongs: (token?: string | null) => () => Promise<ISongResponseShortDTO[]>
+    getSong: (id: string, version?: string, token?: string | null) => () => Promise<ISongResponseExtendedDTO>
+    getSongVersions: (id: string, token?: string | null) => () => Promise<ISongResponseVersionDTO[]>
+    createSong: (data: ISongCreateDTO, token?: string | null) => () => Promise<ISongResponseShortDTO>
+    releaseSongVersion: (id: string, data: ISongCreateDTO, token?: string | null) => () => Promise<ISongResponseShortDTO>
+    deleteSong: (id: string, token?: string | null) => () => Promise<unknown>
+    getComments: (token?: string | null) => () => Promise<ISongResponseCommentDTO[]>
+    createComment: (id: string, data: ISongCreateCommentDTO, token?: string | null) => () => Promise<ISongResponseCommentDTO>
 }

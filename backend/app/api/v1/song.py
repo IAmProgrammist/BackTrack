@@ -24,13 +24,12 @@ from app.schemas.song import (
     SongReleaseSort,
     SongReleaseResponse,
     SongInCreate,
-    SongEmptyResponse
+    SongEmptyResponse,
+    SongShortResponse
 )
 from app.services.songs import SongsService
 from app.database.repositories.songs import SongsRepository
-from app.schemas.group import GroupResponse
 from app.services.files import FileService
-from app.services.groups import GroupsService
 from app.utils import ERROR_RESPONSES, handle_result
 
 router = APIRouter()
@@ -93,7 +92,7 @@ async def get_songs_releases(*,
     status_code=HTTP_200_OK,
     responses=ERROR_RESPONSES,
     name="create_song",
-    response_model=SongListResponse
+    response_model=SongShortResponse
 )
 async def create_song(*,
                       song_service: SongsService = Depends(get_service(SongsService)),
@@ -105,7 +104,7 @@ async def create_song(*,
                       files_service: FileService = Depends(get_service(FileService)),
                       file_repository: FilesRepository = Depends(get_repository(FilesRepository)),
                       settings: AppSettings = Depends(get_app_settings),
-                      token_user: User = Depends(get_current_user_auth())):
+                      token_user: User = Depends(get_current_user_auth())) -> SongShortResponse:
     release_song = await song_service.create_song(
         song_in=song_in,
         song_repo=song_repo,

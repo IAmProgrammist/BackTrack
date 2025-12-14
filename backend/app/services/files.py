@@ -109,7 +109,7 @@ class FileService(BaseService):
         if not file_metadata.mime.startswith("audio/"):
             return file_metadata
 
-        audio_duration = librosa.get_duration(path=path) * 60 * 1000
+        audio_duration = librosa.get_duration(path=path) * 1000
         file_metadata = await file_repository.update_file_duration(file=file_metadata, new_duration=audio_duration)
 
         return file_metadata

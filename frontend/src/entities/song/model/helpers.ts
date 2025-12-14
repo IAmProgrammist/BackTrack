@@ -1,4 +1,8 @@
-export const msToMMSS = (duration: number) => {
+export const msToMMSS = (duration?: number | null) => {
+    if (!duration) {
+        return "--:--"
+    }
+
     const minutes = Math.floor(duration / 1000 / 60).toString();
     const seconds = Math.floor(duration / 1000 % 60).toString();
 

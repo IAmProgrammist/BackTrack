@@ -5,7 +5,7 @@ export interface SongHeaderProps {
     tag?: string
     imageURL?: string
     bpm?: string
-    songKey?: string
-    duration: number
+    songKey?: string | null
+    duration?: number | null
     version: string
 }

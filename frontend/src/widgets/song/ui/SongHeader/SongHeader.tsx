@@ -34,7 +34,7 @@ export const SongHeader = ({id,
         <div className="songheader-info">
             <div className="songheader-title">
                 <h3>{name}</h3>
-                {tag ? <Chip>Черновик</Chip> : null}
+                {tag ? <Chip>{tag}</Chip> : null}
             </div>
             <p className="songheader-description">
                 {description}

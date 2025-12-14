@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **mime** | **string** |  | [default to undefined]
 **original_name** | **string** |  | [default to undefined]
+**duration** | **number** |  | [default to undefined]
 **id** | **string** |  | [optional] [default to undefined]
 
 ## Example
@@ -17,6 +18,7 @@ import { Data1 } from './api';
 const instance: Data1 = {
     mime,
     original_name,
+    duration,
     id,
 };
 ```
