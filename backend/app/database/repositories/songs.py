@@ -5,20 +5,20 @@ from uuid import UUID
 
 from app.database.repositories.base import BaseRepository, db_error_handler
 from app.models.author import Author
+from app.models.file import File
 from app.models.group import Group
 from app.models.song import Song
 from app.models.song_release import SongRelease
 from app.models.song_release_file import SongReleaseFile
 from app.schemas.song import (
-    SongFilter, 
-    SongPagination, 
-    SongSort, 
-    SongReleaseSort, 
-    SongReleasePagination, 
+    SongFilter,
+    SongPagination,
+    SongSort,
+    SongReleaseSort,
+    SongReleasePagination,
     SongReleaseFilter,
     SongReleaseInDB
 )
-from app.models.file import File
 
 
 class SongsRepository(BaseRepository):
@@ -26,7 +26,8 @@ class SongsRepository(BaseRepository):
         super().__init__(conn)
 
     @db_error_handler
-    async def get_song_releases_by_song_id_and_tag_filter(self, *, song_id: UUID, release_id: UUID | None) -> SongRelease:
+    async def get_song_releases_by_song_id_and_tag_filter(self, *, song_id: UUID,
+                                                          release_id: UUID | None) -> SongRelease:
         # Holy cow, that's a lot! Definetely need to cache this... This.
         # Do not forget to add Cache-Control for everything that uses this
         # method!
@@ -37,12 +38,11 @@ class SongsRepository(BaseRepository):
                 .join(SongRelease.authors)
                 .join(SongRelease.groups)
                 .join(SongRelease.files)
-                .join(SongReleaseFile.file)
                 .filter(Song.id == song_id)
                 .filter(SongRelease.id == release_id)
                 .limit(1)
             )
-                    ).scalar()
+                            ).scalar()
         else:
             song_release = (await self.connection.execute(
                 select(SongRelease)
@@ -50,22 +50,21 @@ class SongsRepository(BaseRepository):
                 .join(SongRelease.authors)
                 .join(SongRelease.groups)
                 .join(SongRelease.files)
-                .join(SongReleaseFile.file)
                 .filter(Song.id == song_id)
                 .order_by(SongRelease.created_at.desc())
                 .limit(1)
             )
-                    ).scalar()
+                            ).scalar()
 
         return song_release
 
     @db_error_handler
     async def get_song_releases(
-        self,
-        *,
-        filter_: SongFilter,
-        pagination: SongPagination,
-        sort: SongSort
+            self,
+            *,
+            filter_: SongFilter,
+            pagination: SongPagination,
+            sort: SongSort
     ) -> list[Song]:
         authors_filter_data = filter_.authors_id__in
         groups_filter_data = filter_.groups_id__in
@@ -77,11 +76,11 @@ class SongsRepository(BaseRepository):
 
         query = (
             select(SongRelease)
-                .join(SongRelease.song)
-                .join(SongRelease.authors)
-                .join(SongRelease.groups)
-                .join(SongRelease.files)
-                .join(SongReleaseFile.file)
+            .join(SongRelease.song)
+            .join(SongRelease.authors)
+            .join(SongRelease.groups)
+            .join(SongRelease.files)
+            .join(SongReleaseFile.file)
         )
 
         if authors_filter_data:
@@ -96,7 +95,7 @@ class SongsRepository(BaseRepository):
         query = append_to_statement(
             statement=query,
             model=SongRelease,
-            filter_=filter_,
+            filter_=SongFilter(**filter_.model_dump(exclude_unset=True, exclude_none=True)),
             pagination=pagination,
             sort=sort
         )
@@ -105,30 +104,28 @@ class SongsRepository(BaseRepository):
 
         return songs
 
-
     @db_error_handler
     async def get_song(
-        self,
-        *,
-        song_id: UUID
+            self,
+            *,
+            song_id: UUID
     ) -> Song:
         song = (await self.connection.execute(
-                select(Song)
-                .filter(Song.id == song_id)
-                .limit(1)
-            )).scalar()
+            select(Song)
+            .filter(Song.id == song_id)
+            .limit(1)
+        )).scalar()
 
         return song
 
-
     @db_error_handler
     async def get_song_releases_short(
-        self,
-        *,
-        filter_: SongFilter,
-        pagination: SongPagination,
-        sort: SongSort,
-        song_id: UUID
+            self,
+            *,
+            filter_: SongFilter,
+            pagination: SongPagination,
+            sort: SongSort,
+            song_id: UUID
     ) -> list[Song]:
         query = (
             select(SongRelease).filter(SongRelease.song_id == song_id)
@@ -148,7 +145,7 @@ class SongsRepository(BaseRepository):
 
     @db_error_handler
     async def create_song(
-        self
+            self
     ):
         created_song = Song()
         self.connection.add(created_song)
@@ -158,14 +155,15 @@ class SongsRepository(BaseRepository):
 
     @db_error_handler
     async def create_song_release(
-        self,
-        *,
-        song_in: SongReleaseInDB,
-        song: Song,
-        authors: list[Author],
-        groups: list[Group]
+            self,
+            *,
+            song_in: SongReleaseInDB,
+            song: Song,
+            authors: list[Author],
+            groups: list[Group]
     ) -> SongRelease:
-        created_release = SongRelease(**song_in.model_dump(exclude_none=True), authors=authors, groups=groups, song=song)
+        created_release = SongRelease(**song_in.model_dump(exclude_none=True), authors=authors, groups=groups,
+                                      song=song)
         self.connection.add(created_release)
         await self.connection.commit()
         await self.connection.refresh(created_release)
@@ -173,16 +171,19 @@ class SongsRepository(BaseRepository):
 
     @db_error_handler
     async def attach_files_to_song_release(
-        self,
-        *,
-        song_release: SongRelease,
-        files: list[File],
-        leading: list[bool]
-    ):
-        files = [SongReleaseFile(song_release=song_release, primary=leading, file=file) for (file, leading) in zip(files, leading)]
-        self.connection.bulk_save_objects(files)
+            self,
+            *,
+            song_release: SongRelease,
+            files: list[File],
+            leading: list[bool]
+    ) -> list[SongReleaseFile]:
+        files = [SongReleaseFile(song_release=song_release, primary=leading, file=file) for (file, leading) in
+                 zip(files, leading)]
+        self.connection.add_all(files)
         await self.connection.commit()
-
+        for song_release_file in files:
+            await self.connection.refresh(song_release_file)
+        return files
 
     @db_error_handler
     async def delete_song(self, *, song: Song):

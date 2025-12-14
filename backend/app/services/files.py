@@ -1,4 +1,5 @@
 import aiofiles
+import librosa
 import logging
 from fastapi import Depends, UploadFile
 from fastapi.encoders import jsonable_encoder
@@ -19,7 +20,6 @@ from app.models.file import File
 from app.schemas.files import FileInDB, FileOutMetadata, FilesResponse
 from app.services.base import BaseService
 from app.utils import response_4xx, return_service
-import librosa
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 class FileService(BaseService):
     def get_file_path(self, file_id: str, settings: AppSettings):
         return f"{settings.static_dir}/{file_id}"
-    
+
     async def download_file_by_id(self,
                                   file_id: UUID,
                                   file_repository: FilesRepository = Depends(get_repository(FilesRepository)),
@@ -93,7 +93,8 @@ class FileService(BaseService):
             return None
 
         # Step 1: create file in repository database
-        file_metadata = await file_repository.create_file(file_in=FileInDB(mime=file.content_type, original_name=file.filename))
+        file_metadata = await file_repository.create_file(
+            file_in=FileInDB(mime=file.content_type, original_name=file.filename, duration=None))
         if not file_metadata:
             return None
 

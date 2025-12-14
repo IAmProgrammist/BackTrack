@@ -20,4 +20,4 @@ class Group(RWModel):
     authors: Mapped[list["Author"]] = relationship(
         secondary=group_author, lazy="selectin"
     )
-    file_id: Mapped[UUID] = mapped_column(ForeignKey("file.id"))
+    file_id: Mapped[UUID] = mapped_column(ForeignKey("file.id", ondelete='RESTRICT'))

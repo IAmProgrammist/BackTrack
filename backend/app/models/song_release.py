@@ -1,11 +1,11 @@
 import uuid
-from app.models.group_author import group_author
 from sqlalchemy import Column, DateTime, text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql.schema import ForeignKey
 from typing import TYPE_CHECKING
 from uuid import UUID
 
+from app.models.group_author import group_author
 from app.models.rwmodel import RWModel
 from app.models.song_release_author import song_release_author
 from app.models.song_release_group import song_release_group
@@ -22,8 +22,8 @@ class SongRelease(RWModel):
     __tablename__ = "song_release"
 
     id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
-    song_id: Mapped[UUID] = mapped_column(ForeignKey("song.id"), index=True)
-    song: Mapped["Song"] = relationship(back_populates="song_releases")
+    song_id: Mapped[UUID] = mapped_column(ForeignKey("song.id", ondelete='CASCADE'), index=True, nullable=True)
+    song: Mapped["Song"] = relationship(back_populates="song_releases", lazy="selectin")
     created_at = Column(DateTime, server_default=text("now()"), index=True)
     name: Mapped[str]
     tag: Mapped[str]
@@ -31,11 +31,10 @@ class SongRelease(RWModel):
     bpm: Mapped[int]
     key: Mapped[str]
     lyrics: Mapped[str]
-    song: Mapped["Song"] = relationship(back_populates="song_releases")
     authors: Mapped[list["Author"]] = relationship(
         secondary=song_release_author, lazy="selectin"
     )
     groups: Mapped[list["Group"]] = relationship(
         secondary=song_release_group, lazy="selectin"
     )
-    files: Mapped[list["SongReleaseFile"]] = relationship(back_populates="song_release")
+    files: Mapped[list["SongReleaseFile"]] = relationship(back_populates="song_release", lazy="selectin")

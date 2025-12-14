@@ -1,7 +1,7 @@
-from enum import Enum
 from datetime import datetime
+from enum import Enum
 from fastapi import UploadFile
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 from pydantic_filters import BaseFilter, SearchField, PagePagination, BaseSort
 from typing import Any, Optional, Literal
 from uuid import UUID
@@ -37,6 +37,12 @@ class SongInCreate(SongBase):
     authors: list[UUID]
     groups: list[UUID]
 
+    @model_validator(mode='after')
+    def check_files_size(self) -> 'SongInCreate':
+        if len(self.files_file) != len(self.files_leading):
+            raise ValueError('Files array and files leadings should be of a same size')
+        return self
+
 
 class SongReleaseInDB(SongBase):
     name: str = SongName
@@ -54,13 +60,13 @@ class SongInRelease(SongInCreate):
 # Модели для выбора листа
 ## Выбор песен
 class SongFilter(BaseFilter):
-    id__in: list[UUID]
-    tag__in: list[str]
-    bpm__in: list[int]
-    key__in: list[str]
-    authors_id__in: list[UUID]
-    groups_id__in: list[UUID]
-    q: str = SearchField(target=["name", "tag", "key"])
+    id__in: Optional[list[UUID]]
+    tag__in: Optional[list[str]]
+    bpm__in: Optional[list[int]]
+    key__in: Optional[list[str]]
+    authors_id__in: Optional[list[UUID]]
+    groups_id__in: Optional[list[UUID]]
+    q: Optional[str] = SearchField(target=["name", "tag", "key"])
 
 
 class SongPagination(PagePagination):
@@ -72,7 +78,8 @@ SongOrderByLiteral = Literal["id", "name", "tag", "key", "bpm"]
 
 class SongSort(BaseSort):
     sort_by: Optional[SongOrderByLiteral] = None
-    
+
+
 ## Выбор версий
 class SongReleaseFilter(BaseFilter):
     tag__in: list[str]
@@ -88,14 +95,17 @@ SongOrderByLiteral = Literal["id", "created_at"]
 class SongReleaseSort(BaseSort):
     sort_by: Optional[SongOrderByLiteral] = None
 
+
 # Модели для ответа
 class AuthorShortOutNested(BaseModel):
     id: UUID
     name: str
 
+
 class GroupShortOutNested(BaseModel):
     id: UUID
     name: str
+
 
 class SongShortOutData(BaseModel):
     song_id: UUID
@@ -112,16 +122,19 @@ class AuthorOutNested(BaseModel):
     name: str
     file_id: UUID
 
+
 class GroupOutNested(BaseModel):
     id: UUID
     name: str
     file_id: UUID
+
 
 class FileOutNested(BaseModel):
     id: UUID
     mime: str
     leading: bool
     name: str
+
 
 class SongOutData(BaseModel):
     song_id: UUID
@@ -143,6 +156,7 @@ class SongReleaseOutData(BaseModel):
     created_at: datetime
     description: str
     tag: str
+
 
 # Модель-оркестратор
 class SongListResponse(ApiResponse):
