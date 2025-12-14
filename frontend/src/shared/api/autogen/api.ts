@@ -136,6 +136,25 @@ export interface GroupShortOutNested {
 export interface HTTPValidationError {
     'detail'?: Array<ValidationError>;
 }
+export interface SongCommentInData {
+    'content': string;
+}
+export interface SongCommentListResponse {
+    'message'?: string;
+    'data': Array<SongCommentOutData>;
+    'detail'?: { [key: string]: any; } | null;
+}
+export interface SongCommentOutData {
+    'content': string;
+    'id': string;
+    'created_at': string;
+    'created_by': string;
+}
+export interface SongCommentResponse {
+    'message'?: string;
+    'data': SongCommentOutData;
+    'detail'?: { [key: string]: any; } | null;
+}
 export interface SongDetailedResponse {
     'message'?: string;
     'data': SongOutData;
@@ -1780,6 +1799,49 @@ export const SongsApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
+         * @summary Create Song Comment
+         * @param {string | null} songId 
+         * @param {SongCommentInData} songCommentInData 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createSongCommentApiV1SongsSongIdCommentsPost: async (songId: string | null, songCommentInData: SongCommentInData, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'songId' is not null or undefined
+            assertParamExists('createSongCommentApiV1SongsSongIdCommentsPost', 'songId', songId)
+            // verify required parameter 'songCommentInData' is not null or undefined
+            assertParamExists('createSongCommentApiV1SongsSongIdCommentsPost', 'songCommentInData', songCommentInData)
+            const localVarPath = `/api/v1/songs/{song_id}/comments`
+                .replace(`{${"song_id"}}`, encodeURIComponent(String(songId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication RWAPIKeyHeader required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(songCommentInData, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Delete Song
          * @param {string} songId 
          * @param {*} [options] Override http request option.
@@ -1841,6 +1903,70 @@ export const SongsApiAxiosParamCreator = function (configuration?: Configuration
 
             if (releaseId !== undefined) {
                 localVarQueryParameter['release_id'] = releaseId;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get Song Comments
+         * @param {string | null} songId 
+         * @param {Array<string>} [createdByIn] 
+         * @param {string} [q] 
+         * @param {GetSongCommentsApiV1SongsSongIdCommentsGetSortByEnum} [sortBy] 
+         * @param {SortByOrder} [sortByOrder] 
+         * @param {number} [page] 
+         * @param {number} [perPage] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSongCommentsApiV1SongsSongIdCommentsGet: async (songId: string | null, createdByIn?: Array<string>, q?: string, sortBy?: GetSongCommentsApiV1SongsSongIdCommentsGetSortByEnum, sortByOrder?: SortByOrder, page?: number, perPage?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'songId' is not null or undefined
+            assertParamExists('getSongCommentsApiV1SongsSongIdCommentsGet', 'songId', songId)
+            const localVarPath = `/api/v1/songs/{song_id}/comments`
+                .replace(`{${"song_id"}}`, encodeURIComponent(String(songId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (createdByIn) {
+                localVarQueryParameter['created_by__in'] = createdByIn;
+            }
+
+            if (q !== undefined) {
+                localVarQueryParameter['q'] = q;
+            }
+
+            if (sortBy !== undefined) {
+                localVarQueryParameter['sort_by'] = sortBy;
+            }
+
+            if (sortByOrder !== undefined) {
+                localVarQueryParameter['sort_by_order'] = sortByOrder;
+            }
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (perPage !== undefined) {
+                localVarQueryParameter['per_page'] = perPage;
             }
 
 
@@ -2032,6 +2158,20 @@ export const SongsApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Create Song Comment
+         * @param {string | null} songId 
+         * @param {SongCommentInData} songCommentInData 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createSongCommentApiV1SongsSongIdCommentsPost(songId: string | null, songCommentInData: SongCommentInData, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SongCommentResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createSongCommentApiV1SongsSongIdCommentsPost(songId, songCommentInData, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SongsApi.createSongCommentApiV1SongsSongIdCommentsPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary Delete Song
          * @param {string} songId 
          * @param {*} [options] Override http request option.
@@ -2055,6 +2195,25 @@ export const SongsApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getSongApiV1SongsSongIdGet(songId, releaseId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SongsApi.getSongApiV1SongsSongIdGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Get Song Comments
+         * @param {string | null} songId 
+         * @param {Array<string>} [createdByIn] 
+         * @param {string} [q] 
+         * @param {GetSongCommentsApiV1SongsSongIdCommentsGetSortByEnum} [sortBy] 
+         * @param {SortByOrder} [sortByOrder] 
+         * @param {number} [page] 
+         * @param {number} [perPage] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getSongCommentsApiV1SongsSongIdCommentsGet(songId: string | null, createdByIn?: Array<string>, q?: string, sortBy?: GetSongCommentsApiV1SongsSongIdCommentsGetSortByEnum, sortByOrder?: SortByOrder, page?: number, perPage?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SongCommentListResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getSongCommentsApiV1SongsSongIdCommentsGet(songId, createdByIn, q, sortBy, sortByOrder, page, perPage, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SongsApi.getSongCommentsApiV1SongsSongIdCommentsGet']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -2129,6 +2288,17 @@ export const SongsApiFactory = function (configuration?: Configuration, basePath
         },
         /**
          * 
+         * @summary Create Song Comment
+         * @param {string | null} songId 
+         * @param {SongCommentInData} songCommentInData 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createSongCommentApiV1SongsSongIdCommentsPost(songId: string | null, songCommentInData: SongCommentInData, options?: RawAxiosRequestConfig): AxiosPromise<SongCommentResponse> {
+            return localVarFp.createSongCommentApiV1SongsSongIdCommentsPost(songId, songCommentInData, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Delete Song
          * @param {string} songId 
          * @param {*} [options] Override http request option.
@@ -2147,6 +2317,22 @@ export const SongsApiFactory = function (configuration?: Configuration, basePath
          */
         getSongApiV1SongsSongIdGet(songId: string, releaseId?: string | null, options?: RawAxiosRequestConfig): AxiosPromise<SongDetailedResponse> {
             return localVarFp.getSongApiV1SongsSongIdGet(songId, releaseId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get Song Comments
+         * @param {string | null} songId 
+         * @param {Array<string>} [createdByIn] 
+         * @param {string} [q] 
+         * @param {GetSongCommentsApiV1SongsSongIdCommentsGetSortByEnum} [sortBy] 
+         * @param {SortByOrder} [sortByOrder] 
+         * @param {number} [page] 
+         * @param {number} [perPage] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSongCommentsApiV1SongsSongIdCommentsGet(songId: string | null, createdByIn?: Array<string>, q?: string, sortBy?: GetSongCommentsApiV1SongsSongIdCommentsGetSortByEnum, sortByOrder?: SortByOrder, page?: number, perPage?: number, options?: RawAxiosRequestConfig): AxiosPromise<SongCommentListResponse> {
+            return localVarFp.getSongCommentsApiV1SongsSongIdCommentsGet(songId, createdByIn, q, sortBy, sortByOrder, page, perPage, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2213,6 +2399,18 @@ export class SongsApi extends BaseAPI {
 
     /**
      * 
+     * @summary Create Song Comment
+     * @param {string | null} songId 
+     * @param {SongCommentInData} songCommentInData 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public createSongCommentApiV1SongsSongIdCommentsPost(songId: string | null, songCommentInData: SongCommentInData, options?: RawAxiosRequestConfig) {
+        return SongsApiFp(this.configuration).createSongCommentApiV1SongsSongIdCommentsPost(songId, songCommentInData, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary Delete Song
      * @param {string} songId 
      * @param {*} [options] Override http request option.
@@ -2232,6 +2430,23 @@ export class SongsApi extends BaseAPI {
      */
     public getSongApiV1SongsSongIdGet(songId: string, releaseId?: string | null, options?: RawAxiosRequestConfig) {
         return SongsApiFp(this.configuration).getSongApiV1SongsSongIdGet(songId, releaseId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get Song Comments
+     * @param {string | null} songId 
+     * @param {Array<string>} [createdByIn] 
+     * @param {string} [q] 
+     * @param {GetSongCommentsApiV1SongsSongIdCommentsGetSortByEnum} [sortBy] 
+     * @param {SortByOrder} [sortByOrder] 
+     * @param {number} [page] 
+     * @param {number} [perPage] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public getSongCommentsApiV1SongsSongIdCommentsGet(songId: string | null, createdByIn?: Array<string>, q?: string, sortBy?: GetSongCommentsApiV1SongsSongIdCommentsGetSortByEnum, sortByOrder?: SortByOrder, page?: number, perPage?: number, options?: RawAxiosRequestConfig) {
+        return SongsApiFp(this.configuration).getSongCommentsApiV1SongsSongIdCommentsGet(songId, createdByIn, q, sortBy, sortByOrder, page, perPage, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2272,6 +2487,10 @@ export class SongsApi extends BaseAPI {
     }
 }
 
+export const GetSongCommentsApiV1SongsSongIdCommentsGetSortByEnum = {
+    CreatedAt: 'created_at'
+} as const;
+export type GetSongCommentsApiV1SongsSongIdCommentsGetSortByEnum = typeof GetSongCommentsApiV1SongsSongIdCommentsGetSortByEnum[keyof typeof GetSongCommentsApiV1SongsSongIdCommentsGetSortByEnum];
 export const GetSongReleasesApiV1SongsSongIdReleasesGetSortByEnum = {
     Id: 'id',
     CreatedAt: 'created_at'

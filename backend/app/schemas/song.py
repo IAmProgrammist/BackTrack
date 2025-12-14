@@ -1,7 +1,7 @@
 from datetime import datetime
 from enum import Enum
 from fastapi import UploadFile
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator, field_validator
 from pydantic_filters import BaseFilter, SearchField, PagePagination, BaseSort
 from typing import Any, Optional, Literal
 from uuid import UUID
@@ -45,6 +45,13 @@ class SongInCreate(SongBase):
     authors: list[UUID]
     groups: list[UUID]
 
+    @field_validator('files_leading', mode="before")
+    def separate_by_comma(cls, value):
+        if isinstance(value, list) and isinstance(value[0], str):
+            return [bool(leading) for leading in value[0].split(",")]
+
+        return value
+
     @model_validator(mode='after')
     def check_files_size(self) -> 'SongInCreate':
         if len(self.files_file) != len(self.files_leading):
@@ -66,7 +73,7 @@ class SongReleaseInDB(SongBase):
 
 
 class SongCommentInDB(CommentBase):
-    created_by: str
+    pass
 
 
 class SongInRelease(SongInCreate):

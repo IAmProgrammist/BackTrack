@@ -5,8 +5,10 @@ All URIs are relative to *http://localhost*
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|
 |[**createSongApiV1SongsPost**](#createsongapiv1songspost) | **POST** /api/v1/songs | Create Song|
+|[**createSongCommentApiV1SongsSongIdCommentsPost**](#createsongcommentapiv1songssongidcommentspost) | **POST** /api/v1/songs/{song_id}/comments | Create Song Comment|
 |[**deleteSongApiV1SongsSongIdDelete**](#deletesongapiv1songssongiddelete) | **DELETE** /api/v1/songs/{song_id} | Delete Song|
 |[**getSongApiV1SongsSongIdGet**](#getsongapiv1songssongidget) | **GET** /api/v1/songs/{song_id} | Get Song|
+|[**getSongCommentsApiV1SongsSongIdCommentsGet**](#getsongcommentsapiv1songssongidcommentsget) | **GET** /api/v1/songs/{song_id}/comments | Get Song Comments|
 |[**getSongReleasesApiV1SongsSongIdReleasesGet**](#getsongreleasesapiv1songssongidreleasesget) | **GET** /api/v1/songs/{song_id}/releases | Get Song Releases|
 |[**getSongsApiV1SongsGet**](#getsongsapiv1songsget) | **GET** /api/v1/songs | Get Songs|
 
@@ -80,6 +82,63 @@ const { status, data } = await apiInstance.createSongApiV1SongsPost(
 ### HTTP request headers
 
  - **Content-Type**: multipart/form-data
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | Successful Response |  -  |
+|**400** | Bad Request |  -  |
+|**500** | Internal Server Error |  -  |
+|**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **createSongCommentApiV1SongsSongIdCommentsPost**
+> SongCommentResponse createSongCommentApiV1SongsSongIdCommentsPost(songCommentInData)
+
+
+### Example
+
+```typescript
+import {
+    SongsApi,
+    Configuration,
+    SongCommentInData
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new SongsApi(configuration);
+
+let songId: string; // (default to undefined)
+let songCommentInData: SongCommentInData; //
+
+const { status, data } = await apiInstance.createSongCommentApiV1SongsSongIdCommentsPost(
+    songId,
+    songCommentInData
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **songCommentInData** | **SongCommentInData**|  | |
+| **songId** | [**string**] |  | defaults to undefined|
+
+
+### Return type
+
+**SongCommentResponse**
+
+### Authorization
+
+[RWAPIKeyHeader](../README.md#RWAPIKeyHeader)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
  - **Accept**: application/json
 
 
@@ -181,6 +240,77 @@ const { status, data } = await apiInstance.getSongApiV1SongsSongIdGet(
 ### Return type
 
 **SongDetailedResponse**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | Successful Response |  -  |
+|**400** | Bad Request |  -  |
+|**500** | Internal Server Error |  -  |
+|**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getSongCommentsApiV1SongsSongIdCommentsGet**
+> SongCommentListResponse getSongCommentsApiV1SongsSongIdCommentsGet()
+
+
+### Example
+
+```typescript
+import {
+    SongsApi,
+    Configuration
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new SongsApi(configuration);
+
+let songId: string; // (default to undefined)
+let createdByIn: Array<string>; // (optional) (default to undefined)
+let q: string; // (optional) (default to undefined)
+let sortBy: 'created_at'; // (optional) (default to undefined)
+let sortByOrder: SortByOrder; // (optional) (default to undefined)
+let page: number; // (optional) (default to 1)
+let perPage: number; // (optional) (default to 100)
+
+const { status, data } = await apiInstance.getSongCommentsApiV1SongsSongIdCommentsGet(
+    songId,
+    createdByIn,
+    q,
+    sortBy,
+    sortByOrder,
+    page,
+    perPage
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **songId** | [**string**] |  | defaults to undefined|
+| **createdByIn** | **Array&lt;string&gt;** |  | (optional) defaults to undefined|
+| **q** | [**string**] |  | (optional) defaults to undefined|
+| **sortBy** | [**&#39;created_at&#39;**]**Array<&#39;created_at&#39;>** |  | (optional) defaults to undefined|
+| **sortByOrder** | **SortByOrder** |  | (optional) defaults to undefined|
+| **page** | [**number**] |  | (optional) defaults to 1|
+| **perPage** | [**number**] |  | (optional) defaults to 100|
+
+
+### Return type
+
+**SongCommentListResponse**
 
 ### Authorization
 

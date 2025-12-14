@@ -337,9 +337,8 @@ class SongsService(BaseService):
             )
 
         new_comment = await comment_repo.create_comment_for_song(song=song, comment_in=SongCommentInDB(
-            created_by=token_user.username,
             content=comment_in.content
-        ))
+        ), creator=token_user)
 
         return dict(
             status_code=HTTP_200_OK,

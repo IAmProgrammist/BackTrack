@@ -197,7 +197,7 @@ async def create_song_comment(*,
                               token_user: User = Depends(get_current_user_auth()),
                               song_id: UUID | None = None,
                               ) -> SongCommentListResponse:
-    comment = await song_service.get_comments(
+    comment = await song_service.create_comment(
         comment_in=comment_in,
         comment_repo=comment_repo,
         song_repo=song_repo,

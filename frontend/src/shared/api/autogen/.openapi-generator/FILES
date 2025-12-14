@@ -29,6 +29,10 @@ docs/GroupResponse.md
 docs/GroupShortOutNested.md
 docs/GroupsApi.md
 docs/HTTPValidationError.md
+docs/SongCommentInData.md
+docs/SongCommentListResponse.md
+docs/SongCommentOutData.md
+docs/SongCommentResponse.md
 docs/SongDetailedResponse.md
 docs/SongEmptyResponse.md
 docs/SongListResponse.md

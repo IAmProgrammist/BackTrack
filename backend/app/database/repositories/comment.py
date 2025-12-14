@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncConnection
 from app.database.repositories.base import BaseRepository, db_error_handler
 from app.models.comment import Comment
 from app.models.song import Song
+from app.models.user import User
 from app.schemas.song import (
     SongCommentFilter,
     SongCommentPagination,
@@ -35,8 +36,8 @@ class CommentRepository(BaseRepository):
         return comments
 
     @db_error_handler
-    async def create_comment_for_song(self, *, song: Song, comment_in: SongCommentInDB):
-        song_comment = Comment(**comment_in.model_dump(exclude_none=True), songs=[song])
+    async def create_comment_for_song(self, *, song: Song, creator: User, comment_in: SongCommentInDB):
+        song_comment = Comment(**comment_in.model_dump(exclude_none=True), songs=[song], created_by=creator)
         self.connection.add(song_comment)
         await self.connection.commit()
         await self.connection.refresh(song_comment)

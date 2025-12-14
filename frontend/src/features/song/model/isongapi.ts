@@ -62,6 +62,6 @@ export interface ISongApi {
     createSong: (data: ISongCreateDTO, token?: string | null) => () => Promise<ISongResponseShortDTO>
     releaseSongVersion: (id: string, data: ISongCreateDTO, token?: string | null) => () => Promise<ISongResponseShortDTO>
     deleteSong: (id: string, token?: string | null) => () => Promise<unknown>
-    getComments: (token?: string | null) => () => Promise<ISongResponseCommentDTO[]>
+    getComments: (id: string, token?: string | null) => () => Promise<ISongResponseCommentDTO[]>
     createComment: (id: string, data: ISongCreateCommentDTO, token?: string | null) => () => Promise<ISongResponseCommentDTO>
 }

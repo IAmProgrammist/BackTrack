@@ -71,46 +71,20 @@ export class SongApi implements ISongApi {
     deleteSong(id: string, token?: string | null) {
         return async () => songsApi.deleteSongApiV1SongsSongIdDelete(id, getAxiosConf(token))
     }
-    getComments() {
-        return async () => Promise.resolve([
-            {
-                id: "1",
-                userName: "MusicProducer42",
-                createdAt: "2024-01-12T08:30:00Z",
-                content: "The bridge section could use more dynamics, maybe add a crescendo?"
-            },
-            {
-                id: "2",
-                userName: "AudioEngineer",
-                createdAt: "2024-01-11T14:22:00Z",
-                content: "Great mix! The vocals sit perfectly in the track."
-            },
-            {
-                id: "3",
-                userName: "SongWriterPro",
-                createdAt: "2024-01-10T09:15:00Z",
-                content: "Love the chord progression in the chorus, very innovative!"
-            },
-            {
-                id: "4",
-                userName: "MusicLover99",
-                createdAt: "2024-01-09T16:45:00Z",
-                content: "The lyrics are really touching, great emotional depth."
-            },
-            {
-                id: "5",
-                userName: "BeatMaker",
-                createdAt: "2024-01-08T11:20:00Z",
-                content: "The drum pattern in verse 2 is fantastic, really drives the song forward."
-            }
-        ])
+    getComments(id: string, token?: string | null) {
+        return async () => songsApi.getSongCommentsApiV1SongsSongIdCommentsGet(id, undefined, undefined, "created_at", "asc", undefined, undefined, getAxiosConf(token)).then(({data: {data}}) => data.map((comment) => ({
+            id: comment.id,
+            userName: comment.created_by,
+            createdAt: comment.created_at,
+            content: comment.content,
+        })))
     }
-    createComment(_id: string, _data: ISongCreateCommentDTO) {
-        return async () => Promise.resolve({
-            id: "6",
-            userName: "NewListener",
-            createdAt: new Date().toISOString(),
-            content: "Just listened to this - absolutely amazing work!"
-        })
+    createComment(id: string, data: ISongCreateCommentDTO, token?: string | null) {
+        return async () => songsApi.createSongCommentApiV1SongsSongIdCommentsPost(id, {content: data.content}, getAxiosConf(token)).then(({data: {data}}) => ({
+            id: data.id,
+            userName: data.created_by,
+            createdAt: data.created_at,
+            content: data.content,
+        }))
     }
 }

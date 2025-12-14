@@ -79,8 +79,8 @@ export class SongService implements ISongService {
         }
     }
     
-    getComments(_id: string) {
-        return this.songApi.getComments(this.authService.getToken());
+    getComments(id: string) {
+        return this.songApi.getComments(id, this.authService.getToken());
     }
     
     createCommentSchema() {

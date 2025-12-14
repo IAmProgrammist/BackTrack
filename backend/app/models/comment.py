@@ -19,7 +19,7 @@ class Comment(RWModel):
     id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
     content: Mapped[str]
     created_by_id: Mapped[UUID] = mapped_column(ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
-    created_by: Mapped["User"] = relationship(back_populates="comments")
+    created_by: Mapped["User"] = relationship(back_populates="comments", lazy="selectin")
     created_at = Column(DateTime, server_default=text("now()"), index=True)
     songs: Mapped[list["Song"]] = relationship(
         secondary=comment_song, lazy="selectin"
