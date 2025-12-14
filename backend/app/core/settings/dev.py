@@ -1,5 +1,4 @@
 import logging
-
 from pydantic import PostgresDsn, SecretStr
 
 from app.core.settings.app import AppSettings

@@ -87,4 +87,3 @@ async def delete_user(
 ) -> UserResponse:
     result = await users_service.delete_user(users_repo=users_repo, token_user=token_user)
     return await handle_result(result)
-

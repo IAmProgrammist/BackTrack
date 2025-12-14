@@ -1,5 +1,4 @@
 from collections.abc import Callable
-
 from fastapi import FastAPI
 
 from app.core.settings.app import AppSettings

@@ -1,5 +1,4 @@
 from datetime import UTC, datetime, timedelta
-
 from jose import JWTError, jwt
 from pydantic import ValidationError
 
@@ -14,10 +13,10 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 
 def create_token(
-    *,
-    content: dict[str, str],
-    secret_key: str,
-    expires_delta: timedelta | None = timedelta(minutes=36000),
+        *,
+        content: dict[str, str],
+        secret_key: str,
+        expires_delta: timedelta | None = timedelta(minutes=36000),
 ):
     to_encode = content.copy()
     expire = datetime.now(UTC) + expires_delta

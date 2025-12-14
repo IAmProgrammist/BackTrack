@@ -1,6 +1,7 @@
-from app.models.rwmodel import RWModel
 from sqlalchemy import Table, Column
 from sqlalchemy.sql.schema import ForeignKey
+
+from app.models.rwmodel import RWModel
 
 group_author = Table(
     "author_group",

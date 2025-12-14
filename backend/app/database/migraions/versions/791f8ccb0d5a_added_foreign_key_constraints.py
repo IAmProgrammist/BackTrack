@@ -5,9 +5,8 @@ Revises: 69215f253bc8
 Create Date: 2025-12-14 09:26:45.128678
 
 """
-from alembic import op
 import sqlalchemy as sa
-
+from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = '791f8ccb0d5a'
@@ -48,15 +47,19 @@ def downgrade() -> None:
     op.drop_constraint(None, 'song_release_group', type_='foreignkey')
     op.drop_constraint(None, 'song_release_group', type_='foreignkey')
     op.create_foreign_key(op.f('song_release_group_group_id_fkey'), 'song_release_group', 'group', ['group_id'], ['id'])
-    op.create_foreign_key(op.f('song_release_group_song_release_id_fkey'), 'song_release_group', 'song_release', ['song_release_id'], ['id'])
+    op.create_foreign_key(op.f('song_release_group_song_release_id_fkey'), 'song_release_group', 'song_release',
+                          ['song_release_id'], ['id'])
     op.drop_constraint(None, 'song_release_file', type_='foreignkey')
     op.drop_constraint(None, 'song_release_file', type_='foreignkey')
     op.create_foreign_key(op.f('song_release_file_file_id_fkey'), 'song_release_file', 'file', ['file_id'], ['id'])
-    op.create_foreign_key(op.f('song_release_file_song_release_id_fkey'), 'song_release_file', 'song_release', ['song_release_id'], ['id'])
+    op.create_foreign_key(op.f('song_release_file_song_release_id_fkey'), 'song_release_file', 'song_release',
+                          ['song_release_id'], ['id'])
     op.drop_constraint(None, 'song_release_author', type_='foreignkey')
     op.drop_constraint(None, 'song_release_author', type_='foreignkey')
-    op.create_foreign_key(op.f('song_release_author_song_release_id_fkey'), 'song_release_author', 'song_release', ['song_release_id'], ['id'])
-    op.create_foreign_key(op.f('song_release_author_author_id_fkey'), 'song_release_author', 'author', ['author_id'], ['id'])
+    op.create_foreign_key(op.f('song_release_author_song_release_id_fkey'), 'song_release_author', 'song_release',
+                          ['song_release_id'], ['id'])
+    op.create_foreign_key(op.f('song_release_author_author_id_fkey'), 'song_release_author', 'author', ['author_id'],
+                          ['id'])
     op.drop_constraint(None, 'song_release', type_='foreignkey')
     op.create_foreign_key(op.f('song_release_song_id_fkey'), 'song_release', 'song', ['song_id'], ['id'])
     op.drop_constraint(None, 'group', type_='foreignkey')

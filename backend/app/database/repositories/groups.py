@@ -4,8 +4,8 @@ from sqlalchemy.ext.asyncio import AsyncConnection
 from uuid import UUID
 
 from app.database.repositories.base import BaseRepository, db_error_handler
-from app.models.group import Group
 from app.models.author import Author
+from app.models.group import Group
 from app.schemas.group import GroupFilter, GroupPagination, GroupSort, GroupInDB
 
 
@@ -15,7 +15,8 @@ class GroupsRepository(BaseRepository):
 
     @db_error_handler
     async def get_group_by_id(self, *, group_id: UUID) -> Group:
-        group = (await self.connection.execute(select(Group).join(Group.authors, isouter=True).filter(Group.id == group_id).limit(1))).scalar()
+        group = (await self.connection.execute(
+            select(Group).join(Group.authors, isouter=True).filter(Group.id == group_id).limit(1))).scalar()
 
         return group
 
@@ -78,9 +79,9 @@ class GroupsRepository(BaseRepository):
 
     @db_error_handler
     async def get_groups_with_ids(
-        self,
-        *,
-        ids: list[UUID]
+            self,
+            *,
+            ids: list[UUID]
     ) -> list[Group]:
         groups = (await self.connection.execute(select(Group).filter(Group.id.in_(ids)))).scalars().all()
 

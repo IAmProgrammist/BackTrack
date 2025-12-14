@@ -1,8 +1,13 @@
 from sqlalchemy import Column, Integer, String, text
+from sqlalchemy.orm import Mapped, relationship
+from typing import TYPE_CHECKING
 
 from app.core import security
 from app.models.common import DateTimeModelMixin
 from app.models.rwmodel import RWModel
+
+if TYPE_CHECKING:
+    from app.models.comment import Comment
 
 
 class User(RWModel, DateTimeModelMixin):
@@ -17,6 +22,7 @@ class User(RWModel, DateTimeModelMixin):
     email = Column(String(256), nullable=False, unique=True)
     salt = Column(String(255), nullable=False)
     hashed_password = Column(String(256), nullable=True)
+    comments: Mapped[list["Comment"]] = relationship(back_populates="created_by")
 
     def check_password(self, password: str) -> bool:
         return security.verify_password(self.salt + password, self.hashed_password)

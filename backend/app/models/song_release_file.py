@@ -13,7 +13,8 @@ if TYPE_CHECKING:
 class SongReleaseFile(RWModel):
     __tablename__ = "song_release_file"
 
-    song_release_id: Mapped[UUID] = mapped_column(ForeignKey("song_release.id", ondelete='CASCADE'), index=True, primary_key=True)
+    song_release_id: Mapped[UUID] = mapped_column(ForeignKey("song_release.id", ondelete='CASCADE'), index=True,
+                                                  primary_key=True)
     file_id: Mapped[UUID] = mapped_column(ForeignKey("file.id", ondelete='RESTRICT'), index=True, primary_key=True)
     primary: Mapped[bool]
 

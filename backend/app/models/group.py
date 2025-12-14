@@ -1,15 +1,16 @@
 import uuid
-from app.models.group_author import group_author
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql.schema import ForeignKey
 from typing import TYPE_CHECKING
 from uuid import UUID
 
+from app.models.group_author import group_author
 from app.models.rwmodel import RWModel
 
 if TYPE_CHECKING:
     from app.models.file import File
     from app.models.author import Author
+
 
 class Group(RWModel):
     __tablename__ = "group"

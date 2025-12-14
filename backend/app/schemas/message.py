@@ -1,6 +1,5 @@
-from typing import Any
-
 from pydantic import BaseModel, ConfigDict
+from typing import Any
 
 
 class ErrorResponse(BaseModel):

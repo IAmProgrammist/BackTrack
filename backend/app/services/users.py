@@ -1,5 +1,4 @@
 import logging
-
 from fastapi import Depends
 from fastapi.encoders import jsonable_encoder
 from starlette.status import (
@@ -32,9 +31,9 @@ logger = logging.getLogger(__name__)
 class UsersService(BaseService):
     @return_service
     async def get_user_by_id(
-        self,
-        user_id: int,
-        users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
+            self,
+            user_id: int,
+            users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
     ) -> ServiceResult:
         user = await users_repo.get_user_by_id(user_id=user_id)
         if not user:
@@ -53,8 +52,8 @@ class UsersService(BaseService):
 
     @return_service
     async def get_user_by_token(
-        self,
-        token_user: User,
+            self,
+            token_user: User,
     ) -> ServiceResult:
         if not token_user:
             return response_4xx(
@@ -72,9 +71,9 @@ class UsersService(BaseService):
 
     @return_service
     async def get_users(
-        self,
-        users_filters: UsersFilters = Depends(get_users_filters),
-        users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
+            self,
+            users_filters: UsersFilters = Depends(get_users_filters),
+            users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
     ) -> UserResponse:
         users = await users_repo.get_filtered_users(skip=users_filters.skip, limit=users_filters.limit)
 
@@ -94,10 +93,10 @@ class UsersService(BaseService):
 
     @return_service
     async def signup_user(
-        self,
-        user_in: UserInCreate,
-        users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
-        secret_key: str = "",
+            self,
+            user_in: UserInCreate,
+            users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
+            secret_key: str = "",
     ) -> UserResponse:
         duplicate_user = await users_repo.get_duplicated_user(user_in=user_in)
 
@@ -124,10 +123,10 @@ class UsersService(BaseService):
 
     @return_service
     async def signin_user(
-        self,
-        user_in: UserInSignIn,
-        users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
-        secret_key: str = "",
+            self,
+            user_in: UserInSignIn,
+            users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
+            secret_key: str = "",
     ) -> UserResponse:
         searched_user = await users_repo.get_user_by_email(email=user_in.email)
 
@@ -137,7 +136,8 @@ class UsersService(BaseService):
                 context={"reason": constant.FAIL_VALIDATION_MATCHED_USER_EMAIL},
             )
 
-        validation_password = await users_repo.get_user_password_validation(user=searched_user, password=user_in.password)
+        validation_password = await users_repo.get_user_password_validation(user=searched_user,
+                                                                            password=user_in.password)
         if not validation_password:
             return response_4xx(
                 status_code=HTTP_400_BAD_REQUEST,
@@ -165,10 +165,10 @@ class UsersService(BaseService):
 
     @return_service
     async def update_user(
-        self,
-        token_user: User,
-        user_in: UserInUpdate,
-        users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
+            self,
+            token_user: User,
+            user_in: UserInUpdate,
+            users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
     ) -> UserResponse:
         updated_user = await users_repo.update_user(user=token_user, user_in=user_in)
 
@@ -182,9 +182,9 @@ class UsersService(BaseService):
 
     @return_service
     async def delete_user(
-        self,
-        token_user: User,
-        users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
+            self,
+            token_user: User,
+            users_repo: UsersRepository = Depends(get_repository(UsersRepository)),
     ) -> ServiceResult:
         deleted_user = await users_repo.delete_user(user=token_user)
 

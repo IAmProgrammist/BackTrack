@@ -1,8 +1,8 @@
 import uuid
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from uuid import UUID
 from typing import Optional
 from typing import TYPE_CHECKING
+from uuid import UUID
 
 from app.models.rwmodel import RWModel
 

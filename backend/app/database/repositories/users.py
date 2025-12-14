@@ -46,10 +46,10 @@ class UsersRepository(BaseRepository):
 
     @db_error_handler
     async def get_filtered_users(
-        self,
-        *,
-        skip: int = 0,
-        limit: int = 100,
+            self,
+            *,
+            skip: int = 0,
+            limit: int = 100,
     ) -> list[User]:
         query = select(User).offset(skip).limit(limit)
 

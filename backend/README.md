@@ -32,19 +32,24 @@
 
 `FPBP (fastapi-postgresql-boilerplate)` is a boilerplate that can serve as a base for FastAPI with PostgreSQL.
 
-🚀 FastAPI is a modern, fast (high-performance) web framework for building APIs with Python 3.6+ based on standard Python-type hints.
+🚀 FastAPI is a modern, fast (high-performance) web framework for building APIs with Python 3.6+ based on standard
+Python-type hints.
 I made and used this boilerplate for projects that I’m working on. 🧑‍💻
-it was powerful for building data-driven applications using schema for data validation, serialization, and documentation. 📝
+it was powerful for building data-driven applications using schema for data validation, serialization, and
+documentation. 📝
 
 ## Technology Stacks
 
-- 🐍 [Python 3.12](https://docs.python.org/3.12/) - A programming language that lets you work quickly and integrate systems more effectively.
-- 🚀 [FastAPI](https://fastapi.tiangolo.com) - A modern, fast (high-performance), web framework for building APIs with Python 3.8+ based on standard Python type hints.
-- 🐳 [Docker](https://docs.docker.com) - A platform designed to help developers build, share, and run container applications.
+- 🐍 [Python 3.12](https://docs.python.org/3.12/) - A programming language that lets you work quickly and integrate
+  systems more effectively.
+- 🚀 [FastAPI](https://fastapi.tiangolo.com) - A modern, fast (high-performance), web framework for building APIs with
+  Python 3.8+ based on standard Python type hints.
+- 🐳 [Docker](https://docs.docker.com) - A platform designed to help developers build, share, and run container
+  applications.
 - 🐘 [PostgreSQL](https://www.postgresql.org/docs/) - An open-source object-relational database system.
 - 💾 [SQLAlchemy](https://docs.sqlalchemy.org/en/20/) - the Python SQL toolkit and Object Relational Mapper.
 - 📦 [Poetry](https://python-poetry.org/docs) - A tool for dependency management and packaging in Python.
-- 🧪 [Pytest](https://docs.pytest.org/en/8.0.x/) -  A framework that makes writing small, readable tests easy.
+- 🧪 [Pytest](https://docs.pytest.org/en/8.0.x/) - A framework that makes writing small, readable tests easy.
 - 🦀 [Ruff](https://docs.astral.sh/ruff/) - A fast Python linter and code formatter written in Rust.
 
 ## Development Features

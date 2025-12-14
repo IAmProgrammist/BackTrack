@@ -6,6 +6,14 @@ from pydantic_filters import BaseFilter, SearchField, PagePagination, BaseSort
 from typing import Any, Optional, Literal
 from uuid import UUID
 
+from app.schemas.comment import (
+    CommentFilter,
+    CommentOrderByLiteral,
+    CommentPagination,
+    CommentBase,
+    CommentOut,
+    CommentIn
+)
 from app.schemas.message import ApiResponse
 
 
@@ -44,6 +52,10 @@ class SongInCreate(SongBase):
         return self
 
 
+class SongCommentInData(CommentIn):
+    pass
+
+
 class SongReleaseInDB(SongBase):
     name: str = SongName
     tag: Optional[str] = SongTag
@@ -51,6 +63,10 @@ class SongReleaseInDB(SongBase):
     bpm: Optional[int] = SongBPM
     key: Optional[str] = SongKey
     lyrics: Optional[str] = SongLyrics
+
+
+class SongCommentInDB(CommentBase):
+    created_by: str
 
 
 class SongInRelease(SongInCreate):
@@ -94,6 +110,22 @@ SongOrderByLiteral = Literal["id", "created_at"]
 
 class SongReleaseSort(BaseSort):
     sort_by: Optional[SongOrderByLiteral] = None
+
+
+## Выбор комментов
+class SongCommentFilter(CommentFilter):
+    pass
+
+
+class SongCommentPagination(CommentPagination):
+    pass
+
+
+SongCommentSortLiteral = Literal[CommentOrderByLiteral]
+
+
+class SongCommentSort(BaseSort):
+    sort_by: Optional[SongCommentSortLiteral] = None
 
 
 # Модели для ответа
@@ -158,6 +190,10 @@ class SongReleaseOutData(BaseModel):
     tag: str
 
 
+class SongCommentOutData(CommentOut):
+    pass
+
+
 # Модель-оркестратор
 class SongListResponse(ApiResponse):
     message: str = "Song API Response"
@@ -180,6 +216,18 @@ class SongDetailedResponse(ApiResponse):
 class SongReleaseResponse(ApiResponse):
     message: str = "Song API Response"
     data: list[SongReleaseOutData]
+    detail: dict[str, Any] | None = {"key": "val"}
+
+
+class SongCommentListResponse(ApiResponse):
+    message: str = "Song Comment API Response"
+    data: list[SongCommentOutData]
+    detail: dict[str, Any] | None = {"key": "val"}
+
+
+class SongCommentResponse(ApiResponse):
+    message: str = "Song Comment API Response"
+    data: SongCommentOutData
     detail: dict[str, Any] | None = {"key": "val"}
 
 

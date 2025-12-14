@@ -9,7 +9,7 @@ readme = "README.md"
 repository = "https://github.com/beerjoa/fastapi-postgresql-boilerplate"
 keywords = ["PostgreSQL", "FastAPI", "docker", "boilerplate", "docker-compose", "poetry"]
 packages = [
-    {include = "app"}
+    { include = "app" }
 ]
 
 [tool.poetry.dependencies]
@@ -33,7 +33,7 @@ python-jose = "^3.3.0"
 sqlalchemy = "2.0.45"
 sqlacodegen = "3.2.0"
 pydantic-settings = "^2.2.1"
-passlib = {extras=["bcrypt"], version = "^1.7.4"}
+passlib = { extras = ["bcrypt"], version = "^1.7.4" }
 pydantic-filters = "^0.3.5"
 aiofiles = "^25.1.0"
 librosa = "^0.11.0"

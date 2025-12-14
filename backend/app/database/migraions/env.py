@@ -1,15 +1,14 @@
 import asyncio
 import pathlib
 import sys
-from logging.config import fileConfig
-
 from alembic import context
+from logging.config import fileConfig
 from sqlalchemy import engine_from_config, pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import AsyncEngine
-from app.models.rwmodel import RWModel
 
 from app.core.config import get_app_settings
+from app.models.rwmodel import RWModel
 
 sys.path.append(str(pathlib.Path(__file__).resolve().parents[3]))
 

@@ -1,10 +1,9 @@
 import json
 import logging
 import sys
-from pathlib import Path
-
 from asgi_correlation_id.context import correlation_id
 from loguru import logger
+from pathlib import Path
 
 
 class InterceptHandler(logging.Handler):
@@ -49,12 +48,12 @@ class CustomizeLogger:
 
     @classmethod
     def customize_logging(
-        cls,
-        filepath: Path,
-        level: str,
-        rotation: str,
-        retention: str,
-        format: str,
+            cls,
+            filepath: Path,
+            level: str,
+            rotation: str,
+            retention: str,
+            format: str,
     ):
         def correlation_id_filter(record):
             record["correlation_id"] = correlation_id.get()

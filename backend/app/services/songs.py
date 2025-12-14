@@ -16,6 +16,7 @@ from app.core import constant
 from app.core.config import get_app_settings
 from app.core.settings.app import AppSettings
 from app.database.repositories.authors import AuthorsRepository
+from app.database.repositories.comment import CommentRepository
 from app.database.repositories.files import FilesRepository
 from app.database.repositories.groups import GroupsRepository
 from app.database.repositories.groups import GroupsRepository
@@ -44,7 +45,15 @@ from app.schemas.song import (
     SongShortResponse,
     SongInCreate,
     SongReleaseInDB,
-    SongEmptyResponse
+    SongEmptyResponse,
+    SongCommentFilter,
+    SongCommentPagination,
+    SongCommentInDB,
+    SongCommentInData,
+    SongCommentSort,
+    SongCommentOutData,
+    SongCommentListResponse,
+    SongCommentResponse,
 )
 from app.services.base import BaseService
 from app.services.files import FileService
@@ -222,7 +231,7 @@ class SongsService(BaseService):
             leading=song_in.files_leading
         )
 
-        leading_audio_file = self.get_leading_audio_file(attached_files) \
+        leading_audio_file = self.get_leading_audio_file(attached_files)
 
         return dict(
             status_code=HTTP_200_OK,
@@ -271,5 +280,76 @@ class SongsService(BaseService):
             status_code=HTTP_200_OK,
             content={
                 "message": constant.SUCCESS_DELETE_GROUP,
+            },
+        )
+
+    @return_service
+    async def get_comments(
+            self,
+            comment_repo: CommentRepository = Depends(get_repository(CommentRepository)),
+            song_repo: SongsRepository = Depends(get_repository(SongsRepository)),
+            filter_: SongCommentFilter = FilterDepends(SongCommentFilter),
+            sort: SongCommentSort = SortDepends(SongCommentSort),
+            pagination: SongCommentPagination = PaginationDepends(SongCommentPagination),
+            song_id: UUID | None = None
+    ) -> SongCommentListResponse:
+        song = await song_repo.get_song(song_id=song_id)
+
+        if song is None:
+            logger.error("Failed to delete song: failed to find song")
+            return response_4xx(
+                status_code=HTTP_400_BAD_REQUEST,
+                context={"reason": "Песня не найдена."},
+            )
+
+        comments = await comment_repo.get_comments_for_song(song=song, filter_=filter_, pagination=pagination,
+                                                            sort=sort)
+
+        return dict(
+            status_code=HTTP_200_OK,
+            content={
+                "message": constant.SUCCESS_GROUP_FOUND,
+                "data": jsonable_encoder([SongCommentOutData(
+                    id=comment.id,
+                    created_at=comment.created_at,
+                    created_by=comment.created_by.username,
+                    content=comment.content
+                ) for comment in comments]),
+            },
+        )
+
+    @return_service
+    async def create_comment(
+            self,
+            comment_in: SongCommentInData,
+            comment_repo: CommentRepository = Depends(get_repository(CommentRepository)),
+            song_repo: SongsRepository = Depends(get_repository(SongsRepository)),
+            token_user: User = None,
+            song_id: UUID | None = None,
+    ) -> SongCommentResponse:
+        song = await song_repo.get_song(song_id=song_id)
+
+        if song is None:
+            logger.error("Failed to delete song: failed to find song")
+            return response_4xx(
+                status_code=HTTP_400_BAD_REQUEST,
+                context={"reason": "Песня не найдена."},
+            )
+
+        new_comment = await comment_repo.create_comment_for_song(song=song, comment_in=SongCommentInDB(
+            created_by=token_user.username,
+            content=comment_in.content
+        ))
+
+        return dict(
+            status_code=HTTP_200_OK,
+            content={
+                "message": constant.SUCCESS_GROUP_FOUND,
+                "data": jsonable_encoder(SongCommentOutData(
+                    id=new_comment.id,
+                    created_at=new_comment.created_at,
+                    created_by=token_user.username,
+                    content=new_comment.content
+                )),
             },
         )

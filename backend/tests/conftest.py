@@ -1,13 +1,12 @@
-from collections.abc import AsyncGenerator
-from os import environ
-from typing import Any
-
 import pytest_asyncio
 from asgi_lifespan import LifespanManager
+from collections.abc import AsyncGenerator
 from fastapi import FastAPI
 from httpx import ASGITransport, AsyncClient
+from os import environ
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
+from typing import Any
 
 environ["APP_ENV"] = "test"
 
@@ -44,9 +43,9 @@ async def initialized_app(app: FastAPI) -> AsyncGenerator[FastAPI]:
 @pytest_asyncio.fixture
 async def client(initialized_app: FastAPI) -> AsyncGenerator[AsyncClient]:
     async with AsyncClient(
-        transport=ASGITransport(initialized_app),
-        base_url="http://test",
-        headers={"Content-Type": "application/json"},
+            transport=ASGITransport(initialized_app),
+            base_url="http://test",
+            headers={"Content-Type": "application/json"},
     ) as client:
         yield client
 

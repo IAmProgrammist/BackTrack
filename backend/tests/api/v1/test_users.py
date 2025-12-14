@@ -1,9 +1,7 @@
-from os import environ
-
 import pytest
 from fastapi import FastAPI
 from httpx import AsyncClient
-
+from os import environ
 # from fastapi.testclient import TestClient
 from starlette.status import (
     HTTP_200_OK,
@@ -33,10 +31,10 @@ pytestmark = pytest.mark.asyncio
 
 
 async def test_signup(
-    app: FastAPI,
-    client: AsyncClient,
-    random_user: dict[str, str],
-    created_random_user: dict[str, str],
+        app: FastAPI,
+        client: AsyncClient,
+        random_user: dict[str, str],
+        created_random_user: dict[str, str],
 ) -> None:
     response = await client.post(app.url_path_for("auth:signup"), json=random_user)
     result = response.json()
@@ -58,10 +56,10 @@ async def test_signup_duplicate_user(app: FastAPI, client: AsyncClient, random_u
 
 
 async def test_signin_error(
-    app: FastAPI,
-    client: AsyncClient,
-    created_random_user: dict[str, str],
-    invalid_user: dict[str, str],
+        app: FastAPI,
+        client: AsyncClient,
+        created_random_user: dict[str, str],
+        invalid_user: dict[str, str],
 ) -> None:
     # FAIL_VALIDATION_MATCHED_USER_EMAIL
     response = await client.post(app.url_path_for("auth:signin"), json=invalid_user)
