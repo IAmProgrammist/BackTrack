@@ -1,9 +1,9 @@
 import { getAxiosConf, getImageUrlFromFileId, songsApi } from "shared/api/api";
-import type { ISongApi, ISongCreateCommentDTO, ISongCreateDTO } from "./isongapi";
+import type { ISongApi, ISongCreateCommentDTO, ISongCreateDTO, SongCommentsFilters, SongsFilters } from "./isongapi";
 
 export class SongApi implements ISongApi {
-    getSongs(token?: string | null) {
-        return async () => songsApi.getSongsApiV1SongsGet(undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, getAxiosConf(token)).then(({data: {data}}) => 
+    getSongs(token?: string | null, filters?: SongsFilters) {
+        return async () => songsApi.getSongsApiV1SongsGet(filters?.id, filters?.tag, filters?.bpm, filters?.songKey, filters?.authorsIds, filters?.groupsIds, filters?.q, filters?.page, filters?.perPage, filters?.sortBy, filters?.sortByOrder, getAxiosConf(token)).then(({data: {data}}) => 
             data.map((song) => ({
                 id: song.song_id,
                 version: song.id,
@@ -70,8 +70,8 @@ export class SongApi implements ISongApi {
     deleteSong(id: string, token?: string | null) {
         return async () => songsApi.deleteSongApiV1SongsSongIdDelete(id, getAxiosConf(token))
     }
-    getComments(id: string, token?: string | null) {
-        return async () => songsApi.getSongCommentsApiV1SongsSongIdCommentsGet(id, undefined, undefined, "created_at", "asc", undefined, undefined, getAxiosConf(token)).then(({data: {data}}) => data.map((comment) => ({
+    getComments(id: string, token?: string | null, filter?: SongCommentsFilters) {
+        return async () => songsApi.getSongCommentsApiV1SongsSongIdCommentsGet(id, undefined, filter?.q, "created_at", "asc", filter?.page, filter?.perPage, getAxiosConf(token)).then(({data: {data}}) => data.map((comment) => ({
             id: comment.id,
             userName: comment.created_by,
             createdAt: comment.created_at,

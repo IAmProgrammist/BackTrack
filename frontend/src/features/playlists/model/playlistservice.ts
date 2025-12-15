@@ -1,6 +1,6 @@
 import { object, type AnyObject, type ObjectSchema } from "yup";
 import type { PlaylistCreateDTO, PlaylistUpdateDTO, IPlaylistService } from "./iplaylistservice";
-import type { IPlaylistApi } from "./iplaylistapi";
+import type { IPlaylistApi, PlaylistsFilters } from "./iplaylistapi";
 import { objectToFormData } from "shared/model/objectToFormData";
 import { PLAYLIST_DESCRIPTION_VALIDATION, PLAYLIST_ICON_VALIDATION, PLAYLIST_NAME_VALIDATION, PLAYLIST_SONGS_VALIDATION } from "entities/playlist/model/validators";
 import type { IAuthService } from "features/auth/model/iauthservice";
@@ -18,8 +18,8 @@ export class PlaylistService implements IPlaylistService {
         return this.playlistApi.getPlaylist(id, this.authService.getToken())
     }
 
-    getPlaylists() {
-        return this.playlistApi.getPlaylists(this.authService.getToken())
+    getPlaylists(filters?: PlaylistsFilters) {
+        return this.playlistApi.getPlaylists(this.authService.getToken(), filters)
     }
 
     createPlaylist(data: unknown) {

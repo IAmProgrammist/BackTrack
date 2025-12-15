@@ -1,7 +1,7 @@
 import { object, type AnyObject, type ObjectSchema } from "yup";
 import type { GroupCreateDTO, GroupUpdateDTO, IGroupService } from "./igroupservice";
 import { GROUP_DESCRIPTION_VALIDATION, GROUP_IMAGE_VALIDATION, GROUP_NAME_VALIDATION, GROUP_PARTICIPANTS_VALIDATION } from "entities/group/model/validators";
-import type { IGroupApi } from "./igroupapi";
+import type { GroupsFilters, IGroupApi } from "./igroupapi";
 import type { IAuthService } from "features/auth/model/iauthservice";
 
 export class GroupService implements IGroupService {
@@ -17,8 +17,8 @@ export class GroupService implements IGroupService {
         return this.groupApi.getGroup(id, this.authService.getToken())
     }
 
-    getGroups() {
-        return this.groupApi.getGroups(this.authService.getToken())
+    getGroups(filter?: GroupsFilters) {
+        return this.groupApi.getGroups(this.authService.getToken(), filter)
     }
 
     createGroup(data: unknown) {

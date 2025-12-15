@@ -1,4 +1,5 @@
 import { ObjectSchema, type AnyObject } from "yup"
+import type { GroupsFilters } from "./igroupapi"
 
 export interface GroupCreateDTO {
     name: string
@@ -32,7 +33,7 @@ export interface GroupResponseExpandedDTO {
 }
 
 export interface IGroupService {
-    getGroups: () => () => Promise<GroupResponseShortDTO[]>
+    getGroups: (filter?: GroupsFilters) => () => Promise<GroupResponseShortDTO[]>
     getGroup: (id: string) => () => Promise<GroupResponseExpandedDTO>
     updateGroup: (id: string, data: unknown) => () => Promise<GroupResponseShortDTO>
     deleteGroup: (id: string) => () => Promise<unknown>

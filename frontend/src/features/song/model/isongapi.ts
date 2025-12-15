@@ -1,3 +1,5 @@
+import type { SortByOrder } from "shared/api/autogen"
+
 export interface ISongCreateDTO {
     name: string
     tag: string | null
@@ -55,13 +57,35 @@ export interface ISongCreateCommentDTO {
     content: string
 }
 
+export interface SongsFilters {
+    id?: string[]
+    tag?: string[]
+    bpm?: number[]
+    songKey?: string[]
+    authorsIds?: string[]
+    groupsIds?: string[]
+    q?: string
+    page?: number
+    perPage?: number
+    sortBy?: "id" | "name" | "key" | "bpm" | "tag"
+    sortByOrder?: SortByOrder
+}
+
+export interface SongCommentsFilters {
+    q?: string
+    page?: number
+    perPage?: number
+    sortBy?: "id" | "name"
+    sortByOrder?: SortByOrder
+}
+
 export interface ISongApi {
-    getSongs: (token?: string | null) => () => Promise<ISongResponseShortDTO[]>
+    getSongs: (token?: string | null, filter?: SongsFilters) => () => Promise<ISongResponseShortDTO[]>
     getSong: (id: string, version?: string, token?: string | null) => () => Promise<ISongResponseExtendedDTO>
     getSongVersions: (id: string, token?: string | null) => () => Promise<ISongResponseVersionDTO[]>
     createSong: (data: ISongCreateDTO, token?: string | null) => () => Promise<ISongResponseShortDTO>
     releaseSongVersion: (id: string, data: ISongCreateDTO, token?: string | null) => () => Promise<ISongResponseShortDTO>
     deleteSong: (id: string, token?: string | null) => () => Promise<unknown>
-    getComments: (id: string, token?: string | null) => () => Promise<ISongResponseCommentDTO[]>
+    getComments: (id: string, token?: string | null, filter?: SongCommentsFilters) => () => Promise<ISongResponseCommentDTO[]>
     createComment: (id: string, data: ISongCreateCommentDTO, token?: string | null) => () => Promise<ISongResponseCommentDTO>
 }

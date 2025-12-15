@@ -5,12 +5,13 @@ import { Song } from "entities/song/ui/Song";
 import { useSongsService } from "features/song/lib/useSongsService";
 import { Button } from "shared/ui/Button";
 import { useNavigate } from "react-router";
+import type { SongsFilters } from "features/song/model/isongapi";
 
-export const SongsGrid = () => {
+export const SongsGrid = ({filters}: {filters?: SongsFilters}) => {
     const {service} = useSongsService();
     const {data: songsData, isLoading: songsIsLoading, isError: songsIsError} = useQuery({
-        queryKey: [SONG_QUERY_KEY],
-        queryFn: service.getSongs()
+        queryKey: [SONG_QUERY_KEY, filters],
+        queryFn: service.getSongs(filters)
     })
     const navigate = useNavigate();
 

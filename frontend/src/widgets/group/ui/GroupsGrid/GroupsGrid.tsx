@@ -5,12 +5,13 @@ import { useGroupsService } from "features/groups/lib/useGroupsService"
 import "./groups-grid.css"
 import { Button } from "shared/ui/Button";
 import { useNavigate } from "react-router";
+import type { GroupsFilters } from "features/groups/model/igroupapi";
 
-export const GroupsGrid = () => {
+export const GroupsGrid = ({filters}: {filters?: GroupsFilters}) => {
     const {service} = useGroupsService();
     const {data: groupsData, isLoading: groupsIsLoading, isError: groupsIsError} = useQuery({
-        queryKey: [GROUP_QUERY_KEY],
-        queryFn: service.getGroups()
+        queryKey: [GROUP_QUERY_KEY, filters],
+        queryFn: service.getGroups(filters)
     })
     const navigate = useNavigate();
 

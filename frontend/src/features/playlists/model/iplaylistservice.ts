@@ -1,4 +1,5 @@
 import { ObjectSchema, type AnyObject } from "yup"
+import type { PlaylistsFilters } from "./iplaylistapi"
 
 export interface PlaylistCreateDTO {
     name: string
@@ -31,7 +32,7 @@ export interface PlaylistResponseExpandedDTO {
 }
 
 export interface IPlaylistService {
-    getPlaylists: () => () => Promise<PlaylistResponseShortDTO[]>
+    getPlaylists: (filters?: PlaylistsFilters) => () => Promise<PlaylistResponseShortDTO[]>
     getPlaylist: (id: string) => () => Promise<PlaylistResponseExpandedDTO>
     updatePlaylist: (id: string, data: unknown) => () => Promise<PlaylistResponseShortDTO>
     deletePlaylist: (id: string) => () => Promise<unknown>

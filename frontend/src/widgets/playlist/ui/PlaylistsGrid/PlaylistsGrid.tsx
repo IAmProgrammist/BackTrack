@@ -5,12 +5,13 @@ import { PLAYLIST_QUERY_KEY } from "entities/playlist/model/query-key";
 import { Playlist } from "entities/playlist/ui/Playlist";
 import { Button } from "shared/ui/Button";
 import { useNavigate } from "react-router";
+import type { PlaylistsFilters } from "features/playlists/model/iplaylistapi";
 
-export const PlaylistsGrid = () => {
+export const PlaylistsGrid = ({filters}: {filters: PlaylistsFilters}) => {
     const {service} = usePlaylistsService();
     const {data: playlistsData, isLoading: playlistsIsLoading, isError: playlistsIsError} = useQuery({
-        queryKey: [PLAYLIST_QUERY_KEY],
-        queryFn: service.getPlaylists()
+        queryKey: [PLAYLIST_QUERY_KEY, filters],
+        queryFn: service.getPlaylists(filters)
     })
     const navigate = useNavigate();
 

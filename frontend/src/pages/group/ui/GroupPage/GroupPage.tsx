@@ -28,6 +28,6 @@ export const GroupPage = () => {
         description={groupData.description} 
         participants={groupData.participants}
         />
-        <SongsGrid/>
+        <SongsGrid filters={{groupsIds: [groupId || ""]}}/>
     </div>
 }

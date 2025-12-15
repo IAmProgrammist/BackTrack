@@ -1,9 +1,9 @@
 import { getAxiosConf, getImageUrlFromFileId, groupApi } from "shared/api/api";
-import type { GroupCreateDTO, GroupUpdateDTO, IGroupApi } from "./igroupapi";
+import type { GroupCreateDTO, GroupsFilters, GroupUpdateDTO, IGroupApi } from "./igroupapi";
 
 export class GroupApi implements IGroupApi {
-    getGroups(token?: string | null) {
-        return async () => groupApi.getGroupsApiV1GroupsGet(undefined, undefined, undefined, undefined, undefined, undefined, undefined, getAxiosConf(token)).then((groupResponse) => 
+    getGroups(token?: string | null, filters?: GroupsFilters) {
+        return async () => groupApi.getGroupsApiV1GroupsGet(filters?.id, filters?.q, filters?.authorsId, filters?.page, filters?.perPage, filters?.sortBy, filters?.sortByOrder, getAxiosConf(token)).then((groupResponse) => 
         groupResponse.data.data.map((group) => ({
             id: group.id || "",
             participants: group.authors,

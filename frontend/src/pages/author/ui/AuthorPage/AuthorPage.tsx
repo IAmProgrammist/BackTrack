@@ -23,7 +23,7 @@ export const AuthorPage = () => {
 
     return <div className="author-page">
         <AuthorHeader id={authorData.id} name={authorData.name} imageURL={authorData.imageURL} description={authorData.description}/>
-        <GroupsGrid/>
-        <SongsGrid/>
+        <GroupsGrid filters={{authorsId: [authorId || ""]}}/>
+        <SongsGrid filters={{authorsIds: [authorId || ""]}}/>
     </div>
 }

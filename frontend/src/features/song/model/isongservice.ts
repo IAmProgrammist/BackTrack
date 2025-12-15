@@ -1,4 +1,5 @@
 import type { AnyObject, ObjectSchema } from "yup"
+import type { SongCommentsFilters, SongsFilters } from "./isongapi"
 
 export interface ISongCreateDTO {
     name: string
@@ -70,14 +71,14 @@ export interface ISongCreateCommentDTO {
 }
 
 export interface ISongService {
-    getSongs: () => () => Promise<ISongResponseShortDTO[]>
+    getSongs: (filter?: SongsFilters) => () => Promise<ISongResponseShortDTO[]>
     getSong: (id: string, version?: string) => () => Promise<ISongResponseExtendedDTO>
     getSongVersions: (id: string) => () => Promise<ISongResponseVersionDTO[]>
     createSong: (data: unknown) => () => Promise<ISongResponseShortDTO>
     releaseSongVersion: (id: string, data: unknown) => () => Promise<ISongResponseShortDTO>
     deleteSong: (id: string) => () => Promise<unknown>
     createComment: (id: string, data: unknown) => () => Promise<ISongResponseCommentDTO>
-    getComments: (id: string) => () => Promise<ISongResponseCommentDTO[]>
+    getComments: (id: string, filter?: SongCommentsFilters) => () => Promise<ISongResponseCommentDTO[]>
     createSchema: () => ObjectSchema<AnyObject, ISongCreateDTO>
     releaseSchema: () => ObjectSchema<AnyObject, ISongReleaseVersionDTO>
     createCommentSchema: () => ObjectSchema<AnyObject, ISongCreateCommentDTO>

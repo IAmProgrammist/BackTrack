@@ -1,9 +1,9 @@
 import { getAxiosConf, getImageUrlFromFileId, playlistApi } from "shared/api/api";
-import type { IPlaylistApi, PlaylistCreateDTO, PlaylistUpdateDTO } from "./iplaylistapi";
+import type { IPlaylistApi, PlaylistCreateDTO, PlaylistsFilters, PlaylistUpdateDTO } from "./iplaylistapi";
 
 export class PlaylistApi implements IPlaylistApi {
-    getPlaylists(token?: string | null) {
-        return async () => playlistApi.getPlaylistsApiV1PlaylistsGet(undefined, undefined, undefined, undefined, undefined, undefined, getAxiosConf(token)).then(({data: {data}}) => data.map((playlist) => ({
+    getPlaylists(token?: string | null, filters?: PlaylistsFilters) {
+        return async () => playlistApi.getPlaylistsApiV1PlaylistsGet(filters?.id, filters?.q, filters?.page, filters?.perPage, filters?.sortBy, filters?.sortByOrder, getAxiosConf(token)).then(({data: {data}}) => data.map((playlist) => ({
             id: playlist.id,
             name: playlist.name,
             tracksAmount: playlist.tracks_amount,

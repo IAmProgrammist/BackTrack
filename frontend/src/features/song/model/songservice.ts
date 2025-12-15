@@ -1,4 +1,4 @@
-import type { ISongApi } from "./isongapi";
+import type { ISongApi, SongCommentsFilters, SongsFilters } from "./isongapi";
 import type { ISongCreateCommentDTO, ISongCreateDTO, ISongReleaseVersionDTO, ISongService } from "./isongservice";
 import { object } from "yup";
 import { SONG_AUTHORS_VALIDATOR, SONG_BPM_VALIDATOR, SONG_DESCRIPTION_VALIDATOR, SONG_FILES_VALIDATOR, SONG_GROUPS_VALIDATOR, SONG_KEY_VALIDATOR, SONG_LYRICS_VALIDATOR, SONG_NAME_VALIDATOR, SONG_TAG_VALIDATOR } from "entities/song/model/validators";
@@ -14,8 +14,8 @@ export class SongService implements ISongService {
         this.authService = authService;
     }
 
-    getSongs() {
-        return this.songApi.getSongs(this.authService.getToken());
+    getSongs(filter?: SongsFilters) {
+        return this.songApi.getSongs(this.authService.getToken(), filter);
     }
 
     getSong(id: string, version?: string) {
@@ -79,8 +79,8 @@ export class SongService implements ISongService {
         }
     }
     
-    getComments(id: string) {
-        return this.songApi.getComments(id, this.authService.getToken());
+    getComments(id: string, filter?: SongCommentsFilters) {
+        return this.songApi.getComments(id, this.authService.getToken(), filter);
     }
     
     createCommentSchema() {
