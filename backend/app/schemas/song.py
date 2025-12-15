@@ -175,6 +175,12 @@ class FileOutNested(BaseModel):
     name: str
 
 
+class PlaylistOutNested(BaseModel):
+    id: UUID
+    name: str
+    file_id: str
+
+
 class SongOutData(BaseModel):
     song_id: UUID
     id: UUID
@@ -188,6 +194,7 @@ class SongOutData(BaseModel):
     files: list[FileOutNested]
     authors: list[AuthorOutNested]
     groups: list[GroupOutNested]
+    playlists: list[PlaylistOutNested]
 
 
 class SongReleaseOutData(BaseModel):

@@ -1,6 +1,6 @@
 import { Textarea } from "shared/ui/Textarea"
 import "./styles.css"
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { SONG_COMMENT_KEY } from "entities/song/model/query-key";
 import type { SongCommentsListProps } from "./types";

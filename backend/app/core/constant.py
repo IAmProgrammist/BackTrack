@@ -42,4 +42,12 @@ FAIL_GROUP_FILE_NOT_IMAGE = "Файл должен быть изображени
 FAIL_GROUP_COULDNT_SAVE_FILE = "Не удалось сохранить файл."
 FAIL_GROUP_COULDNT_SAVE = "Не удалось сохранить группу."
 
+FAIL_PLAYLIST_NOT_FOUND = "Плейлист не найден."
+SUCCESS_PLAYLIST_FOUND = "Плейлист найден."
+SUCCESS_DELETE_PLAYLIST = "Плейлист успешно удалён."
+FAIL_PLAYLIST_FILTERED_NOT_FOUND = "Нет списка плейлистов, соответствующих фильтру."
+FAIL_PLAYLIST_FILE_NOT_IMAGE = "Файл должен быть изображением."
+FAIL_PLAYLIST_COULDNT_SAVE_FILE = "Не удалось сохранить файл."
+FAIL_PLAYLIST_COULDNT_SAVE = "Не удалось сохранить плейлист."
+
 # --------

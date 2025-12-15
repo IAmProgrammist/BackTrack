@@ -10,3 +10,5 @@ from .song_release_author import song_release_author
 from .song_release_file import SongReleaseFile
 from .song_release_group import song_release_group
 from .user import User
+from .playlist import Playlist
+from .playlist_song import PlaylistSong

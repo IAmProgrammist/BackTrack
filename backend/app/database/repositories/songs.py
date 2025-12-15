@@ -76,11 +76,13 @@ class SongsRepository(BaseRepository):
 
         query = (
             select(SongRelease)
+            .distinct(SongRelease.song_id)
             .join(SongRelease.song)
             .join(SongRelease.authors)
             .join(SongRelease.groups)
             .join(SongRelease.files)
             .join(SongReleaseFile.file)
+            .order_by(SongRelease.song_id, SongRelease.created_at.desc())
         )
 
         if authors_filter_data:
@@ -184,6 +186,16 @@ class SongsRepository(BaseRepository):
         for song_release_file in files:
             await self.connection.refresh(song_release_file)
         return files
+
+    @db_error_handler
+    async def get_songs_with_ids(
+        self,
+        *,
+        ids: list[UUID]
+    ) -> list[Song]:
+        groups = (await self.connection.execute(select(Song).filter(Song.id.in_(ids)))).scalars().all()
+
+        return groups
 
     @db_error_handler
     async def delete_song(self, *, song: Song):

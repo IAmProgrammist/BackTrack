@@ -21,6 +21,7 @@ from app.database.repositories.files import FilesRepository
 from app.database.repositories.groups import GroupsRepository
 from app.database.repositories.groups import GroupsRepository
 from app.database.repositories.songs import SongsRepository
+from app.database.repositories.playlists import PlaylistsRepository
 from app.models.song_release import SongRelease
 from app.models.song_release_file import SongReleaseFile
 from app.models.user import User
@@ -54,6 +55,7 @@ from app.schemas.song import (
     SongCommentOutData,
     SongCommentListResponse,
     SongCommentResponse,
+    PlaylistOutNested,
 )
 from app.services.base import BaseService
 from app.services.files import FileService
@@ -72,6 +74,7 @@ class SongsService(BaseService):
             song_id: UUID,
             release_id: UUID | None,
             song_repo: SongsRepository = Depends(get_repository(SongsRepository)),
+            playlist_repo: PlaylistsRepository = Depends(get_repository(PlaylistsRepository)),
     ) -> SongDetailedResponse:
         song = await song_repo.get_song_releases_by_song_id_and_tag_filter(song_id=song_id, release_id=release_id)
         if not song:
@@ -79,6 +82,7 @@ class SongsService(BaseService):
                 status_code=HTTP_404_NOT_FOUND,
                 context={"reason": "Не удалось найти песню"},
             )
+        playlists = await playlist_repo.get_playlists_for_song_release(song_release=song)
         leading_audio_file = self.get_leading_audio_file(song.files)
 
         return dict(
@@ -101,6 +105,7 @@ class SongsService(BaseService):
                              song.authors],
                     groups=[GroupOutNested(id=group.id, name=group.name, file_id=group.file_id) for group in
                             song.groups],
+                    playlists=[PlaylistOutNested(id=playlist.id, name=playlist.name, file_id=playlist.file_id) for playlist in playlists],
                 )),
             },
         )

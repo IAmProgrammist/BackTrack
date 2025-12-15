@@ -14,6 +14,7 @@ from app.database.repositories.comment import CommentRepository
 from app.database.repositories.files import FilesRepository
 from app.database.repositories.groups import GroupsRepository
 from app.database.repositories.songs import SongsRepository
+from app.database.repositories.playlists import PlaylistsRepository
 from app.models.user import User
 from app.schemas.song import (
     SongDetailedResponse,
@@ -52,11 +53,12 @@ router = APIRouter()
 async def get_song(*,
                    song_service: SongsService = Depends(get_service(SongsService)),
                    song_repo: SongsRepository = Depends(get_repository(SongsRepository)),
+                   playlist_repo: PlaylistsRepository = Depends(get_repository(PlaylistsRepository)),
                    song_id: UUID,
                    release_id: UUID | None = None
                    ) -> SongDetailedResponse:
     song = await song_service.get_song_releases_by_id_and_release_id(song_repo=song_repo, song_id=song_id,
-                                                                     release_id=release_id)
+                                                                     release_id=release_id, playlist_repo=playlist_repo)
 
     return await handle_result(song)
 

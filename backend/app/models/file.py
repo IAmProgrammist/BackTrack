@@ -8,6 +8,7 @@ from app.models.rwmodel import RWModel
 
 if TYPE_CHECKING:
     from app.models.song_release_file import SongReleaseFile
+    from app.models.playlist import Playlist
 
 
 class File(RWModel):
@@ -18,3 +19,4 @@ class File(RWModel):
     original_name: Mapped[str]
     duration: Mapped[Optional[int]] = mapped_column(nullable=True)
     song_releases: Mapped[list["SongReleaseFile"]] = relationship(back_populates="file")
+    playlists: Mapped[list["Playlist"]] = relationship(back_populates="file")

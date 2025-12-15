@@ -10,6 +10,7 @@ from app.models.rwmodel import RWModel
 if TYPE_CHECKING:
     from app.models.song_release import SongRelease
     from app.models.comment import Comment
+    from app.models.playlist_song import PlaylistSong
 
 
 class Song(RWModel):
@@ -20,3 +21,4 @@ class Song(RWModel):
     comments: Mapped[list["Comment"]] = relationship(
         secondary=comment_song, lazy="selectin"
     )
+    playlists: Mapped[list["PlaylistSong"]] = relationship(back_populates="song", lazy="selectin")
