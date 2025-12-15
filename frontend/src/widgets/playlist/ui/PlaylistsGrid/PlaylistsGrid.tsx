@@ -7,7 +7,7 @@ import { Button } from "shared/ui/Button";
 import { useNavigate } from "react-router";
 import type { PlaylistsFilters } from "features/playlists/model/iplaylistapi";
 
-export const PlaylistsGrid = ({filters}: {filters: PlaylistsFilters}) => {
+export const PlaylistsGrid = ({filters}: {filters?: PlaylistsFilters}) => {
     const {service} = usePlaylistsService();
     const {data: playlistsData, isLoading: playlistsIsLoading, isError: playlistsIsError} = useQuery({
         queryKey: [PLAYLIST_QUERY_KEY, filters],
