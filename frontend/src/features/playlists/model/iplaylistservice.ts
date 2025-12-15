@@ -27,7 +27,7 @@ export interface PlaylistResponseExpandedDTO {
     name: string
     description: string
     imageURL: string
-    tracks: {id: string, name: string, tagSelector: string, groups: {id: string, name: string}[], authors: {id: string, name: string}[], duration: number}[]
+    tracks: {id: string, name: string, tagSelector: string, groups: {id: string, name: string}[], authors: {id: string, name: string}[], duration?: number | null}[]
 }
 
 export interface IPlaylistService {

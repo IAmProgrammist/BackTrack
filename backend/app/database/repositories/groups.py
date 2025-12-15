@@ -31,7 +31,7 @@ class GroupsRepository(BaseRepository):
         # We should filter this manually. Ugh.
         authors_filter_data = filter_.authors
         filter_.authors = None
-        query = select(Group).join(Group.authors, isouter=True)
+        query = select(Group).distinct(Group.id).join(Group.authors, isouter=True).order_by(Group.id)
         if authors_filter_data:
             query = query.filter(Author.id.in_(authors_filter_data.id))
 

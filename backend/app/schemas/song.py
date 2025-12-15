@@ -178,7 +178,7 @@ class FileOutNested(BaseModel):
 class PlaylistOutNested(BaseModel):
     id: UUID
     name: str
-    file_id: str
+    file_id: UUID
 
 
 class SongOutData(BaseModel):

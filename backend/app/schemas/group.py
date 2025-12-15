@@ -24,6 +24,13 @@ class GroupInCreate(GroupBase):
     authors: list[UUID]
     file: UploadFile
 
+    @field_validator('authors', mode="before")
+    def separate_author_ids_by_comma(cls, value):
+        if isinstance(value, list) and isinstance(value[0], str):
+            return [UUID(author_id) for author_id in value[0].split(",")]
+
+        return value
+
 
 class GroupInUpdate(GroupInCreate):
     pass

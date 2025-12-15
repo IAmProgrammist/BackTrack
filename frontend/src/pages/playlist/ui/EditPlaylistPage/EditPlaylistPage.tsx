@@ -13,8 +13,9 @@ import { ControlledSongsWithTagSelect } from "widgets/song/ui/ControlledSongsWit
 export const EditPlaylistPage = () =>  {
     const {service} = usePlaylistsService();
     const navigate = useNavigate();
+    const {playlistId = ""} = useParams(); 
     
-    return <Mutate title="Создать плейлист" mutationFn={(data) => service.createPlaylist(data)()} yupSchema={service.createSchema()} onSuccess={(data) => navigate(`/playlists/view/${data.id}`)}>
+    return <Mutate title="Создать плейлист" mutationFn={(data) => service.updatePlaylist(playlistId, data)()} yupSchema={service.createSchema()} onSuccess={(data) => navigate(`/playlists/view/${data.id}`)}>
         <EditPlaylistFormPage/>
     </Mutate>
 }

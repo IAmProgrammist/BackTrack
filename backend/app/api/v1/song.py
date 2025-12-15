@@ -38,6 +38,7 @@ from app.schemas.song import (
 )
 from app.services.files import FileService
 from app.services.songs import SongsService
+from app.services.playlists import PlaylistsService
 from app.utils import ERROR_RESPONSES, handle_result
 
 router = APIRouter()

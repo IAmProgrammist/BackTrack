@@ -60,6 +60,7 @@ from app.schemas.song import (
 from app.services.base import BaseService
 from app.services.files import FileService
 from app.utils import response_4xx, return_service
+from app.utils.filter_song_releases_with_filter import filter_song_releases_according_to_filter
 
 logger = logging.getLogger(__name__)
 
@@ -82,7 +83,17 @@ class SongsService(BaseService):
                 status_code=HTTP_404_NOT_FOUND,
                 context={"reason": "Не удалось найти песню"},
             )
+
         playlists = await playlist_repo.get_playlists_for_song_release(song_release=song)
+        fitting_playlists = []
+        for related_playlist in playlists:
+            for playlist_record in related_playlist.songs:
+                if playlist_record.song_id != song.song_id:
+                    continue
+                playlists_filtered = filter_song_releases_according_to_filter([song], playlist_record.filter)
+                if len(playlists_filtered) > 0:
+                    fitting_playlists.append(related_playlist)
+
         leading_audio_file = self.get_leading_audio_file(song.files)
 
         return dict(
@@ -105,7 +116,7 @@ class SongsService(BaseService):
                              song.authors],
                     groups=[GroupOutNested(id=group.id, name=group.name, file_id=group.file_id) for group in
                             song.groups],
-                    playlists=[PlaylistOutNested(id=playlist.id, name=playlist.name, file_id=playlist.file_id) for playlist in playlists],
+                    playlists=[PlaylistOutNested(id=playlist.id, name=playlist.name, file_id=playlist.file_id) for playlist in fitting_playlists],
                 )),
             },
         )

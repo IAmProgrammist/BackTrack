@@ -29,6 +29,17 @@ docs/GroupResponse.md
 docs/GroupShortOutNested.md
 docs/GroupsApi.md
 docs/HTTPValidationError.md
+docs/PlaylistDetailedResponse.md
+docs/PlaylistEmptyResponse.md
+docs/PlaylistExtendedOutAuthors.md
+docs/PlaylistExtendedOutData.md
+docs/PlaylistExtendedOutGroups.md
+docs/PlaylistExtendedOutTracks.md
+docs/PlaylistListResponse.md
+docs/PlaylistOutNested.md
+docs/PlaylistResponse.md
+docs/PlaylistShortOutData.md
+docs/PlaylistsApi.md
 docs/SongCommentInData.md
 docs/SongCommentListResponse.md
 docs/SongCommentOutData.md

@@ -23,8 +23,7 @@ export class SongApi implements ISongApi {
             name: data.name,
             authors: data.authors.map((author) => ({id: author.id, name: author.name, imageURL: getImageUrlFromFileId(author.file_id)})),
             groups: data.groups.map((group) => ({id: group.id, name: group.name, imageURL: getImageUrlFromFileId(group.file_id)})),
-            // TODO: playlists are not present yet! Need to fix this.
-            playlists: [],
+            playlists: data.playlists.map((playlist) => ({id: playlist.id, name: playlist.name, imageURL: getImageUrlFromFileId(playlist.file_id)})),
             duration: data.duration,
             description: data.description,
             bpm: data.bpm,

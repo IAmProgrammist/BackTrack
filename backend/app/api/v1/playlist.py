@@ -25,6 +25,7 @@ from app.schemas.playlist import (
 )
 from app.schemas.playlist import PlaylistResponse
 from app.services.files import FileService
+from app.services.songs import SongsService
 from app.services.playlists import PlaylistsService
 from app.utils import ERROR_RESPONSES, handle_result
 
@@ -41,9 +42,10 @@ router = APIRouter()
 async def get_playlist(*,
                     playlist_service: PlaylistsService = Depends(get_service(PlaylistsService)),
                     playlist_repository: PlaylistsRepository = Depends(get_repository(PlaylistsRepository)),
+                    song_service: SongsService = Depends(get_service(SongsService)),
                     playlist_id: UUID
                     ) -> PlaylistDetailedResponse:
-    response = await playlist_service.get_playlist_by_id(playlist_id=playlist_id, playlist_repo=playlist_repository)
+    response = await playlist_service.get_playlist_by_id(playlist_id=playlist_id, playlist_repo=playlist_repository, song_service=song_service)
 
     return await handle_result(response)
 
@@ -116,6 +118,7 @@ async def update_playlist(*,
                        file_repository: FilesRepository = Depends(get_repository(FilesRepository)),
                        settings: AppSettings = Depends(get_app_settings),
                        token_user: User = Depends(get_current_user_auth()),
+                       songs_repo: SongsRepository = Depends(get_repository(SongsRepository)),
                        playlist_id: UUID
                        ) -> PlaylistResponse:
     response = await playlist_service.update_playlist(
@@ -126,6 +129,7 @@ async def update_playlist(*,
         settings=settings,
         token_user=token_user,
         playlist_id=playlist_id,
+        songs_repo=songs_repo
     )
 
     return await handle_result(response)

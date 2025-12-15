@@ -1,5 +1,5 @@
 from pydantic_filters.drivers.sqlalchemy import append_to_statement
-from sqlalchemy import and_, func, or_, select, func
+from sqlalchemy import and_, func, or_, select, func, delete
 from sqlalchemy.ext.asyncio import AsyncConnection
 from uuid import UUID
 
@@ -29,11 +29,6 @@ class PlaylistsRepository(BaseRepository):
                                                   .join(SongRelease.files)
                                                   .join(SongReleaseFile.file)
                                                   .order_by(SongRelease.created_at.desc())
-                                                  .filter(or_(
-                                                      PlaylistSong.filter == "",
-                                                      SongRelease.tag.ilike(PlaylistSong.filter),
-                                                      str(SongRelease.id) == PlaylistSong.filter
-                                                  ))
                                                   .filter(Playlist.id == playlist_id).limit(1))).scalar()
 
         return playlist
@@ -54,7 +49,7 @@ class PlaylistsRepository(BaseRepository):
             pagination: PlaylistPagination,
             sort: PlaylistSort
     ) -> list[Playlist]:
-        query = select(Playlist).join(Playlist.songs, isouter=True)
+        query = select(Playlist).distinct(Playlist.id).join(Playlist.songs, isouter=True).order_by(Playlist.id)
 
         query = append_to_statement(
             statement=query,
@@ -90,8 +85,7 @@ class PlaylistsRepository(BaseRepository):
         filters: list[str]
     ) -> list[PlaylistSong]:
         # First, we need to detach all playlist songs
-        playlist.songs = []
-        self.connection.add(playlist)
+        await self.connection.execute(delete(PlaylistSong).where(PlaylistSong.playlist_id == playlist.id))
         await self.connection.commit()
         await self.connection.refresh(playlist)
 
@@ -133,16 +127,11 @@ class PlaylistsRepository(BaseRepository):
                     .join(Playlist.songs, isouter=True)
                     .join(PlaylistSong.song)
                     .join(Song.song_releases, isouter=True)
-                    .filter(SongRelease.id == song_release.id)
-                    .filter(or_(
-                        PlaylistSong.filter == "",
-                        SongRelease.tag.ilike(PlaylistSong.filter),
-                        str(SongRelease.id) == PlaylistSong.filter
-                    )))).scalars().all()
+                    .filter(SongRelease.id == song_release.id))).scalars().all()
 
         return playlists
 
     @db_error_handler
     async def delete_playlist(self, *, playlist: Playlist):
-        await self.connection.delete(playlist)
+        await self.connection.execute(delete(Playlist).where(Playlist.id == playlist.id))
         await self.connection.commit()

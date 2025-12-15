@@ -1,5 +1,5 @@
 from fastapi import UploadFile
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, model_validator, field_validator
 from pydantic_filters import BaseFilter, SearchField, PagePagination, BaseSort
 from typing import Any, Optional, Literal
 from uuid import UUID
@@ -21,6 +21,26 @@ class PlaylistInCreate(PlaylistBase):
     songs_ids: list[UUID]
     songs_filters: list[str]
     file: UploadFile
+
+    @field_validator('songs_ids', mode="before")
+    def separate_song_ids_by_comma(cls, value):
+        if isinstance(value, list) and isinstance(value[0], str):
+            return [UUID(song_id) for song_id in value[0].split(",")]
+
+        return value
+
+    @field_validator('songs_filters', mode="before")
+    def separate_filters_by_comma(cls, value):
+        if isinstance(value, list) and isinstance(value[0], str):
+            return [str(filter) for filter in value[0].split(",")]
+
+        return value
+
+    @model_validator(mode='after')
+    def check_files_size(self) -> 'PlaylistInCreate':
+        if len(self.songs_ids) != len(self.songs_filters):
+            raise ValueError('Songs array and filters array should be of a same size')
+        return self
 
 
 class PlaylistInUpdate(PlaylistInCreate):
@@ -54,7 +74,7 @@ class PlaylistShortOutData(BaseModel):
     id: UUID
     name: str
     tracks_amount: int
-    file_id: str
+    file_id: UUID
 
 
 class PlaylistExtendedOutGroups(BaseModel):
@@ -80,7 +100,7 @@ class PlaylistExtendedOutData(BaseModel):
     id: UUID
     name: str
     description: str
-    file_id: str
+    file_id: UUID
     tracks: list[PlaylistExtendedOutTracks]
 
 # Модель-оркестратор

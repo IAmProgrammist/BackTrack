@@ -17,6 +17,7 @@ Name | Type | Description | Notes
 **files** | [**Array&lt;FileOutNested&gt;**](FileOutNested.md) |  | [default to undefined]
 **authors** | [**Array&lt;AuthorOutNested&gt;**](AuthorOutNested.md) |  | [default to undefined]
 **groups** | [**Array&lt;GroupOutNested&gt;**](GroupOutNested.md) |  | [default to undefined]
+**playlists** | [**Array&lt;PlaylistOutNested&gt;**](PlaylistOutNested.md) |  | [default to undefined]
 
 ## Example
 
@@ -36,6 +37,7 @@ const instance: SongOutData = {
     files,
     authors,
     groups,
+    playlists,
 };
 ```
 

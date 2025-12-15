@@ -10,7 +10,7 @@ from starlette.status import (
     HTTP_500_INTERNAL_SERVER_ERROR
 )
 from typing import Annotated
-from uuid import UUID
+from uuid import UUID, uuid4
 
 from app.api.dependencies.database import get_repository
 from app.api.dependencies.service import get_service
@@ -43,6 +43,7 @@ from app.schemas.playlist import (
 from app.services.base import BaseService
 from app.services.files import FileService
 from app.utils import ServiceResult, response_4xx, return_service
+from app.utils.filter_song_releases_with_filter import filter_song_releases_according_to_filter
 
 logger = logging.getLogger(__name__)
 
@@ -63,14 +64,27 @@ class PlaylistsService(BaseService):
             )
 
         def track_mapper_function(track: PlaylistSong):
-            leading_audio = song_service.get_leading_audio_file(track.song.song_releases[0].files)
+            fitting_release = filter_song_releases_according_to_filter(track.song.song_releases, track.filter)
+            if len(fitting_release) == 0:
+                return PlaylistExtendedOutTracks(
+                    id=track.song.id,
+                    name="Песня не найдена. Уточните фильтр",
+                    filter=track.filter,
+                    groups=[],
+                    authors=[],
+                    duration=None
+                )
+
+            fitting_track = fitting_release[-1]
+
+            leading_audio = song_service.get_leading_audio_file(fitting_track.files)
 
             return PlaylistExtendedOutTracks(
                 id=track.song.id,
-                name=track.song.song_releases[0].name,
+                name=fitting_track.name,
                 filter=track.filter,
-                groups=[PlaylistExtendedOutGroups(id=group.id, name=group.name) for group in track.song.song_releases[0].groups],
-                authors=[PlaylistExtendedOutAuthors(id=author.id, name=author.name) for author in track.song.song_releases[0].authors],
+                groups=[PlaylistExtendedOutGroups(id=group.id, name=group.name) for group in fitting_track.groups],
+                authors=[PlaylistExtendedOutAuthors(id=author.id, name=author.name) for author in fitting_track.authors],
                 duration=leading_audio.file.duration if leading_audio else None
             )
 
@@ -83,7 +97,7 @@ class PlaylistsService(BaseService):
                     name=playlist.name,
                     description=playlist.description,
                     file_id=playlist.file_id,
-                    tracks=[track_mapper_function(track) for track in playlist.songs if len(track.song.song_releases) > 0]
+                    tracks=[track_mapper_function(track) for track in playlist.songs]
                 )),
             },
         )
@@ -193,6 +207,7 @@ class PlaylistsService(BaseService):
             file_repository: FilesRepository = Depends(get_repository(FilesRepository)),
             settings: AppSettings = Depends(get_app_settings),
             token_user: User = None,
+            playlist_id: UUID = None,
     ) -> PlaylistResponse:
         logger.info("Update playlist")
 
@@ -230,8 +245,8 @@ class PlaylistsService(BaseService):
 
         playlist = await playlist_repo.update_playlist(
             playlist=playlist,
-            playlist_in=PlaylistInDB(name=playlist_in.name, description=playlist_in.description, file_id=stored_file.id,
-                               file=stored_file)
+            playlist_in=PlaylistInDB(name=playlist_in.name, description=playlist_in.description, file_id=stored_file.id),
+            file=stored_file
         )
         if not playlist:
             logger.error("Failed to create playlist")
