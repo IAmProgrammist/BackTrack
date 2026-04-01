@@ -53,35 +53,81 @@ def get_device() -> str:
 # Model
 # ─────────────────────────────────────────────────────────────────
 class AudioAutoencoder(nn.Module):
-    def __init__(
-        self,
-        input_dim:   int   = INPUT_DIM,
-        latent_dim:  int   = LATENT_DIM,
-        hidden_dims: list  = None,
-        dropout:     float = 0.1,
-    ):
+    def __init__(self, input_size=INPUT_DIM, latent_dim=LATENT_DIM):
         super().__init__()
-        if hidden_dims is None:
-            hidden_dims = HIDDEN_DIMS
+        # Энкодер: 16000 → latent_dim
+        self.encoder = nn.Sequential(
+            # [B, 1, 16000] → [B, 32, 8000]
+            nn.Conv1d(1, 32, kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm1d(32),
+            nn.ReLU(),
 
-        # Encoder
-        enc, prev = [], input_dim
-        for h in hidden_dims:
-            enc += [nn.Linear(prev, h), nn.LeakyReLU()]
-            prev = h
-        enc.append(nn.Linear(prev, latent_dim))
-        self.encoder = nn.Sequential(*enc)
+            # [B, 32, 8000] → [B, 64, 4000]
+            nn.Conv1d(32, 64, kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm1d(64),
+            nn.ReLU(),
 
-        # Decoder
-        dec, prev = [], latent_dim
-        for h in reversed(hidden_dims):
-            dec += [nn.Linear(prev, h), nn.LeakyReLU()]
-            prev = h
-        dec.append(nn.Linear(prev, input_dim))  # ← no activation, linear output
-        self.decoder = nn.Sequential(*dec)
+            # [B, 64, 4000] → [B, 128, 2000]
+            nn.Conv1d(64, 128, kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm1d(128),
+            nn.ReLU(),
 
-    def encode(self, x): return self.encoder(x)
-    def decode(self, z): return self.decoder(z)
+            # [B, 128, 2000] → [B, 256, 1000]
+            nn.Conv1d(128, 256, kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm1d(256),
+            nn.ReLU(),
+
+            # [B, 256, 1000] → [B, 256, 500]
+            nn.Conv1d(256, 256, kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm1d(256),
+            nn.ReLU(),
+        )
+
+        # Bottleneck: flatten → linear → latent
+        self.bottleneck_size = 256 * 512  # 128_000
+        self.fc_enc = nn.Linear(self.bottleneck_size, latent_dim)
+        self.fc_dec = nn.Linear(latent_dim, self.bottleneck_size)
+
+        # Декодер: latent_dim → 16000
+        self.decoder = nn.Sequential(
+            # [B, 256, 500] → [B, 256, 1000]
+            nn.ConvTranspose1d(256, 256, kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm1d(256),
+            nn.ReLU(),
+
+            # [B, 256, 1000] → [B, 128, 2000]
+            nn.ConvTranspose1d(256, 128, kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm1d(128),
+            nn.ReLU(),
+
+            # [B, 128, 2000] → [B, 64, 4000]
+            nn.ConvTranspose1d(128, 64, kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm1d(64),
+            nn.ReLU(),
+
+            # [B, 64, 4000] → [B, 32, 8000]
+            nn.ConvTranspose1d(64, 32, kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm1d(32),
+            nn.ReLU(),
+
+            # [B, 32, 8000] → [B, 1, 16000]
+            nn.ConvTranspose1d(32, 1, kernel_size=4, stride=2, padding=1),
+            nn.Tanh()  # или Sigmoid, если данные в [0, 1]
+        )
+
+    def encode(self, x):
+        # x: [B, 16000] → добавляем канал → [B, 1, 16000]
+        x = x.unsqueeze(1)
+        x = self.encoder(x)
+        x = x.view(x.size(0), -1)       # flatten
+        return self.fc_enc(x)            # [B, latent_dim]
+
+    def decode(self, z):
+        x = self.fc_dec(z)               # [B, bottleneck_size]
+        x = x.view(x.size(0), 256, 512) # reshape
+        x = self.decoder(x)              # [B, 1, 16000]
+        return x.squeeze(1)              # [B, 16000]
+
     def forward(self, x):
         z = self.encode(x)
         return self.decode(z), z

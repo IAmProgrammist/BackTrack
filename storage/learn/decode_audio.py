@@ -35,22 +35,9 @@ def read_binary_slice(filepath: str) -> tuple[bytes, dict]:
         [M bytes]  Raw amplitude data
     """
     with open(filepath, 'rb') as f:
-        magic = f.read(8)
-        if magic != MAGIC:
-            raise ValueError(
-                f"Invalid file format in '{filepath}'. "
-                f"Expected magic bytes {MAGIC!r}, got {magic!r}."
-            )
-
-        meta_len_bytes = f.read(4)
-        meta_len = struct.unpack('<I', meta_len_bytes)[0]
-
-        meta_json = f.read(meta_len)
-        metadata = json.loads(meta_json.decode('utf-8'))
-
         amplitude_data = f.read()
 
-    return amplitude_data, metadata
+    return amplitude_data, dict()
 
 
 def collect_slices(input_path: Path) -> tuple[bytes, dict]:
@@ -87,9 +74,9 @@ def collect_slices(input_path: Path) -> tuple[bytes, dict]:
 
 def write_wav(output_path: str, amplitude_bytes: bytes, metadata: dict):
     """Write raw 16-bit mono PCM bytes to a WAV file."""
-    sample_rate = metadata['sample_rate']
-    sample_width = metadata.get('sample_width', 2)  # default 16-bit
-    channels = metadata.get('channels', 1)
+    sample_rate = 44100
+    sample_width = 2  # default 16-bit
+    channels = 1
 
     n_frames = len(amplitude_bytes) // (sample_width * channels)
 
