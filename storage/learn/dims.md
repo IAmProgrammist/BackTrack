@@ -6,9 +6,9 @@ LATENT_DIM  = 8192
 HIDDEN_DIMS = [13000, 10321]
 ```
 
-## Best metrics for 200 epochs
+## Best metrics for 927 epochs
 
-Epoch  193/500  loss=0.03235  acc=23.02%  (35.0s)  ← best
+Epoch  927/1000  loss=0.00127  acc with 5% precision=86.16%  acc with 10% precision=98.60%  acc with 20% precision=99.97%  acc as sound-noise ratio=13.49db  (19.0s)  ← best
 
 # FOR 1 to 1.5
 

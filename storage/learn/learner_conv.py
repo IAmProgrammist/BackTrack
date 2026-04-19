@@ -32,8 +32,8 @@ from torch.utils.data import DataLoader, Dataset
 # ─────────────────────────────────────────────────────────────────
 # Constants
 # ─────────────────────────────────────────────────────────────────
-INPUT_DIM   = 16384           # numbers  (= 262 144 bytes)
-LATENT_DIM  = 4096            # float16 values
+INPUT_DIM   = 16384            # numbers  (= 262 144 bytes)
+LATENT_DIM  = 4096             # float16 values
 HIDDEN_DIMS = [8192, 6144]
 FILE_BYTES  = INPUT_DIM * 2    # 32 768 bytes
 
@@ -55,68 +55,51 @@ def get_device() -> str:
 class AudioAutoencoder(nn.Module):
     def __init__(self, input_size=INPUT_DIM, latent_dim=LATENT_DIM):
         super().__init__()
-        # Энкодер: 16000 → latent_dim
+        # Энкодер: 4096 → latent_dim
         self.encoder = nn.Sequential(
-            # [B, 1, 16000] → [B, 32, 8000]
-            nn.Conv1d(1, 32, kernel_size=4, stride=2, padding=1),
-            nn.BatchNorm1d(32),
-            nn.ReLU(),
+            nn.Conv1d(1,   32,  kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm1d(32),  nn.ReLU(),
 
-            # [B, 32, 8000] → [B, 64, 4000]
-            nn.Conv1d(32, 64, kernel_size=4, stride=2, padding=1),
-            nn.BatchNorm1d(64),
-            nn.ReLU(),
+            nn.Conv1d(32,  64,  kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm1d(64),  nn.ReLU(),
 
-            # [B, 64, 4000] → [B, 128, 2000]
-            nn.Conv1d(64, 128, kernel_size=4, stride=2, padding=1),
-            nn.BatchNorm1d(128),
-            nn.ReLU(),
+            nn.Conv1d(64,  128, kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm1d(128), nn.ReLU(),
 
-            # [B, 128, 2000] → [B, 256, 1000]
             nn.Conv1d(128, 256, kernel_size=4, stride=2, padding=1),
-            nn.BatchNorm1d(256),
-            nn.ReLU(),
+            nn.BatchNorm1d(256), nn.ReLU(),
 
-            # [B, 256, 1000] → [B, 256, 500]
             nn.Conv1d(256, 256, kernel_size=4, stride=2, padding=1),
             nn.BatchNorm1d(256),
             nn.ReLU(),
         )
 
-        # Bottleneck: flatten → linear → latent
         self.bottleneck_size = 256 * 512  # 128_000
         self.fc_enc = nn.Linear(self.bottleneck_size, latent_dim)
         self.fc_dec = nn.Linear(latent_dim, self.bottleneck_size)
 
-        # Декодер: latent_dim → 16000
+
         self.decoder = nn.Sequential(
-            # [B, 256, 500] → [B, 256, 1000]
             nn.ConvTranspose1d(256, 256, kernel_size=4, stride=2, padding=1),
             nn.BatchNorm1d(256),
             nn.ReLU(),
 
-            # [B, 256, 1000] → [B, 128, 2000]
             nn.ConvTranspose1d(256, 128, kernel_size=4, stride=2, padding=1),
-            nn.BatchNorm1d(128),
-            nn.ReLU(),
+            nn.BatchNorm1d(128), nn.ReLU(),
 
-            # [B, 128, 2000] → [B, 64, 4000]
-            nn.ConvTranspose1d(128, 64, kernel_size=4, stride=2, padding=1),
-            nn.BatchNorm1d(64),
-            nn.ReLU(),
+            nn.ConvTranspose1d(128, 64,  kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm1d(64),  nn.ReLU(),
 
-            # [B, 64, 4000] → [B, 32, 8000]
-            nn.ConvTranspose1d(64, 32, kernel_size=4, stride=2, padding=1),
-            nn.BatchNorm1d(32),
-            nn.ReLU(),
+            nn.ConvTranspose1d(64,  32,  kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm1d(32),  nn.ReLU(),
 
-            # [B, 32, 8000] → [B, 1, 16000]
-            nn.ConvTranspose1d(32, 1, kernel_size=4, stride=2, padding=1),
-            nn.Tanh()  # или Sigmoid, если данные в [0, 1]
+            nn.ConvTranspose1d(32,  1,   kernel_size=4, stride=2, padding=1),
+            nn.Tanh()
         )
 
+
     def encode(self, x):
-        # x: [B, 16000] → добавляем канал → [B, 1, 16000]
+        # x: [B, 4096] → добавляем канал → [B, 1, 4096]
         x = x.unsqueeze(1)
         x = self.encoder(x)
         x = x.view(x.size(0), -1)       # flatten
@@ -124,28 +107,46 @@ class AudioAutoencoder(nn.Module):
 
     def decode(self, z):
         x = self.fc_dec(z)               # [B, bottleneck_size]
-        x = x.view(x.size(0), 256, 512) # reshape
-        x = self.decoder(x)              # [B, 1, 16000]
-        return x.squeeze(1)              # [B, 16000]
+        x = x.view(x.size(0), 256, 512)  # reshape
+        x = self.decoder(x)              # [B, 1, 4096]
+        return x.squeeze(1)              # [B, 4096]
 
     def forward(self, x):
         z = self.encode(x)
         return self.decode(z), z
 
 
+
 # ─────────────────────────────────────────────────────────────────
 # Loss
 # ─────────────────────────────────────────────────────────────────
-class AutoencoderLoss(nn.Module):
-    def __init__(self, latent_weight=0):
+class SpectralLoss(nn.Module):
+    def __init__(self, n_fft=1024, latent_weight=1e-4):
         super().__init__()
-        self.mse = nn.MSELoss()  # ← renamed
-        self.lw  = latent_weight
+        self.n_fft = n_fft
+        self.lw = latent_weight
+        # несколько масштабов — ловим и детали и общую структуру
+        self.fft_sizes = [256, 512, 1024, 2048]
 
     def forward(self, x_hat, x, z):
-        recon = self.mse(x_hat, x)
+        loss_freq = 0.0
+        for n in self.fft_sizes:
+            # считаем спектр оригинала и реконструкции
+            X     = torch.stft(x,     n, return_complex=True, window=torch.hann_window(n).to(x.device))
+            X_hat = torch.stft(x_hat, n, return_complex=True, window=torch.hann_window(n).to(x.device))
+
+            # loss по амплитуде (логарифм — ближе к восприятию)
+            mag     = X.abs().clamp(min=1e-7).log()
+            mag_hat = X_hat.abs().clamp(min=1e-7).log()
+            loss_freq += nn.functional.l1_loss(mag_hat, mag)
+
+        # немного MSE в сэмплах — чтобы фаза не уплыла совсем
+        loss_time = nn.functional.mse_loss(x_hat, x)
         spars = self.lw * z.abs().mean()
-        return recon + spars, recon
+
+        total = loss_freq / len(self.fft_sizes) + 0.1 * loss_time + spars
+        return total, loss_freq / len(self.fft_sizes)
+
 
 
 # ─────────────────────────────────────────────────────────────────
@@ -177,8 +178,8 @@ class BinFileDataset(Dataset):
     def __getitem__(self, idx):
         raw  = self.files[idx].read_bytes()              # 32 768 bytes
         bits = np.array(
-            np.frombuffer(raw, dtype=np.uint16)
-        ).astype(np.float32) / 65535.0 
+            np.frombuffer(raw, dtype=np.int16)
+        ).astype(np.float32) / 32768.0
         return torch.from_numpy(bits)                    # (262144,)
 
 
@@ -194,10 +195,8 @@ def load_bin_file(path: str) -> torch.Tensor:
             f"Expected {FILE_BYTES} bytes ({INPUT_DIM} bits), "
             f"got {p.stat().st_size} bytes: {path}"
         )
-    raw  = np.frombuffer(p.read_bytes(), dtype=np.uint8)
-    bits = np.array(
-        np.frombuffer(raw, dtype=np.uint16)
-    ).astype(np.float32) / 65535.0 
+    raw = np.frombuffer(p.read_bytes(), dtype=np.int16)
+    bits = raw.astype(np.float32) / 32768.0
     return torch.from_numpy(bits)
 
 
@@ -215,8 +214,11 @@ def save_latent(z: torch.Tensor, path: str):
 
 
 def reconstruction_quality(x_hat: torch.Tensor, x: torch.Tensor) -> float:
-    """Returns % of samples within 5% of original value"""
-    return (x_hat - x).abs().lt(0.05).float().mean().item()
+    x_hat = x_hat.clamp(-1, 1)
+    signal_power = x.pow(2).mean(dim=-1).clamp(min=1e-10)       # [B]
+    noise_power  = (x_hat - x).pow(2).mean(dim=-1).clamp(min=1e-10)  # [B]
+    snr = 10 * torch.log10(signal_power / noise_power)           # [B]
+    return snr.mean().item()
 
 
 # ─────────────────────────────────────────────────────────────────
@@ -228,7 +230,6 @@ def save_model(model, path, meta=None):
         "model_state_dict": model.state_dict(),
         "input_dim":        INPUT_DIM,
         "latent_dim":       LATENT_DIM,
-        "hidden_dims":      HIDDEN_DIMS,
         **(meta or {}),
     }, path)
     print(f"  Model saved → {path}")
@@ -237,9 +238,8 @@ def save_model(model, path, meta=None):
 def load_model(path, device="cpu") -> AudioAutoencoder:
     ckpt  = torch.load(path, map_location=device, weights_only=False)
     model = AudioAutoencoder(
-        input_dim   = ckpt.get("input_dim",   INPUT_DIM),
+        input_size   = ckpt.get("input_dim",   INPUT_DIM),
         latent_dim  = ckpt.get("latent_dim",  LATENT_DIM),
-        hidden_dims = ckpt.get("hidden_dims", HIDDEN_DIMS),
     )
     model.load_state_dict(ckpt["model_state_dict"])
     model.to(device)
@@ -269,8 +269,12 @@ def run_train(args):
         pin_memory  = (device == "cuda"),
     )
 
-    model = AudioAutoencoder()
-    model.to(device)
+    if not args.model:
+        model = AudioAutoencoder()
+        model.to(device)
+    else:
+        model = load_model(args.model, device)
+
     total_p = sum(p.numel() for p in model.parameters())
     print(f"  Model params     : {total_p:,}")
     print(f"  Input dim        : {INPUT_DIM:,} nums")
@@ -282,7 +286,7 @@ def run_train(args):
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
         optimizer, patience=10, factor=0.5
     )
-    criterion = AutoencoderLoss(latent_weight=1e-4)
+    criterion = SpectralLoss(latent_weight=1e-4)
 
     best_loss = float("inf")
     history   = []
@@ -320,7 +324,7 @@ def run_train(args):
         print(
             f"  Epoch {epoch:>4}/{args.epochs}  "
             f"loss={avg_loss:.5f}  "
-            f"acc={avg_acc*100:.2f}%  "
+            f"acc={avg_acc:.2f} dB "
             f"({time.time()-t0:.1f}s){tag}"
         )
 
@@ -367,7 +371,7 @@ def run_predict(args):
 
         # ── Decompress ───────────────────────────────────────
         x_hat_soft  = model.decode(z)                    # (1, 262144)
-        x_hat_bin   = (x_hat_soft.clamp(0, 1).cpu() * 65535).to(torch.uint16)
+        x_hat_bin   = (x_hat_soft.clamp(-1, 1).cpu() * 32768.0).to(torch.int16)
         print(len(x_hat_bin))
         print(x_hat_bin)
         recon_path  = out / f"{stem}_reconstructed.bin"
@@ -375,10 +379,9 @@ def run_predict(args):
         print(f"  Decompressed → {recon_path}")
 
         # ── Quality ───────────────────────────────────────────
-        acc    = x_hat_bin.eq(x.squeeze(0).cpu()).float().mean().item()
-        errors = int((1.0 - acc) * INPUT_DIM)
-        print(f"\n  Bit accuracy : {acc*100:.4f}%")
-        print(f"  Bit errors   : {errors:,} / {INPUT_DIM:,}")
+        x_orig_int = (x.squeeze(0).cpu() * 32768).clamp(-32768, 32767).to(torch.int16)
+        snr = reconstruction_quality(x_hat_soft.squeeze(0).unsqueeze(0), x)
+        print(f"\n  SNR: {snr:.1f} dB")
 
     print("\n  Done ✓\n")
 
@@ -403,6 +406,8 @@ def build_parser():
     tr.add_argument("--epochs",     type=int,   default=10)
     tr.add_argument("--batch_size", type=int,   default=8)
     tr.add_argument("--lr",         type=float, default=1e-4)
+    tr.add_argument("--model",   required=False,
+                    help="Path to a saved .pt checkpoint")
 
     # predict
     pr = sub.add_parser("predict",

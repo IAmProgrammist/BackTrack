@@ -256,13 +256,11 @@ def run_train(args):
         num_workers = min(4, os.cpu_count() or 1),
         pin_memory  = (device == "cuda"),
     )
-
+    
     if not args.model:
-        print("No checkpoint provided")
         model = AudioAutoencoder()
         model.to(device)
     else:
-        print("A checkpoint is provided")
         model = load_model(args.model, device)
 
     total_p = sum(p.numel() for p in model.parameters())
@@ -276,7 +274,7 @@ def run_train(args):
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
         optimizer, patience=10, factor=0.5
     )
-    criterion = AutoencoderLoss(latent_weight=1e-4)
+    criterion = SpectralLoss(latent_weight=1e-4)
 
     best_loss = float("inf")
     history   = []
@@ -408,7 +406,7 @@ def build_parser():
                     help="Where to save the best model checkpoint (.pt)")
     tr.add_argument("--epochs",     type=int,   default=10)
     tr.add_argument("--batch_size", type=int,   default=8)
-    tr.add_argument("--lr",         type=float, default=1e-4)
+    tr.add_argument("--lr",         type=float, default=1e-6)
     tr.add_argument("--model",   required=False,
                     help="Path to a saved .pt checkpoint")
 
