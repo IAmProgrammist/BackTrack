@@ -11,5 +11,9 @@
             "url": "http://localhost:5173",
             "webRoot": "${workspaceFolder}"
         }
-    ]
+    ],
+    "settings": {
+        "python.terminal.activateEnvInCurrentTerminal": true,
+        "python.defaultInterpreterPath": "./.venv/bin/python3"
+    }
 }

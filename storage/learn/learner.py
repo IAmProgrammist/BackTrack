@@ -22,6 +22,7 @@ import os
 import sys
 import time
 from pathlib import Path
+import json
 
 import numpy as np
 import torch
@@ -34,7 +35,7 @@ from torch.utils.data import DataLoader, Dataset
 # ─────────────────────────────────────────────────────────────────
 INPUT_DIM   = 16384
 LATENT_DIM  = 8192
-HIDDEN_DIMS = [13000, 10321]
+HIDDEN_DIMS = [12000]
 FILE_BYTES  = INPUT_DIM * 2    # 32 768 bytes
 
 
@@ -77,6 +78,7 @@ class AudioAutoencoder(nn.Module):
         for h in reversed(hidden_dims):
             dec += [nn.Linear(prev, h), nn.LeakyReLU()]
             prev = h
+        
         dec.append(nn.Linear(prev, input_dim))  # ← no activation, linear output
         self.decoder = nn.Sequential(*dec)
 
@@ -234,6 +236,14 @@ def load_model(path, device="cpu") -> AudioAutoencoder:
     model.eval()
     return model
 
+def load_meta(path, device="cpu"):
+    ckpt  = torch.load(path, map_location=device, weights_only=False)
+    ckpt["model_state_dict"] = None
+    ckpt["input_dim"] = None
+    ckpt["latent_dim"] = None
+    ckpt["hidden_dims"] = None
+    return ckpt
+
 
 # ─────────────────────────────────────────────────────────────────
 # Mode: TRAIN
@@ -253,7 +263,7 @@ def run_train(args):
         dataset,
         batch_size  = args.batch_size,
         shuffle     = True,
-        num_workers = min(4, os.cpu_count() or 1),
+        num_workers = 0,
         pin_memory  = (device == "cuda"),
     )
 
@@ -388,6 +398,13 @@ def run_predict(args):
 
     print("\n  Done ✓\n")
 
+def run_read(args):
+    device = get_device()
+    
+    checkpoint = load_meta(args.model, device)
+    
+    print(json.dumps(checkpoint))
+
 
 # ─────────────────────────────────────────────────────────────────
 # CLI
@@ -421,18 +438,23 @@ def build_parser():
                     help="Input .bin file (must be exactly 32768 bytes)")
     pr.add_argument("--out_dir", required=True,
                     help="Directory for output .latent and reconstructed .bin")
+    
+    rr = sub.add_parser("read", help="Read data of a model")
+    rr.add_argument("--model",   required=True,
+                    help="Path to a saved .pt checkpoint")
 
     return parser
 
 
 def main():
-    print(get_device())
     parser = build_parser()
     args   = parser.parse_args()
     if args.mode == "train":
         run_train(args)
     elif args.mode == "predict":
         run_predict(args)
+    elif args.mode == "read":
+        run_read(args)
     else:
         parser.print_help()
         sys.exit(1)
