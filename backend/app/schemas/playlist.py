@@ -94,6 +94,7 @@ class PlaylistExtendedOutTracks(BaseModel):
     groups: list[PlaylistExtendedOutGroups]
     authors: list[PlaylistExtendedOutAuthors]
     duration: Optional[int]
+    sound_file_id: Optional[UUID]
 
 
 class PlaylistExtendedOutData(BaseModel):

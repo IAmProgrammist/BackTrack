@@ -113,3 +113,35 @@ class FileService(BaseService):
         file_metadata = await file_repository.update_file_duration(file=file_metadata, new_duration=audio_duration)
 
         return file_metadata
+    
+    async def stream_audio_file(
+        self,
+        file_id: UUID,
+        file_repository: FilesRepository = Depends(get_repository(FilesRepository)),
+        settings: AppSettings = Depends(get_app_settings)
+    ):
+        file = await file_repository.get_file_by_id(file_id=file_id)
+        if file.mime != "audio/cnn-flac":
+            return self.download_file_by_id(file_id=file_id, file_repository=file_repository, settings=settings)
+        
+        logger.info(f"Streaming file {file_id}")
+        file_data = await file_repository.get_file_by_id(file_id=file_id)
+        path = self.get_file_path(file_id, settings)
+
+        if not Path(path).exists():
+            logger.error(f"File {file_id} doesn't exists in filesystem")
+            raise response_4xx(
+                status_code=HTTP_400_BAD_REQUEST,
+                context={"reason": constant.FAIL_FILE_NOT_FOUND},
+            )
+
+        if not file_data:
+            logger.error(f"File {file_id} is not found in database")
+            raise response_4xx(
+                status_code=HTTP_400_BAD_REQUEST,
+                context={"reason": constant.FAIL_FILE_NOT_FOUND},
+            )
+
+        logger.error(f"File {file_id} found successfully")
+        
+        

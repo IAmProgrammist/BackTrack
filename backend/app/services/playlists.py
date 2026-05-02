@@ -72,7 +72,8 @@ class PlaylistsService(BaseService):
                     filter=track.filter,
                     groups=[],
                     authors=[],
-                    duration=None
+                    duration=None,
+                    sound_file_id=None,
                 )
 
             fitting_track = fitting_release[-1]
@@ -85,7 +86,8 @@ class PlaylistsService(BaseService):
                 filter=track.filter,
                 groups=[PlaylistExtendedOutGroups(id=group.id, name=group.name) for group in fitting_track.groups],
                 authors=[PlaylistExtendedOutAuthors(id=author.id, name=author.name) for author in fitting_track.authors],
-                duration=leading_audio.file.duration if leading_audio else None
+                duration=leading_audio.file.duration if leading_audio else None,
+                sound_file_id=leading_audio.file_id if leading_audio else None,
             )
 
         return dict(

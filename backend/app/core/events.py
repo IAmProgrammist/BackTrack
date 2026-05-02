@@ -3,11 +3,13 @@ from fastapi import FastAPI
 
 from app.core.settings.app import AppSettings
 from app.database.events import close_db_connection, connect_to_db
+from app.audio_manager.events import connect_to_cnn
 
 
 def create_start_app_handler(app: FastAPI, settings: AppSettings) -> Callable:
     async def start_app() -> None:
         await connect_to_db(app, settings)
+        await connect_to_cnn(app, settings)
 
     return start_app
 
