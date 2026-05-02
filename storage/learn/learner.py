@@ -92,6 +92,82 @@ class AudioAutoencoder(nn.Module):
 # ─────────────────────────────────────────────────────────────────
 # Loss
 # ─────────────────────────────────────────────────────────────────
+class AutoencoderLoss(nn.Module):
+    def __init__(self, latent_weight=0, sample_rate=44100, spectral_weight=0.1, perceptual_weight=0.05):
+        super().__init__()
+        self.mse = nn.MSELoss()
+        self.lw  = latent_weight
+        self.sw  = spectral_weight
+        self.pw  = perceptual_weight
+        self.sample_rate = sample_rate
+
+    def _spectral_loss(self, x_hat, x):
+        """Frequency-weighted MSE in the FFT domain — penalizes high freq errors more."""
+        orig_fft = torch.fft.rfft(x)
+        rec_fft  = torch.fft.rfft(x_hat)
+
+        n_freqs = orig_fft.shape[-1]
+        weights = torch.linspace(1.0, 5.0, n_freqs, device=x.device)
+
+        return torch.mean(weights * torch.abs(orig_fft - rec_fft) ** 2)
+
+    def _multiscale_stft_loss(self, x_hat, x):
+        """
+        Compare spectrograms at multiple window sizes.
+        Small windows catch transients, large windows catch tonal structure.
+        """
+        loss = 0.0
+        for fft_size in [512, 1024, 2048]:
+            window = torch.hann_window(fft_size, device=x.device)
+
+            orig_stft = torch.stft(x,     fft_size, return_complex=True, window=window)
+            rec_stft  = torch.stft(x_hat, fft_size, return_complex=True, window=window)
+
+            # L1 on magnitude — more robust than L2 for spectrograms
+            orig_mag = orig_stft.abs()
+            rec_mag  = rec_stft.abs()
+            loss += torch.mean(torch.abs(orig_mag - rec_mag))
+
+            # Log magnitude — emphasizes quieter details that MSE ignores
+            loss += torch.mean(torch.abs(
+                torch.log(orig_mag + 1e-7) - torch.log(rec_mag + 1e-7)
+            ))
+
+        return loss / 3  # average across scales
+
+    def _perceptual_loss(self, x_hat, x):
+        """
+        A-weighting curve approximation — mimics how humans perceive loudness
+        across frequencies. Deemphasizes very low and very high extremes.
+        """
+        fft_size = 1024
+        window   = torch.hann_window(fft_size, device=x.device)
+
+        orig_mag = torch.stft(x,     fft_size, return_complex=True, window=window).abs()
+        rec_mag  = torch.stft(x_hat, fft_size, return_complex=True, window=window).abs()
+
+        n_freqs = orig_mag.shape[-2]
+        freqs   = torch.linspace(0, self.sample_rate / 2, n_freqs, device=x.device)
+
+        # Simplified A-weighting
+        f2  = freqs ** 2
+        aw  = (12200**2 * f2**2) / (
+            (f2 + 20.6**2) * torch.sqrt((f2 + 107.7**2) * (f2 + 737.9**2)) * (f2 + 12200**2)
+        )
+        aw  = (aw / (aw.max() + 1e-7)).unsqueeze(0).unsqueeze(-1)  # normalize + broadcast
+
+        return torch.mean(aw * torch.abs(orig_mag - rec_mag) ** 2)
+
+    def forward(self, x_hat, x, z):
+        recon     = self.mse(x_hat, x)
+        spars     = self.lw * z.abs().mean()
+        spectral  = self.sw * self._multiscale_stft_loss(x_hat, x)
+        percept   = self.pw * self._perceptual_loss(x_hat, x)
+
+        total = recon + spars + spectral + percept
+        return total, recon
+
+
 class SpectralLoss(nn.Module):
     def __init__(self, n_fft=1024, latent_weight=1e-4):
         super().__init__()
@@ -119,7 +195,7 @@ class SpectralLoss(nn.Module):
         total = loss_freq / len(self.fft_sizes) + 0.1 * loss_time + spars
         return total, loss_freq / len(self.fft_sizes)
 
-class AutoencoderLoss(nn.Module):
+class MSEAutoencoderLoss(nn.Module):
     def __init__(self, latent_weight=0):
         super().__init__()
         self.mse = nn.MSELoss()  # ← renamed
@@ -286,7 +362,10 @@ def run_train(args):
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
         optimizer, patience=10, factor=0.5
     )
-    criterion = AutoencoderLoss(latent_weight=1e-4)
+    criterion = AutoencoderLoss(latent_weight=1e-4,     # keep whatever you had
+        spectral_weight=0.1,
+        perceptual_weight=0.05,
+    )
 
     best_loss = float("inf")
     history   = []
