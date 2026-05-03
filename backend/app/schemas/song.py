@@ -32,11 +32,20 @@ class SongInCreate(SongBase):
     lyrics: str | None = SongLyrics
     files_file: list[UploadFile]
     files_leading: list[bool]
+    # Использовать кастомный кодек для хранения аудио
+    files_audio_custom_codec: list[bool]
     authors: list[UUID]
     groups: list[UUID]
 
     @field_validator("files_leading", mode="before")
-    def separate_by_comma(cls, value):
+    def separate_by_comma_files_leading(cls, value):
+        if isinstance(value, list) and isinstance(value[0], str):
+            return [bool(leading) for leading in value[0].split(",")]
+
+        return value
+
+    @field_validator("files_audio_custom_codec", mode="before")
+    def separate_by_comma_files_audio_custom_codec(cls, value):
         if isinstance(value, list) and isinstance(value[0], str):
             return [bool(leading) for leading in value[0].split(",")]
 
@@ -44,7 +53,7 @@ class SongInCreate(SongBase):
 
     @model_validator(mode="after")
     def check_files_size(self) -> "SongInCreate":
-        if len(self.files_file) != len(self.files_leading):
+        if len(self.files_file) != len(self.files_leading) or len(self.files_file) != len(self.files_audio_custom_codec):
             raise ValueError("Files array and files leadings should be of a same size")
         return self
 

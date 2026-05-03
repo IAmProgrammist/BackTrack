@@ -11,8 +11,10 @@ from starlette.status import (
     HTTP_404_NOT_FOUND,
 )
 
+from app.api.dependencies.audio_manager import get_audio_manager
 from app.api.dependencies.database import get_repository
 from app.api.dependencies.service import get_service
+from app.audio_manager.audio_manager import AudioManager
 from app.core import constant
 from app.core.config import get_app_settings
 from app.core.settings.app import AppSettings
@@ -187,6 +189,7 @@ class SongsService(BaseService):
         files_service: FileService = Depends(get_service(FileService)),
         file_repository: FilesRepository = Depends(get_repository(FilesRepository)),
         settings: AppSettings = Depends(get_app_settings),
+        audio_manager: AudioManager = Depends(get_audio_manager),
         token_user: User = None,
     ) -> SongShortResponse:
         song = None
@@ -226,8 +229,10 @@ class SongsService(BaseService):
             )
 
         files = []
-        for request_file in song_in.files_file:
-            file = await files_service.create_file(file_repository=file_repository, settings=settings, file=request_file)
+        for idx, request_file in enumerate(song_in.files_file):
+            file = await files_service.create_file(
+                file_repository=file_repository, settings=settings, file=request_file, audio_manager=audio_manager, custom_audio_codec=song_in.files_audio_custom_codec[idx]
+            )
             files.append(file)
 
         attached_files = await song_repo.attach_files_to_song_release(song_release=song_release, files=files, leading=song_in.files_leading)

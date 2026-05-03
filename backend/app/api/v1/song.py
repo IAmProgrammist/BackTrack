@@ -5,9 +5,11 @@ from fastapi import APIRouter, Depends, Form
 from pydantic_filters.plugins.fastapi import FilterDepends, PaginationDepends, SortDepends
 from starlette.status import HTTP_200_OK
 
+from app.api.dependencies.audio_manager import get_audio_manager
 from app.api.dependencies.auth import get_current_user_auth
 from app.api.dependencies.database import get_repository
 from app.api.dependencies.service import get_service
+from app.audio_manager.audio_manager import AudioManager
 from app.core.config import get_app_settings
 from app.core.settings.app import AppSettings
 from app.database.repositories.authors import AuthorsRepository
@@ -100,6 +102,7 @@ async def create_song(
     file_repository: FilesRepository = Depends(get_repository(FilesRepository)),
     settings: AppSettings = Depends(get_app_settings),
     token_user: User = Depends(get_current_user_auth()),
+    audio_manager: AudioManager = Depends(get_audio_manager),
 ) -> SongShortResponse:
     release_song = await song_service.create_song(
         song_in=song_in,
@@ -111,6 +114,7 @@ async def create_song(
         file_repository=file_repository,
         settings=settings,
         token_user=token_user,
+        audio_manager=audio_manager,
     )
 
     return await handle_result(release_song)

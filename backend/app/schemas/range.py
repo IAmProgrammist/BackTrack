@@ -76,7 +76,6 @@ class RangeHeader(BaseModel):
 # Dependency for FastAPI
 async def parse_range_header(range: str | None = Header(None)) -> RangeHeader | None:
     """FastAPI dependency to parse Range header"""
-    print(f"A range is provided actually! {range}")
     if not range:
         return None
 

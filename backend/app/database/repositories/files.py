@@ -37,3 +37,12 @@ class FilesRepository(BaseRepository):
         await self.connection.commit()
         await self.connection.refresh(created_file)
         return created_file
+
+    @db_error_handler
+    async def update_file_mime(self, *, file: File, new_mime: str) -> File:
+        file.mime = new_mime
+
+        self.connection.add(file)
+        await self.connection.commit()
+        await self.connection.refresh(file)
+        return file
