@@ -13,7 +13,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = ">=3.12,<3.14.1"
 fastapi = "^0.124.2"
 alembic = "^1.13.1"
 uvicorn = "^0.38.0"
@@ -37,6 +37,9 @@ passlib = { extras = ["bcrypt"], version = "^1.7.4" }
 pydantic-filters = "^0.3.5"
 aiofiles = "^25.1.0"
 librosa = "^0.11.0"
+torch = "^2.11.0"
+torchvision = "^0.26.0"
+noisereduce = "^3.0.3"
 
 [tool.poetry.group.dev.dependencies]
 coverage = "^7.4.3"

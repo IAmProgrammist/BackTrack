@@ -1,18 +1,15 @@
-from enum import Enum
-from fastapi import UploadFile
-from pydantic import BaseModel, ConfigDict, Field, field_validator
-from pydantic_filters import BaseFilter, SearchField, PagePagination, BaseSort
-from typing import Any, Optional, Literal
+from typing import Any, Literal
 from uuid import UUID
+
+from fastapi import UploadFile
+from pydantic import BaseModel, ConfigDict, Field
+from pydantic_filters import BaseFilter, BaseSort, PagePagination, SearchField
 
 from app.schemas.message import ApiResponse
 
 
 class AuthorBase(BaseModel):
-    model_config = ConfigDict(
-        from_attributes=True,
-        str_strip_whitespace=True
-    )
+    model_config = ConfigDict(from_attributes=True, str_strip_whitespace=True)
 
     name: str = Field(min_length=1, max_length=1024)
     description: str = Field(min_length=0, max_length=1024)
@@ -45,7 +42,7 @@ AuthorOrderByLiteral = Literal["id", "name"]
 
 
 class AuthorSort(BaseSort):
-    sort_by: Optional[AuthorOrderByLiteral] = None
+    sort_by: AuthorOrderByLiteral | None = None
 
 
 # Модели для ответа

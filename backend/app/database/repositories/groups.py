@@ -1,12 +1,13 @@
-from pydantic_filters.drivers.sqlalchemy import append_to_statement
-from sqlalchemy import and_, func, or_, select
-from sqlalchemy.ext.asyncio import AsyncConnection
 from uuid import UUID
+
+from pydantic_filters.drivers.sqlalchemy import append_to_statement
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncConnection
 
 from app.database.repositories.base import BaseRepository, db_error_handler
 from app.models.author import Author
 from app.models.group import Group
-from app.schemas.group import GroupFilter, GroupPagination, GroupSort, GroupInDB
+from app.schemas.group import GroupFilter, GroupInDB, GroupPagination, GroupSort
 
 
 class GroupsRepository(BaseRepository):
@@ -15,19 +16,12 @@ class GroupsRepository(BaseRepository):
 
     @db_error_handler
     async def get_group_by_id(self, *, group_id: UUID) -> Group:
-        group = (await self.connection.execute(
-            select(Group).join(Group.authors, isouter=True).filter(Group.id == group_id).limit(1))).scalar()
+        group = (await self.connection.execute(select(Group).join(Group.authors, isouter=True).filter(Group.id == group_id).limit(1))).scalar()
 
         return group
 
     @db_error_handler
-    async def get_groups_with_participants(
-            self,
-            *,
-            filter_: GroupFilter,
-            pagination: GroupPagination,
-            sort: GroupSort
-    ) -> list[Group]:
+    async def get_groups_with_participants(self, *, filter_: GroupFilter, pagination: GroupPagination, sort: GroupSort) -> list[Group]:
         # We should filter this manually. Ugh.
         authors_filter_data = filter_.authors
         filter_.authors = None
@@ -35,25 +29,14 @@ class GroupsRepository(BaseRepository):
         if authors_filter_data:
             query = query.filter(Author.id.in_(authors_filter_data.id))
 
-        query = append_to_statement(
-            statement=query,
-            model=Group,
-            filter_=filter_,
-            pagination=pagination,
-            sort=sort
-        )
+        query = append_to_statement(statement=query, model=Group, filter_=filter_, pagination=pagination, sort=sort)
 
         groups = (await self.connection.execute(query)).scalars()
 
         return groups
 
     @db_error_handler
-    async def create_group(
-            self,
-            *,
-            group_in: GroupInDB,
-            authors: Author
-    ) -> Group:
+    async def create_group(self, *, group_in: GroupInDB, authors: Author) -> Group:
         created_group = Group(**group_in.model_dump(exclude_none=True), authors=authors)
         self.connection.add(created_group)
         await self.connection.commit()
@@ -61,12 +44,7 @@ class GroupsRepository(BaseRepository):
         return created_group
 
     @db_error_handler
-    async def update_group(
-            self,
-            *,
-            group: Group,
-            group_in: GroupInDB
-    ) -> Group:
+    async def update_group(self, *, group: Group, group_in: GroupInDB) -> Group:
         group_in_obj = group_in.model_dump(exclude_unset=True)
 
         for key, val in group_in_obj.items():
@@ -78,11 +56,7 @@ class GroupsRepository(BaseRepository):
         return group
 
     @db_error_handler
-    async def get_groups_with_ids(
-            self,
-            *,
-            ids: list[UUID]
-    ) -> list[Group]:
+    async def get_groups_with_ids(self, *, ids: list[UUID]) -> list[Group]:
         groups = (await self.connection.execute(select(Group).filter(Group.id.in_(ids)))).scalars().all()
 
         return groups

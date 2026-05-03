@@ -1,27 +1,17 @@
 from datetime import datetime
-from enum import Enum
-from fastapi import UploadFile
-from pydantic import BaseModel, ConfigDict, Field, model_validator, field_validator
-from pydantic_filters import BaseFilter, SearchField, PagePagination, BaseSort
-from typing import Any, Optional, Literal
+from typing import Any, Literal
 from uuid import UUID
 
-from app.schemas.comment import (
-    CommentFilter,
-    CommentOrderByLiteral,
-    CommentPagination,
-    CommentBase,
-    CommentOut,
-    CommentIn
-)
+from fastapi import UploadFile
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from pydantic_filters import BaseFilter, BaseSort, PagePagination, SearchField
+
+from app.schemas.comment import CommentBase, CommentFilter, CommentIn, CommentOrderByLiteral, CommentOut, CommentPagination
 from app.schemas.message import ApiResponse
 
 
 class SongBase(BaseModel):
-    model_config = ConfigDict(
-        from_attributes=True,
-        str_strip_whitespace=True
-    )
+    model_config = ConfigDict(from_attributes=True, str_strip_whitespace=True)
 
 
 SongName = Field(min_length=1, max_length=1024)
@@ -35,27 +25,27 @@ SongBPM = Field(gt=0)
 # Модели для создания
 class SongInCreate(SongBase):
     name: str = SongName
-    tag: Optional[str] = SongTag
+    tag: str | None = SongTag
     description: str = SongDescription
-    bpm: Optional[int] = SongBPM
-    key: Optional[str] = SongKey
-    lyrics: Optional[str] = SongLyrics
+    bpm: int | None = SongBPM
+    key: str | None = SongKey
+    lyrics: str | None = SongLyrics
     files_file: list[UploadFile]
     files_leading: list[bool]
     authors: list[UUID]
     groups: list[UUID]
 
-    @field_validator('files_leading', mode="before")
+    @field_validator("files_leading", mode="before")
     def separate_by_comma(cls, value):
         if isinstance(value, list) and isinstance(value[0], str):
             return [bool(leading) for leading in value[0].split(",")]
 
         return value
 
-    @model_validator(mode='after')
-    def check_files_size(self) -> 'SongInCreate':
+    @model_validator(mode="after")
+    def check_files_size(self) -> "SongInCreate":
         if len(self.files_file) != len(self.files_leading):
-            raise ValueError('Files array and files leadings should be of a same size')
+            raise ValueError("Files array and files leadings should be of a same size")
         return self
 
 
@@ -65,11 +55,11 @@ class SongCommentInData(CommentIn):
 
 class SongReleaseInDB(SongBase):
     name: str = SongName
-    tag: Optional[str] = SongTag
+    tag: str | None = SongTag
     description: str = SongDescription
-    bpm: Optional[int] = SongBPM
-    key: Optional[str] = SongKey
-    lyrics: Optional[str] = SongLyrics
+    bpm: int | None = SongBPM
+    key: str | None = SongKey
+    lyrics: str | None = SongLyrics
 
 
 class SongCommentInDB(CommentBase):
@@ -83,13 +73,13 @@ class SongInRelease(SongInCreate):
 # Модели для выбора листа
 ## Выбор песен
 class SongFilter(BaseFilter):
-    id__in: Optional[list[UUID]]
-    tag__in: Optional[list[str]]
-    bpm__in: Optional[list[int]]
-    key__in: Optional[list[str]]
-    authors_id__in: Optional[list[UUID]]
-    groups_id__in: Optional[list[UUID]]
-    q: Optional[str] = SearchField(target=["name", "tag", "key"])
+    id__in: list[UUID] | None
+    tag__in: list[str] | None
+    bpm__in: list[int] | None
+    key__in: list[str] | None
+    authors_id__in: list[UUID] | None
+    groups_id__in: list[UUID] | None
+    q: str | None = SearchField(target=["name", "tag", "key"])
 
 
 class SongPagination(PagePagination):
@@ -100,7 +90,7 @@ SongOrderByLiteral = Literal["id", "name", "tag", "key", "bpm"]
 
 
 class SongSort(BaseSort):
-    sort_by: Optional[SongOrderByLiteral] = None
+    sort_by: SongOrderByLiteral | None = None
 
 
 ## Выбор версий
@@ -116,7 +106,7 @@ SongOrderByLiteral = Literal["id", "created_at"]
 
 
 class SongReleaseSort(BaseSort):
-    sort_by: Optional[SongOrderByLiteral] = None
+    sort_by: SongOrderByLiteral | None = None
 
 
 ## Выбор комментов
@@ -132,7 +122,7 @@ SongCommentSortLiteral = Literal[CommentOrderByLiteral]
 
 
 class SongCommentSort(BaseSort):
-    sort_by: Optional[SongCommentSortLiteral] = None
+    sort_by: SongCommentSortLiteral | None = None
 
 
 # Модели для ответа
@@ -153,7 +143,7 @@ class SongShortOutData(BaseModel):
     name: str
     authors: list[AuthorShortOutNested]
     groups: list[GroupShortOutNested]
-    duration: Optional[int]
+    duration: int | None
 
 
 class AuthorOutNested(BaseModel):
@@ -187,9 +177,9 @@ class SongOutData(BaseModel):
     name: str
     description: str
     tag: str
-    bpm: Optional[int]
-    key: Optional[str]
-    duration: Optional[int]
+    bpm: int | None
+    key: str | None
+    duration: int | None
     lyrics: str
     files: list[FileOutNested]
     authors: list[AuthorOutNested]

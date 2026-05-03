@@ -1,6 +1,7 @@
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict
 from typing import Any
+
+from pydantic import BaseModel, ConfigDict
 
 from app.core import security
 from app.schemas.message import ApiResponse

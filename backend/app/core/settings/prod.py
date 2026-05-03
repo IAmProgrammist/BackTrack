@@ -1,4 +1,5 @@
 import logging
+
 from pydantic import PostgresDsn, SecretStr
 
 from app.core.settings.app import AppSettings
@@ -12,5 +13,5 @@ class ProdAppSettings(AppSettings):
     # back-end app settings
     secret_key: SecretStr = SecretStr("secret-prod")
     db_url: PostgresDsn = "postgresql+asyncpg://postgres:postgres@postgresql:5432/postgres"
-    cnn_path: str = "./model.pt"
+    audio_ae_path: str = "/app/ae/model.pt"
     logging_level: int = logging.INFO

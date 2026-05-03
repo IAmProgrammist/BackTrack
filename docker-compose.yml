@@ -51,6 +51,7 @@ services:
     environment:
       - DB_URL=postgresql+asyncpg://${POSTGRES_USER:-appuser}:${POSTGRES_PASSWORD:-apppassword}@postgres:5432/${POSTGRES_DB:-appdb}
       - APP_ENV=${APP_ENV:-dev}
+      - AUDIO_AE_PATH=${MODEL_DIR:-/app/ae}/${MODEL_FILE:-/model.pt}
     expose:
       - "8000"
     depends_on:
@@ -61,12 +62,20 @@ services:
     volumes:
       - ./backend:/app:delegated
       - backend_statics:${STATIC_DIR:-/home/backtrack}
+      - ${MODEL_SOURCE:-./storage/learn}:${MODEL_DIR:-/app/ae}:ro
     healthcheck:
       test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')\""]
       interval: 30s
       timeout: 10s
       retries: 3
     restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
 
   # Frontend Service
   frontend:

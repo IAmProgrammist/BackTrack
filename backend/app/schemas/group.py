@@ -1,19 +1,15 @@
-from enum import Enum
-from fastapi import UploadFile
-from pydantic import BaseModel, ConfigDict, Field, field_validator
-from pydantic_filters import BaseFilter, SearchField, PagePagination, BaseSort
-from typing import Any, Optional, Literal
+from typing import Any, Literal
 from uuid import UUID
 
-from app.models.author import Author
+from fastapi import UploadFile
+from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic_filters import BaseFilter, BaseSort, PagePagination, SearchField
+
 from app.schemas.message import ApiResponse
 
 
 class GroupBase(BaseModel):
-    model_config = ConfigDict(
-        from_attributes=True,
-        str_strip_whitespace=True
-    )
+    model_config = ConfigDict(from_attributes=True, str_strip_whitespace=True)
 
     name: str = Field(min_length=1, max_length=1024)
     description: str = Field(min_length=0, max_length=1024)
@@ -24,7 +20,7 @@ class GroupInCreate(GroupBase):
     authors: list[UUID]
     file: UploadFile
 
-    @field_validator('authors', mode="before")
+    @field_validator("authors", mode="before")
     def separate_author_ids_by_comma(cls, value):
         if isinstance(value, list) and isinstance(value[0], str):
             return [UUID(author_id) for author_id in value[0].split(",")]
@@ -59,7 +55,7 @@ GroupOrderByLiteral = Literal["id", "name"]
 
 
 class GroupSort(BaseSort):
-    sort_by: Optional[GroupOrderByLiteral] = None
+    sort_by: GroupOrderByLiteral | None = None
 
 
 # Модели для ответа

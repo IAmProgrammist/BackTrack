@@ -1,8 +1,9 @@
 import asyncio
 import pathlib
 import sys
-from alembic import context
 from logging.config import fileConfig
+
+from alembic import context
 from sqlalchemy import engine_from_config, pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import AsyncEngine

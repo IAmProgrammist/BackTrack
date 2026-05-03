@@ -1,6 +1,7 @@
-from sqlalchemy import and_, func, or_, select
-from sqlalchemy.ext.asyncio import AsyncConnection
 from uuid import UUID
+
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncConnection
 
 from app.database.repositories.base import BaseRepository, db_error_handler
 from app.models.file import File

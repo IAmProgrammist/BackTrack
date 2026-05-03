@@ -1,6 +1,7 @@
+from typing import TYPE_CHECKING
+
 from sqlalchemy import Column, Integer, String, text
 from sqlalchemy.orm import Mapped, relationship
-from typing import TYPE_CHECKING
 
 from app.core import security
 from app.models.common import DateTimeModelMixin

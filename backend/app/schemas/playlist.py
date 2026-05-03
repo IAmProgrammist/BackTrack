@@ -1,17 +1,15 @@
-from fastapi import UploadFile
-from pydantic import BaseModel, ConfigDict, model_validator, field_validator
-from pydantic_filters import BaseFilter, SearchField, PagePagination, BaseSort
-from typing import Any, Optional, Literal
+from typing import Any, Literal
 from uuid import UUID
+
+from fastapi import UploadFile
+from pydantic import BaseModel, ConfigDict, field_validator, model_validator
+from pydantic_filters import BaseFilter, BaseSort, PagePagination, SearchField
 
 from app.schemas.message import ApiResponse
 
 
 class PlaylistBase(BaseModel):
-    model_config = ConfigDict(
-        from_attributes=True,
-        str_strip_whitespace=True
-    )
+    model_config = ConfigDict(from_attributes=True, str_strip_whitespace=True)
 
 
 # Модели для создания
@@ -22,24 +20,24 @@ class PlaylistInCreate(PlaylistBase):
     songs_filters: list[str]
     file: UploadFile
 
-    @field_validator('songs_ids', mode="before")
+    @field_validator("songs_ids", mode="before")
     def separate_song_ids_by_comma(cls, value):
         if isinstance(value, list) and isinstance(value[0], str):
             return [UUID(song_id) for song_id in value[0].split(",")]
 
         return value
 
-    @field_validator('songs_filters', mode="before")
+    @field_validator("songs_filters", mode="before")
     def separate_filters_by_comma(cls, value):
         if isinstance(value, list) and isinstance(value[0], str):
             return [str(filter) for filter in value[0].split(",")]
 
         return value
 
-    @model_validator(mode='after')
-    def check_files_size(self) -> 'PlaylistInCreate':
+    @model_validator(mode="after")
+    def check_files_size(self) -> "PlaylistInCreate":
         if len(self.songs_ids) != len(self.songs_filters):
-            raise ValueError('Songs array and filters array should be of a same size')
+            raise ValueError("Songs array and filters array should be of a same size")
         return self
 
 
@@ -66,7 +64,7 @@ PlaylistOrderByLiteral = Literal["id", "name"]
 
 
 class PlaylistSort(BaseSort):
-    sort_by: Optional[PlaylistOrderByLiteral] = None
+    sort_by: PlaylistOrderByLiteral | None = None
 
 
 # Модели для ответа
@@ -93,8 +91,8 @@ class PlaylistExtendedOutTracks(BaseModel):
     filter: str
     groups: list[PlaylistExtendedOutGroups]
     authors: list[PlaylistExtendedOutAuthors]
-    duration: Optional[int]
-    sound_file_id: Optional[UUID]
+    duration: int | None
+    sound_file_id: UUID | None
 
 
 class PlaylistExtendedOutData(BaseModel):
@@ -103,6 +101,7 @@ class PlaylistExtendedOutData(BaseModel):
     description: str
     file_id: UUID
     tracks: list[PlaylistExtendedOutTracks]
+
 
 # Модель-оркестратор
 class PlaylistListResponse(ApiResponse):

@@ -1,10 +1,8 @@
-from datetime import datetime
-from pydantic import BaseModel, ConfigDict
 from typing import Any
-from typing import Optional
 from uuid import UUID
 
-from app.core import security
+from pydantic import BaseModel, ConfigDict
+
 from app.schemas.message import ApiResponse
 
 
@@ -15,7 +13,7 @@ class FileBase(BaseModel):
 
     mime: str
     original_name: str
-    duration: Optional[int]
+    duration: int | None
 
 
 class FileOutMetadata(FileBase):

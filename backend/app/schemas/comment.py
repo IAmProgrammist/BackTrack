@@ -1,15 +1,13 @@
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field
-from pydantic_filters import BaseFilter, SearchField, PagePagination, BaseSort
-from typing import Optional, Literal
+from typing import Literal
 from uuid import UUID
+
+from pydantic import BaseModel, ConfigDict, Field
+from pydantic_filters import BaseFilter, BaseSort, PagePagination, SearchField
 
 
 class CommentBase(BaseModel):
-    model_config = ConfigDict(
-        from_attributes=True,
-        str_strip_whitespace=True
-    )
+    model_config = ConfigDict(from_attributes=True, str_strip_whitespace=True)
 
     content: str = Field(min_length=1, max_length=8192)
 
@@ -37,4 +35,4 @@ CommentOrderByLiteral = Literal["created_at"]
 
 
 class CommentSorts(BaseSort):
-    sort_by: Optional[CommentOrderByLiteral] = None
+    sort_by: CommentOrderByLiteral | None = None

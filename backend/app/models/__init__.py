@@ -4,11 +4,11 @@ from .comment_song import comment_song
 from .file import File
 from .group import Group
 from .group_author import group_author
+from .playlist import Playlist
+from .playlist_song import PlaylistSong
 from .song import Song
 from .song_release import SongRelease
 from .song_release_author import song_release_author
 from .song_release_file import SongReleaseFile
 from .song_release_group import song_release_group
 from .user import User
-from .playlist import Playlist
-from .playlist_song import PlaylistSong

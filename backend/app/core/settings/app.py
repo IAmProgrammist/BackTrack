@@ -1,5 +1,6 @@
-from pydantic import ConfigDict, SecretStr
 from typing import Any
+
+from pydantic import ConfigDict, SecretStr
 
 from app.core.settings.base import BaseAppSettings
 

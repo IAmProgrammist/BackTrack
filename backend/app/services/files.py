@@ -1,23 +1,24 @@
-import aiofiles
-import librosa
 import logging
-from fastapi import Depends, UploadFile
-from fastapi.encoders import jsonable_encoder
-from fastapi.responses import FileResponse
 from pathlib import Path
-from starlette.status import (
-    HTTP_400_BAD_REQUEST,
-    HTTP_200_OK
-)
 from uuid import UUID
 
+import aiofiles
+import librosa
+from fastapi import Depends, UploadFile
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import FileResponse, StreamingResponse
+from starlette.status import HTTP_200_OK, HTTP_206_PARTIAL_CONTENT, HTTP_400_BAD_REQUEST
+
+from app.api.dependencies.audio_manager import get_audio_manager
 from app.api.dependencies.database import get_repository
+from app.audio_manager.audio_manager import AudioManager, decode_stream_to_wave, get_wave_meta
 from app.core import constant
 from app.core.config import get_app_settings
 from app.core.settings.app import AppSettings
 from app.database.repositories.files import FilesRepository
 from app.models.file import File
 from app.schemas.files import FileInDB, FileOutMetadata, FilesResponse
+from app.schemas.range import RangeHeader
 from app.services.base import BaseService
 from app.utils import response_4xx, return_service
 
@@ -28,11 +29,7 @@ class FileService(BaseService):
     def get_file_path(self, file_id: str, settings: AppSettings):
         return f"{settings.static_dir}/{file_id}"
 
-    async def download_file_by_id(self,
-                                  file_id: UUID,
-                                  file_repository: FilesRepository = Depends(get_repository(FilesRepository)),
-                                  settings: AppSettings = Depends(get_app_settings)
-                                  ) -> FileResponse:
+    async def download_file_by_id(self, file_id: UUID, file_repository: FilesRepository = Depends(get_repository(FilesRepository)), settings: AppSettings = Depends(get_app_settings)) -> FileResponse:
         logger.info(f"Downloading file {file_id}")
         file_data = await file_repository.get_file_by_id(file_id=file_id)
         path = self.get_file_path(file_id, settings)
@@ -52,21 +49,12 @@ class FileService(BaseService):
             )
 
         logger.error(f"File {file_id} found successfully")
-        return FileResponse(
-            headers={
-                "Cache-Control": "public, max-age=360000"
-            },
-            path=path,
-            media_type=file_data.mime,
-            filename=file_data.original_name
-        )
+        return FileResponse(headers={"Cache-Control": "public, max-age=360000"}, path=path, media_type=file_data.mime, filename=file_data.original_name)
 
     @return_service
-    async def get_file_metadata_by_id(self,
-                                      file_id: UUID,
-                                      file_repository: FilesRepository = Depends(get_repository(FilesRepository)),
-                                      settings: AppSettings = Depends(get_app_settings)
-                                      ) -> FilesResponse:
+    async def get_file_metadata_by_id(
+        self, file_id: UUID, file_repository: FilesRepository = Depends(get_repository(FilesRepository)), settings: AppSettings = Depends(get_app_settings)
+    ) -> FilesResponse:
         logger.info(f"Getting file metadata {file_id}")
         file_data = await file_repository.get_file_by_id(file_id=file_id)
         if not file_data:
@@ -84,24 +72,19 @@ class FileService(BaseService):
             },
         )
 
-    async def create_file(self,
-                          file_repository: FilesRepository = Depends(get_repository(FilesRepository)),
-                          settings: AppSettings = Depends(get_app_settings),
-                          file: UploadFile = None
-                          ) -> File | None:
+    async def create_file(self, file_repository: FilesRepository = Depends(get_repository(FilesRepository)), settings: AppSettings = Depends(get_app_settings), file: UploadFile = None) -> File | None:
         if not file:
             return None
 
         # Step 1: create file in repository database
-        file_metadata = await file_repository.create_file(
-            file_in=FileInDB(mime=file.content_type, original_name=file.filename, duration=None))
+        file_metadata = await file_repository.create_file(file_in=FileInDB(mime=file.content_type, original_name=file.filename, duration=None))
         if not file_metadata:
             return None
 
         # Step 2: store file in a filesystem
         path = self.get_file_path(file_metadata.id, settings)
         Path(settings.static_dir).mkdir(parents=True, exist_ok=True)
-        async with aiofiles.open(path, 'wb') as out_file:
+        async with aiofiles.open(path, "wb") as out_file:
             content = await file.read()
             await out_file.write(content)
 
@@ -113,17 +96,19 @@ class FileService(BaseService):
         file_metadata = await file_repository.update_file_duration(file=file_metadata, new_duration=audio_duration)
 
         return file_metadata
-    
+
     async def stream_audio_file(
         self,
         file_id: UUID,
         file_repository: FilesRepository = Depends(get_repository(FilesRepository)),
-        settings: AppSettings = Depends(get_app_settings)
+        settings: AppSettings = Depends(get_app_settings),
+        audio_manager: AudioManager = Depends(get_audio_manager),
+        range_header: RangeHeader | None = None,
     ):
         file = await file_repository.get_file_by_id(file_id=file_id)
-        if file.mime != "audio/cnn-flac":
-            return self.download_file_by_id(file_id=file_id, file_repository=file_repository, settings=settings)
-        
+        if file.mime != "audio/ae-flac":
+            return await self.download_file_by_id(file_id=file_id, file_repository=file_repository, settings=settings)
+
         logger.info(f"Streaming file {file_id}")
         file_data = await file_repository.get_file_by_id(file_id=file_id)
         path = self.get_file_path(file_id, settings)
@@ -143,5 +128,24 @@ class FileService(BaseService):
             )
 
         logger.error(f"File {file_id} found successfully")
-        
-        
+
+        wave_length = (await get_wave_meta(audio_manager, path)) or 0
+        skip, until = (0, wave_length - 1)
+        print("A range header was not parsed D:")
+
+        if range_header:
+            skip, until = range_header.to_tuple(wave_length)
+            print("A range header that is parsed yeah")
+
+        return StreamingResponse(
+            decode_stream_to_wave(audio_manager, path, skip, until),
+            media_type="audio/wav",
+            status_code=(HTTP_206_PARTIAL_CONTENT),
+            headers={
+                "Accepts-Ranges": "bytes",
+                "Cache-Control": "public, max-age=360000",
+                "Content-Range": f"bytes {skip}-{until}/{wave_length}",
+                "Content-Length": f"{until - skip}",
+                "Content-Disposition": f'attachment; filename="{file.original_name}"',
+            },
+        )

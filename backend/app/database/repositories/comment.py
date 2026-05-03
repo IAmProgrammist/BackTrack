@@ -6,12 +6,7 @@ from app.database.repositories.base import BaseRepository, db_error_handler
 from app.models.comment import Comment
 from app.models.song import Song
 from app.models.user import User
-from app.schemas.song import (
-    SongCommentFilter,
-    SongCommentPagination,
-    SongCommentSort,
-    SongCommentInDB
-)
+from app.schemas.song import SongCommentFilter, SongCommentInDB, SongCommentPagination, SongCommentSort
 
 
 class CommentRepository(BaseRepository):
@@ -19,17 +14,10 @@ class CommentRepository(BaseRepository):
         super().__init__(conn)
 
     @db_error_handler
-    async def get_comments_for_song(self, *, song: Song, filter_: SongCommentFilter, pagination: SongCommentPagination,
-                                    sort: SongCommentSort) -> list[Comment]:
+    async def get_comments_for_song(self, *, song: Song, filter_: SongCommentFilter, pagination: SongCommentPagination, sort: SongCommentSort) -> list[Comment]:
         query = select(Comment).join(Comment.songs).join(Comment.created_by).filter(Song.id == song.id)
 
-        query = append_to_statement(
-            statement=query,
-            model=Comment,
-            filter_=filter_,
-            pagination=pagination,
-            sort=sort
-        )
+        query = append_to_statement(statement=query, model=Comment, filter_=filter_, pagination=pagination, sort=sort)
 
         comments = (await self.connection.execute(query)).scalars()
 

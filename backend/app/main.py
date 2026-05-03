@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from asgi_correlation_id import CorrelationIdMiddleware
 from fastapi import FastAPI
 from fastapi.exceptions import HTTPException, RequestValidationError
@@ -7,7 +9,6 @@ from fastapi.openapi.docs import (
     get_swagger_ui_html,
     get_swagger_ui_oauth2_redirect_html,
 )
-from pathlib import Path
 from starlette.staticfiles import StaticFiles
 
 from app.api.v1 import api_router

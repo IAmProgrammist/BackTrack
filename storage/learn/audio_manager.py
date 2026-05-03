@@ -147,7 +147,7 @@ async def decode(audio_manager: AudioManager, from_file: str, to_file: str):
     print(f"Decoded → '{to_file}'")
 
 async def main():
-    audio_manager = AudioManager("/home/vlados/Desktop/Uni/BackTrack/storage/learn/try.pt")
+    audio_manager = AudioManager("/home/vlados/Desktop/Uni/BackTrack/storage/learn/try2.pt")
 
     audio_manager.encode("/home/vlados/Desktop/Uni/BackTrack/storage/learn/overlearn/test2.wav", "/home/vlados/Desktop/Uni/BackTrack/storage/learn/overlearn/comp2.bin")
     await decode(audio_manager, "/home/vlados/Desktop/Uni/BackTrack/storage/learn/overlearn/comp2.bin", "/home/vlados/Desktop/Uni/BackTrack/storage/learn/overlearn/decomp2.wav")
