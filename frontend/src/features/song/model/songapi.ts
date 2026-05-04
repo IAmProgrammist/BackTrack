@@ -46,7 +46,7 @@ export class SongApi implements ISongApi {
         )
     }
     createSong(data: ISongCreateDTO, token?: string | null) {
-        return async () => songsApi.createSongApiV1SongsPost(data.name, data.tag, data.description || "", data.bpm, data.songKey, data.lyrics, data.files.map((complexFile) => complexFile.file[0]), data.files.map((complexFile) => complexFile.leading), data.authors, data.groups, undefined, getAxiosConf(token)).then(({data: {data}}) => ({
+        return async () => songsApi.createSongApiV1SongsPost(data.name, data.tag, data.description || "", data.bpm, data.songKey, data.lyrics, data.files.map((complexFile) => complexFile.file[0]), data.files.map((complexFile) => complexFile.leading), data.files.map((complexFile) => complexFile.customCodec), data.authors, data.groups, undefined, getAxiosConf(token)).then(({data: {data}}) => ({
             id: data.song_id,
             version: data.id,
             tag: data.tag,
@@ -57,7 +57,7 @@ export class SongApi implements ISongApi {
         }))
     }
     releaseSongVersion(id: string, data: ISongCreateDTO, token?: string | null) {
-        return async () => songsApi.createSongApiV1SongsPost(data.name, data.tag, data.description || "", data.bpm, data.songKey, data.lyrics, data.files.map((complexFile) => complexFile.file[0]), data.files.map((complexFile) => complexFile.leading), data.authors, data.groups, id, getAxiosConf(token)).then(({data: {data}}) => ({
+        return async () => songsApi.createSongApiV1SongsPost(data.name, data.tag, data.description || "", data.bpm, data.songKey, data.lyrics, data.files.map((complexFile) => complexFile.file[0]), data.files.map((complexFile) => complexFile.leading), data.files.map((complexFile) => complexFile.customCodec), data.authors, data.groups, id, getAxiosConf(token)).then(({data: {data}}) => ({
             id: data.song_id,
             version: data.id,
             tag: data.tag,

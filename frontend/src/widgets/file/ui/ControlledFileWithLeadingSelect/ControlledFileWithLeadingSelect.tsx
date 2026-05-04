@@ -13,11 +13,11 @@ export const ControlledFileWithLeadingSelect = ({controlProps, containerProps = 
     useWatch({control: methods.control, name})
 
     const handleFileAdded = () => {
-        methods.setValue(name, [...methods.getValues(name) || [], {file: [], leading: false}])
+        methods.setValue(name, [...methods.getValues(name) || [], {file: [], leading: false, customCodec: false}])
     }
 
     const handleFileRemoved = (index: number) => {
-        methods.setValue(name, (methods.getValues(name) as {file: [], leading: false}[]).filter((_, idx) => idx !== index))
+        methods.setValue(name, (methods.getValues(name) as {file: [], leading: false, customCodec: boolean}[]).filter((_, idx) => idx !== index))
     }
 
     return <div {...containerProps} className={clsx(containerProps?.className, "")}>
@@ -36,6 +36,7 @@ export const ControlledFileWithLeadingSelect = ({controlProps, containerProps = 
                                     <Button type="button" equated onClick={() => handleFileRemoved(index)}><MdDelete/></Button>
                                 </div>
                                 <ControlledCheckboxInput inputProps={{subText: "Основной файл"}} controlProps={{name: `${name}.${index}.leading`}}/>
+                                <ControlledCheckboxInput inputProps={{subText: "Кастомный аудио-кодек"}} controlProps={{name: `${name}.${index}.customCodec`}}/>
                             </div>
                         </>})}
                     {error?.root?.type === "check-if-only-of-type-leading" ? <div style={{color: "var(--error-color)"}}>{error?.root?.message}</div> : "Ведущий файл будет представлять собой песню в зависимости от своего типа. Например, ведущая картинка будет видна на обложке, а ведущий аудиофайл будет играть при вопсроизведении трека."}

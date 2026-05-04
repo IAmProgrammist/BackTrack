@@ -25,7 +25,7 @@ export class AuthorService implements IAuthorService {
         const schema = this.createSchema();
 
         return async () => {
-            let validatedData = await schema.validate(data) as AuthorCreateDTO;
+            const validatedData = await schema.validate(data) as AuthorCreateDTO;
             return this.authorApi.createAuthor({...validatedData, icon: validatedData.icon[0]}, this.authService.getToken())()
        }
     }
@@ -34,7 +34,7 @@ export class AuthorService implements IAuthorService {
         const schema = this.updateSchema();
 
         return async () => { 
-            let validatedData = await schema.validate(data) as AuthorUpdateDTO;
+            const validatedData = await schema.validate(data) as AuthorUpdateDTO;
             return this.authorApi.updateAuthor(id, {...validatedData, icon: validatedData.icon[0]}, this.authService.getToken())()
         }
     }

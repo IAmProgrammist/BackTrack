@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
 export const ControlledFileInput = ({inputProps, controlProps}: ControlledFileInputProps) => {
     const {control} = useFormContext();
     const inputRef = useRef<HTMLInputElement>(null);
-    let value = useWatch({name: controlProps.name, control});
+    const value = useWatch({name: controlProps.name, control});
 
     useEffect(() => {
         if (inputRef.current) {

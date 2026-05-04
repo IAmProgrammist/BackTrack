@@ -30,7 +30,7 @@ export class SongService implements ISongService {
         const schema = this.createSchema();
 
         return async () => {
-            let validated = await schema.validate(data);
+            const validated = await schema.validate(data);
             const {files, bpm, authors, groups, ...restData} = validated;
             return this.songApi.createSong({
                 name: restData.name,
@@ -50,7 +50,7 @@ export class SongService implements ISongService {
         const schema = this.releaseSchema();
 
         return async () => {
-            let validated = await schema.validate(data);
+            const validated = await schema.validate(data);
             const {files, bpm, authors, groups, ...restData} = validated;
             return this.songApi.releaseSongVersion(id, {
                 name: restData.name,
@@ -74,7 +74,7 @@ export class SongService implements ISongService {
         const schema = this.createCommentSchema();
 
         return async () => {
-            let validated = await schema.validate(data);
+            const validated = await schema.validate(data);
             return this.songApi.createComment(id, validated, this.authService.getToken())()
         }
     }

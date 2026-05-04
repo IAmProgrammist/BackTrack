@@ -6,6 +6,7 @@ All URIs are relative to *http://localhost*
 |------------- | ------------- | -------------|
 |[**downloadFileApiV1FilesFileIdDownloadGet**](#downloadfileapiv1filesfileiddownloadget) | **GET** /api/v1/files/{file_id}/download | Download File|
 |[**getFileApiV1FilesFileIdGet**](#getfileapiv1filesfileidget) | **GET** /api/v1/files/{file_id} | Get File|
+|[**streamAudioFileApiV1FilesFileIdStreamAudioGet**](#streamaudiofileapiv1filesfileidstreamaudioget) | **GET** /api/v1/files/{file_id}/stream-audio | Stream Audio File|
 
 # **downloadFileApiV1FilesFileIdDownloadGet**
 > downloadFileApiV1FilesFileIdDownloadGet()
@@ -92,6 +93,62 @@ const { status, data } = await apiInstance.getFileApiV1FilesFileIdGet(
 ### Return type
 
 **FilesResponse**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | Successful Response |  -  |
+|**400** | Bad Request |  -  |
+|**500** | Internal Server Error |  -  |
+|**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **streamAudioFileApiV1FilesFileIdStreamAudioGet**
+> any streamAudioFileApiV1FilesFileIdStreamAudioGet()
+
+
+### Example
+
+```typescript
+import {
+    FilesApi,
+    Configuration
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new FilesApi(configuration);
+
+let fileId: string; // (default to undefined)
+let range: string; // (optional) (default to undefined)
+
+const { status, data } = await apiInstance.streamAudioFileApiV1FilesFileIdStreamAudioGet(
+    fileId,
+    range
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **fileId** | [**string**] |  | defaults to undefined|
+| **range** | [**string**] |  | (optional) defaults to undefined|
+
+
+### Return type
+
+**any**
 
 ### Authorization
 

@@ -25,7 +25,7 @@ export class PlaylistService implements IPlaylistService {
         const schema = this.createSchema();
         
         return async () => {
-            let validated = await schema.validate(data) as PlaylistCreateDTO;
+            const validated = await schema.validate(data) as PlaylistCreateDTO;
             return this.playlistApi.createPlaylist({...validated, icon: validated.icon[0]}, this.authService.getToken())()
         }
     }
@@ -34,7 +34,7 @@ export class PlaylistService implements IPlaylistService {
         const schema = this.createSchema();
         
         return async () => {
-            let validated = await schema.validate(data) as PlaylistUpdateDTO;
+            const validated = await schema.validate(data) as PlaylistUpdateDTO;
             return this.playlistApi.updatePlaylist(id, {...validated, icon: validated.icon[0]}, this.authService.getToken())()
         }
     }

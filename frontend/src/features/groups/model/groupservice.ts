@@ -25,7 +25,7 @@ export class GroupService implements IGroupService {
         const schema = this.createSchema();
 
         return async () => {
-            let validated = await schema.validate(data) as GroupCreateDTO;
+            const validated = await schema.validate(data) as GroupCreateDTO;
             return this.groupApi.createGroup({...validated, icon: validated.icon[0]}, this.authService.getToken())()
         }
     }
@@ -34,7 +34,7 @@ export class GroupService implements IGroupService {
         const schema = this.updateSchema();
 
         return async () => {
-            let validated = await schema.validate(data) as GroupUpdateDTO;
+            const validated = await schema.validate(data) as GroupUpdateDTO;
             return this.groupApi.updateGroup(id, {...validated, icon: validated.icon[0]}, this.authService.getToken())()
         }
     }

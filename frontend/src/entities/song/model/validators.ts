@@ -6,7 +6,7 @@ export const SONG_DESCRIPTION_VALIDATOR = string().trim().min(0).max(8192, "Оп
 export const SONG_BPM_VALIDATOR = number().optional().min(0)
 export const SONG_KEY_VALIDATOR = string().optional().min(1).max(32, "Слишком длиное")
 export const SONG_LYRICS_VALIDATOR = string().min(0).max(8192, "Слишком длинное");
-export const SONG_FILES_VALIDATOR = array().of(object<{file: File, leading: boolean}>().shape({
+export const SONG_FILES_VALIDATOR = array().of(object<{file: File, leading: boolean, customCodec: boolean}>().shape({
     file: array()
         .of(
             mixed<File>()
@@ -15,9 +15,10 @@ export const SONG_FILES_VALIDATOR = array().of(object<{file: File, leading: bool
         )
         .min(1)
         .max(1, "Можно выбрать только один файл"),
-    leading: boolean().optional()
+    leading: boolean().optional(),
+    customCodec: boolean().optional(),
 })).test("check-if-only-of-type-leading", "Ведущим может быть только один файл одного и того же типа", (data) => {
-    let mimeTypes: {[key in string]: boolean} = {};
+    const mimeTypes: {[key in string]: boolean} = {};
     for (const file of data || []) {
         if (file.leading && file?.file?.[0]?.type) {
             if (mimeTypes[file?.file?.[0]?.type]) {

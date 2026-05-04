@@ -35,6 +35,7 @@ let key: string; // (default to undefined)
 let lyrics: string; // (default to undefined)
 let filesFile: Array<File>; // (default to undefined)
 let filesLeading: Array<boolean>; // (default to undefined)
+let filesAudioCustomCodec: Array<boolean>; // (default to undefined)
 let authors: Array<string>; // (default to undefined)
 let groups: Array<string>; // (default to undefined)
 let songId: string; // (optional) (default to undefined)
@@ -48,6 +49,7 @@ const { status, data } = await apiInstance.createSongApiV1SongsPost(
     lyrics,
     filesFile,
     filesLeading,
+    filesAudioCustomCodec,
     authors,
     groups,
     songId
@@ -66,6 +68,7 @@ const { status, data } = await apiInstance.createSongApiV1SongsPost(
 | **lyrics** | [**string**] |  | defaults to undefined|
 | **filesFile** | **Array&lt;File&gt;** |  | defaults to undefined|
 | **filesLeading** | **Array&lt;boolean&gt;** |  | defaults to undefined|
+| **filesAudioCustomCodec** | **Array&lt;boolean&gt;** |  | defaults to undefined|
 | **authors** | **Array&lt;string&gt;** |  | defaults to undefined|
 | **groups** | **Array&lt;string&gt;** |  | defaults to undefined|
 | **songId** | [**string**] |  | (optional) defaults to undefined|

@@ -11,6 +11,7 @@ Name | Type | Description | Notes
 **groups** | [**Array&lt;PlaylistExtendedOutGroups&gt;**](PlaylistExtendedOutGroups.md) |  | [default to undefined]
 **authors** | [**Array&lt;PlaylistExtendedOutAuthors&gt;**](PlaylistExtendedOutAuthors.md) |  | [default to undefined]
 **duration** | **number** |  | [default to undefined]
+**sound_file_id** | **string** |  | [default to undefined]
 
 ## Example
 
@@ -24,6 +25,7 @@ const instance: PlaylistExtendedOutTracks = {
     groups,
     authors,
     duration,
+    sound_file_id,
 };
 ```
 

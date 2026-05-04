@@ -16,7 +16,7 @@ const flatObject = (sourceObject: NestedRecord, prefix: string = ""): Record<str
 
 export function objectToFormData<K extends NestedRecord>(obj: K): FormData {
   const formData = new FormData();
-  let flattedData = flatObject(obj);
+  const flattedData = flatObject(obj);
 
   for (const [key, value] of Object.entries(flattedData)) {
     if (value instanceof File) {

@@ -168,6 +168,7 @@ export interface PlaylistExtendedOutTracks {
     'groups': Array<PlaylistExtendedOutGroups>;
     'authors': Array<PlaylistExtendedOutAuthors>;
     'duration': number | null;
+    'sound_file_id': string | null;
 }
 export interface PlaylistListResponse {
     'message'?: string;
@@ -1120,6 +1121,44 @@ export const FilesApiAxiosParamCreator = function (configuration?: Configuration
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @summary Stream Audio File
+         * @param {string} fileId 
+         * @param {string | null} [range] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        streamAudioFileApiV1FilesFileIdStreamAudioGet: async (fileId: string, range?: string | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'fileId' is not null or undefined
+            assertParamExists('streamAudioFileApiV1FilesFileIdStreamAudioGet', 'fileId', fileId)
+            const localVarPath = `/api/v1/files/{file_id}/stream-audio`
+                .replace(`{${"file_id"}}`, encodeURIComponent(String(fileId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            if (range != null) {
+                localVarHeaderParameter['range'] = String(range);
+            }
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -1155,6 +1194,20 @@ export const FilesApiFp = function(configuration?: Configuration) {
             const localVarOperationServerBasePath = operationServerMap['FilesApi.getFileApiV1FilesFileIdGet']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * 
+         * @summary Stream Audio File
+         * @param {string} fileId 
+         * @param {string | null} [range] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async streamAudioFileApiV1FilesFileIdStreamAudioGet(fileId: string, range?: string | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.streamAudioFileApiV1FilesFileIdStreamAudioGet(fileId, range, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FilesApi.streamAudioFileApiV1FilesFileIdStreamAudioGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -1184,6 +1237,17 @@ export const FilesApiFactory = function (configuration?: Configuration, basePath
         getFileApiV1FilesFileIdGet(fileId: string, options?: RawAxiosRequestConfig): AxiosPromise<FilesResponse> {
             return localVarFp.getFileApiV1FilesFileIdGet(fileId, options).then((request) => request(axios, basePath));
         },
+        /**
+         * 
+         * @summary Stream Audio File
+         * @param {string} fileId 
+         * @param {string | null} [range] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        streamAudioFileApiV1FilesFileIdStreamAudioGet(fileId: string, range?: string | null, options?: RawAxiosRequestConfig): AxiosPromise<any> {
+            return localVarFp.streamAudioFileApiV1FilesFileIdStreamAudioGet(fileId, range, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -1211,6 +1275,18 @@ export class FilesApi extends BaseAPI {
      */
     public getFileApiV1FilesFileIdGet(fileId: string, options?: RawAxiosRequestConfig) {
         return FilesApiFp(this.configuration).getFileApiV1FilesFileIdGet(fileId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Stream Audio File
+     * @param {string} fileId 
+     * @param {string | null} [range] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public streamAudioFileApiV1FilesFileIdStreamAudioGet(fileId: string, range?: string | null, options?: RawAxiosRequestConfig) {
+        return FilesApiFp(this.configuration).streamAudioFileApiV1FilesFileIdStreamAudioGet(fileId, range, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -2278,13 +2354,14 @@ export const SongsApiAxiosParamCreator = function (configuration?: Configuration
          * @param {string | null} lyrics 
          * @param {Array<File>} filesFile 
          * @param {Array<boolean>} filesLeading 
+         * @param {Array<boolean>} filesAudioCustomCodec 
          * @param {Array<string>} authors 
          * @param {Array<string>} groups 
          * @param {string | null} [songId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createSongApiV1SongsPost: async (name: string, tag: string | null, description: string, bpm: number | null, key: string | null, lyrics: string | null, filesFile: Array<File>, filesLeading: Array<boolean>, authors: Array<string>, groups: Array<string>, songId?: string | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createSongApiV1SongsPost: async (name: string, tag: string | null, description: string, bpm: number | null, key: string | null, lyrics: string | null, filesFile: Array<File>, filesLeading: Array<boolean>, filesAudioCustomCodec: Array<boolean>, authors: Array<string>, groups: Array<string>, songId?: string | null, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'name' is not null or undefined
             assertParamExists('createSongApiV1SongsPost', 'name', name)
             // verify required parameter 'tag' is not null or undefined
@@ -2301,6 +2378,8 @@ export const SongsApiAxiosParamCreator = function (configuration?: Configuration
             assertParamExists('createSongApiV1SongsPost', 'filesFile', filesFile)
             // verify required parameter 'filesLeading' is not null or undefined
             assertParamExists('createSongApiV1SongsPost', 'filesLeading', filesLeading)
+            // verify required parameter 'filesAudioCustomCodec' is not null or undefined
+            assertParamExists('createSongApiV1SongsPost', 'filesAudioCustomCodec', filesAudioCustomCodec)
             // verify required parameter 'authors' is not null or undefined
             assertParamExists('createSongApiV1SongsPost', 'authors', authors)
             // verify required parameter 'groups' is not null or undefined
@@ -2357,6 +2436,10 @@ export const SongsApiAxiosParamCreator = function (configuration?: Configuration
 
                 if (filesLeading) {
                 localVarFormParams.append('files_leading', filesLeading.join(COLLECTION_FORMATS.csv));
+            }
+
+                if (filesAudioCustomCodec) {
+                localVarFormParams.append('files_audio_custom_codec', filesAudioCustomCodec.join(COLLECTION_FORMATS.csv));
             }
 
                 if (authors) {
@@ -2728,14 +2811,15 @@ export const SongsApiFp = function(configuration?: Configuration) {
          * @param {string | null} lyrics 
          * @param {Array<File>} filesFile 
          * @param {Array<boolean>} filesLeading 
+         * @param {Array<boolean>} filesAudioCustomCodec 
          * @param {Array<string>} authors 
          * @param {Array<string>} groups 
          * @param {string | null} [songId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createSongApiV1SongsPost(name: string, tag: string | null, description: string, bpm: number | null, key: string | null, lyrics: string | null, filesFile: Array<File>, filesLeading: Array<boolean>, authors: Array<string>, groups: Array<string>, songId?: string | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SongShortResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createSongApiV1SongsPost(name, tag, description, bpm, key, lyrics, filesFile, filesLeading, authors, groups, songId, options);
+        async createSongApiV1SongsPost(name: string, tag: string | null, description: string, bpm: number | null, key: string | null, lyrics: string | null, filesFile: Array<File>, filesLeading: Array<boolean>, filesAudioCustomCodec: Array<boolean>, authors: Array<string>, groups: Array<string>, songId?: string | null, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SongShortResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createSongApiV1SongsPost(name, tag, description, bpm, key, lyrics, filesFile, filesLeading, filesAudioCustomCodec, authors, groups, songId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['SongsApi.createSongApiV1SongsPost']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -2861,14 +2945,15 @@ export const SongsApiFactory = function (configuration?: Configuration, basePath
          * @param {string | null} lyrics 
          * @param {Array<File>} filesFile 
          * @param {Array<boolean>} filesLeading 
+         * @param {Array<boolean>} filesAudioCustomCodec 
          * @param {Array<string>} authors 
          * @param {Array<string>} groups 
          * @param {string | null} [songId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createSongApiV1SongsPost(name: string, tag: string | null, description: string, bpm: number | null, key: string | null, lyrics: string | null, filesFile: Array<File>, filesLeading: Array<boolean>, authors: Array<string>, groups: Array<string>, songId?: string | null, options?: RawAxiosRequestConfig): AxiosPromise<SongShortResponse> {
-            return localVarFp.createSongApiV1SongsPost(name, tag, description, bpm, key, lyrics, filesFile, filesLeading, authors, groups, songId, options).then((request) => request(axios, basePath));
+        createSongApiV1SongsPost(name: string, tag: string | null, description: string, bpm: number | null, key: string | null, lyrics: string | null, filesFile: Array<File>, filesLeading: Array<boolean>, filesAudioCustomCodec: Array<boolean>, authors: Array<string>, groups: Array<string>, songId?: string | null, options?: RawAxiosRequestConfig): AxiosPromise<SongShortResponse> {
+            return localVarFp.createSongApiV1SongsPost(name, tag, description, bpm, key, lyrics, filesFile, filesLeading, filesAudioCustomCodec, authors, groups, songId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2971,14 +3056,15 @@ export class SongsApi extends BaseAPI {
      * @param {string | null} lyrics 
      * @param {Array<File>} filesFile 
      * @param {Array<boolean>} filesLeading 
+     * @param {Array<boolean>} filesAudioCustomCodec 
      * @param {Array<string>} authors 
      * @param {Array<string>} groups 
      * @param {string | null} [songId] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public createSongApiV1SongsPost(name: string, tag: string | null, description: string, bpm: number | null, key: string | null, lyrics: string | null, filesFile: Array<File>, filesLeading: Array<boolean>, authors: Array<string>, groups: Array<string>, songId?: string | null, options?: RawAxiosRequestConfig) {
-        return SongsApiFp(this.configuration).createSongApiV1SongsPost(name, tag, description, bpm, key, lyrics, filesFile, filesLeading, authors, groups, songId, options).then((request) => request(this.axios, this.basePath));
+    public createSongApiV1SongsPost(name: string, tag: string | null, description: string, bpm: number | null, key: string | null, lyrics: string | null, filesFile: Array<File>, filesLeading: Array<boolean>, filesAudioCustomCodec: Array<boolean>, authors: Array<string>, groups: Array<string>, songId?: string | null, options?: RawAxiosRequestConfig) {
+        return SongsApiFp(this.configuration).createSongApiV1SongsPost(name, tag, description, bpm, key, lyrics, filesFile, filesLeading, filesAudioCustomCodec, authors, groups, songId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

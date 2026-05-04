@@ -7,7 +7,7 @@ export interface ISongCreateDTO {
     bpm: number | null
     songKey: string | null
     lyrics: string | null
-    files: {file: File[], leading: boolean}[]
+    files: {file: File[], leading: boolean, customCodec: boolean}[]
     authors: string[]
     groups: string[]
 }

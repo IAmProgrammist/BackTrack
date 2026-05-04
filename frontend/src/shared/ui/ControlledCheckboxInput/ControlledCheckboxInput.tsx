@@ -4,7 +4,7 @@ import { Checkbox } from "../Checkbox";
 
 export const ControlledCheckboxInput = ({inputProps, controlProps}: ControlledCheckboxInputProps) => {
     const {control} = useFormContext();
-    let value = useWatch({name: controlProps.name, control});
+    const value = useWatch({name: controlProps.name, control});
     
     return <Controller
         {...controlProps}
