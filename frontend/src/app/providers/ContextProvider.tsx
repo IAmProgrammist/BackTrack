@@ -8,6 +8,7 @@ import { SongsContextProvider } from "./SongsContextProvider";
 import { PlaylistContextProvider } from "./PlaylistContextProvider";
 import { AuthContextProvider } from "./AuthContextProvider";
 import { SnackbarProvider } from "notistack";
+import { PlayerContextProvider } from "./PlayerContextProvider";
 
 export const ContextProvider = ({children}: {children: ReactNode}) => {
     return <BrowserRouter>
@@ -18,9 +19,11 @@ export const ContextProvider = ({children}: {children: ReactNode}) => {
                         <AuthorsContextProvider>
                             <SongsContextProvider>
                                 <PlaylistContextProvider>
-                                    <SnackbarProvider>
-                                        {children}
-                                    </SnackbarProvider>
+                                    <PlayerContextProvider>
+                                        <SnackbarProvider>
+                                            {children}
+                                        </SnackbarProvider>
+                                    </PlayerContextProvider>
                                 </PlaylistContextProvider>
                             </SongsContextProvider>
                         </AuthorsContextProvider>
