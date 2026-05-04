@@ -59,6 +59,7 @@ class PlaylistsService(BaseService):
             if len(fitting_release) == 0:
                 return PlaylistExtendedOutTracks(
                     id=track.song.id,
+                    version=None,
                     name="Песня не найдена. Уточните фильтр",
                     filter=track.filter,
                     groups=[],
@@ -73,6 +74,7 @@ class PlaylistsService(BaseService):
 
             return PlaylistExtendedOutTracks(
                 id=track.song.id,
+                version=fitting_track.id,
                 name=fitting_track.name,
                 filter=track.filter,
                 groups=[PlaylistExtendedOutGroups(id=group.id, name=group.name) for group in fitting_track.groups],

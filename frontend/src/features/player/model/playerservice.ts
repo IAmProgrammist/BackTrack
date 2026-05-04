@@ -1,10 +1,12 @@
 import type { IAuthService } from "features/auth/model/iauthservice";
 import type { IPlayerService } from "./iplayerservice";
-import type { PlayerRepository, PlayingType } from "./playerrepository";
-import { fromEvent, map, merge, Observable, shareReplay, startWith } from "rxjs";
+import type { PlayerRepository } from "./playerrepository";
+import { fromEvent, map, merge, Observable, startWith } from "rxjs";
 import { getAxiosConf, playlistApi, songsApi } from "shared/api/api";
 import type { PlaylistOrderState, TrackOrderState } from "entities/player/model/validators";
 import {match, P} from "ts-pattern";
+import { FilesApiAxiosParamCreator, type PlaylistExtendedOutTracks } from "shared/api/autogen";
+import type { PlayingType, SongReleaseData } from "./iplayerrepository";
 
 export class PlayerService implements IPlayerService {
     private _repository: PlayerRepository
@@ -14,8 +16,8 @@ export class PlayerService implements IPlayerService {
     readonly volume$: Observable<number>
     readonly currentTime$: Observable<number>
     readonly duration$: Observable<number>
-    readonly playing$: Observable<PlayingType | null>
-    readonly queue$: Observable<{index: number, items: string[], orderType: PlaylistOrderState}>
+    readonly playing$: Observable<PlayingType>
+    readonly queue$: Observable<{index: number, items: SongReleaseData[], orderType: PlaylistOrderState}>
 
     constructor(repository: PlayerRepository, authService: IAuthService) {
         this._repository = repository
@@ -25,10 +27,10 @@ export class PlayerService implements IPlayerService {
         this.paused$ = merge(
             fromEvent(player, "play").pipe(map(() => false)),
             fromEvent(player, "pause").pipe(map(() => true))
-        ).pipe(startWith(player?.paused), shareReplay(1))
-        this.volume$ = fromEvent(player, "volumechange").pipe(map(() => player?.volume), shareReplay(1), startWith(player?.volume))
-        this.currentTime$ = fromEvent(player, "timeupdate").pipe(map(() => player?.currentTime), shareReplay(1), startWith(player?.currentTime))
-        this.duration$ = fromEvent(player, "durationchange").pipe(map(() => player?.duration), shareReplay(1), startWith(player?.duration))
+        ).pipe(startWith(player?.paused))
+        this.volume$ = fromEvent(player, "volumechange").pipe(map(() => player?.volume), startWith(player?.volume))
+        this.currentTime$ = fromEvent(player, "timeupdate").pipe(map(() => player?.currentTime), startWith(player?.currentTime))
+        this.duration$ = fromEvent(player, "durationchange").pipe(map(() => player?.duration), startWith(player?.duration))
         this.playing$ = this._repository.playing$.asObservable();
         this.queue$ = this._repository.playQueue$.asObservable();
         
@@ -46,7 +48,7 @@ export class PlayerService implements IPlayerService {
     }
 
     // Обновляет очередь с нуля. Если порядок "shuffle", то перемешивает треки, иначе сохраняет исходный порядок
-    private _setQueue({fileIds}: {fileIds: string[]}) {
+    private _setQueue({fileIds}: {fileIds: SongReleaseData[]}) {
         const currentQueue = this._repository.playQueue$.value;
 
         this._repository.playQueue$.next({index: 0, originalItems: fileIds, items: currentQueue.orderType === "shuffle" ? this._shuffle(fileIds) : fileIds, orderType: currentQueue.orderType})
@@ -66,21 +68,23 @@ export class PlayerService implements IPlayerService {
                 throw new Error("Scheduled song has no leading audio file")
             }
 
-            this._setQueue({fileIds: [file.id]})
+            this._setQueue({fileIds: [{id, version, fileId: file.id}]})
             this._setPlaying("track", id)
+            this.togglePlay(true);
         })
     }
     
     schedulePlaylist(playlistId: string) {
         return async () => playlistApi.getPlaylistApiV1PlaylistsPlaylistIdGet(playlistId, getAxiosConf(this._authService.getToken())).then(({data: {data}}) => {
-            this._setQueue({fileIds: data.tracks.map((track) => track.sound_file_id).filter((id): id is string => !!id)})
+            this._setQueue({fileIds: data.tracks.filter((track): track is PlaylistExtendedOutTracks & {id: string, version: string, fileId: string} => !!track.sound_file_id && !!track.version).map((track) => ({id: track.id, version: track.version || "", fileId: track.sound_file_id || ""}))})
             this._setPlaying("playlist", playlistId)
+            this.togglePlay(true);
         })
     }
 
     updateTrackOrderState(state: TrackOrderState) {
         const currentPlaying = this._repository.playing$.value;
-        this._repository.playing$.next(currentPlaying ? {...currentPlaying, state} : null)
+        this._repository.playing$.next({...currentPlaying, state})
     }
 
     updatePlaylistOrderState(state: PlaylistOrderState) {
@@ -106,6 +110,15 @@ export class PlayerService implements IPlayerService {
             })
     }
 
+    async _updatePlayerSourceFromFileId(fileId: string) {
+        const player = this._repository.player as HTMLAudioElement;
+
+        FilesApiAxiosParamCreator().streamAudioFileApiV1FilesFileIdStreamAudioGet(fileId, undefined, getAxiosConf(this._authService.getToken())).then(({url}) => {
+            player.src = url
+            return player.play()
+        });
+    }
+
     // Переключить статус проигрывания
     togglePlay(play?: boolean) {
         const player = this._repository.player;
@@ -113,8 +126,12 @@ export class PlayerService implements IPlayerService {
 
         match(player.src)
             .with("", () => {
-                player.currentTime = 0;
-                player.pause();
+                const currentQueue = this._repository.playQueue$.value;
+                if (currentQueue.items.length === 0 || currentQueue.index >= currentQueue.items.length) {
+                    return;
+                }
+
+                this._updatePlayerSourceFromFileId(currentQueue.items[currentQueue.index].fileId)
             })
             .otherwise(() => {
                 match({paused: player.paused, play})
@@ -138,13 +155,13 @@ export class PlayerService implements IPlayerService {
         const currentQueue = this._repository.playQueue$.value;
         if (currentQueue.index < currentQueue.items.length - 1) {
             // Если это не последний трек, то выбрать следующий трек
-            player.src = currentQueue.items[currentQueue.index + 1];
+            this._updatePlayerSourceFromFileId(currentQueue.items[currentQueue.index + 1].fileId)
             player.currentTime = 0;
             this._repository.playQueue$.next({...currentQueue, index: currentQueue.index + 1})
         } else if (currentQueue.index === currentQueue.items.length - 1 && currentQueue.orderType === "repeat") {
             // Если же трек последний, но порядок "repeat", то начать с начала очереди
             const newIndex = 0;
-            player.src = currentQueue.items[newIndex];
+            this._updatePlayerSourceFromFileId(currentQueue.items[newIndex].fileId)
             player.currentTime = 0;
             this._repository.playQueue$.next({...currentQueue, index: newIndex})
         } else if (currentQueue.index === currentQueue.items.length - 1 && currentQueue.orderType === "default") {
@@ -152,11 +169,6 @@ export class PlayerService implements IPlayerService {
             player.currentTime = 0;
             player.pause();
             return;
-        }
-
-            
-        if (player.paused) {
-            player.play();
         }
     }
     
@@ -177,12 +189,12 @@ export class PlayerService implements IPlayerService {
         } else {
             const currentQueue = this._repository.playQueue$.value;
             if (currentQueue.index > 0) {
-                player.src = currentQueue.items[currentQueue.index - 1];
+                this._updatePlayerSourceFromFileId(currentQueue.items[currentQueue.index - 1].fileId)
                 player.currentTime = 0;
                 this._repository.playQueue$.next({...currentQueue, index: currentQueue.index - 1})
             } else if (currentQueue.index === 0 && currentQueue.orderType === "repeat") {
                 const newIndex = currentQueue.items.length - 1;
-                player.src = currentQueue.items[newIndex];
+                this._updatePlayerSourceFromFileId(currentQueue.items[newIndex].fileId)
                 player.currentTime = 0;
                 this._repository.playQueue$.next({...currentQueue, index: newIndex})
             } else if (currentQueue.index === 0 && currentQueue.orderType === "default") {

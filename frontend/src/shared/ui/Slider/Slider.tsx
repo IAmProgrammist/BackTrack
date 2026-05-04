@@ -20,6 +20,8 @@ export const Slider = ({progress, onProgressChange, ...props}: SliderProps) => {
     }
 
     const handleSliderButtonEnded = () => {
+        if (!moving) return;
+
         setMoving(false);
         onProgressChange(progressLocal);
     }
@@ -30,7 +32,6 @@ export const Slider = ({progress, onProgressChange, ...props}: SliderProps) => {
         const wholeWidth = backgroundRef.current?.getBoundingClientRect().width || 1;
         const startingX = backgroundRef.current?.getBoundingClientRect().left || 0;
         const touchX = event.clientX;
-        console.log(wholeWidth, startingX, touchX);
         setProgressLocal(Math.min(1, Math.max(0, (touchX - startingX) / wholeWidth)))
     }
 

@@ -87,6 +87,7 @@ class PlaylistExtendedOutAuthors(BaseModel):
 
 class PlaylistExtendedOutTracks(BaseModel):
     id: UUID
+    version: UUID | None
     name: str
     filter: str
     groups: list[PlaylistExtendedOutGroups]

@@ -6,6 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **string** |  | [default to undefined]
+**version** | **string** |  | [default to undefined]
 **name** | **string** |  | [default to undefined]
 **filter** | **string** |  | [default to undefined]
 **groups** | [**Array&lt;PlaylistExtendedOutGroups&gt;**](PlaylistExtendedOutGroups.md) |  | [default to undefined]
@@ -20,6 +21,7 @@ import { PlaylistExtendedOutTracks } from './api';
 
 const instance: PlaylistExtendedOutTracks = {
     id,
+    version,
     name,
     filter,
     groups,

@@ -1,6 +1,6 @@
 import type { Observable } from "rxjs"
-import type { PlayingType } from "./playerrepository"
 import type { PlaylistOrderState, TrackOrderState } from "entities/player/model/validators"
+import type { PlayingType, SongReleaseData } from "./iplayerrepository"
 
 
 export interface IPlayerService {
@@ -8,8 +8,8 @@ export interface IPlayerService {
     readonly volume$: Observable<number>
     readonly currentTime$: Observable<number>
     readonly duration$: Observable<number>
-    readonly playing$: Observable<PlayingType | null>
-    readonly queue$: Observable<{index: number, items: string[], orderType: PlaylistOrderState}>
+    readonly playing$: Observable<PlayingType>
+    readonly queue$: Observable<{index: number, items: SongReleaseData[], orderType: PlaylistOrderState}>
 
     // Запланировать трек для проигрывания
     scheduleTrack: (id: string, version?: string) => () => Promise<void>

@@ -163,6 +163,7 @@ export interface PlaylistExtendedOutGroups {
 }
 export interface PlaylistExtendedOutTracks {
     'id': string;
+    'version': string | null;
     'name': string;
     'filter': string;
     'groups': Array<PlaylistExtendedOutGroups>;
