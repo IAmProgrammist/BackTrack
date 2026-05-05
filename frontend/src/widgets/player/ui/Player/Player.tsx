@@ -15,6 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 import { SONG_VERSIONS_QUERY_KEY } from "entities/song/model/query-key";
 import { useSongsService } from "features/song/lib/useSongsService";
 import { useNavigate } from "react-router";
+import clsx from "clsx";
 
 export const Player = () => {
     const playerService = usePlayerContext();
@@ -23,7 +24,7 @@ export const Player = () => {
     const currentTime = useObservableState(playerService.currentTime$.pipe(sampleTime(500))) || 0;
     const paused = useObservableState(playerService.paused$);
     const duration = useObservableState(playerService.duration$) || 0;
-    const volume = useObservableState(playerService.volume$) || 1;
+    const volume = useObservableState(playerService.volume$);
     const trackPlaying = useObservableState(playerService.playing$);
     const playlistPlaying = useObservableState(playerService.queue$);
 
@@ -46,11 +47,11 @@ export const Player = () => {
     }, [currentTrack, navigate])
         
 
-    useEffect(() => {
-        playerService.schedulePlaylist("4fd4f35c-c0dd-4b85-b4ec-e8cda2f4cc4c")();
-    }, [playerService])
+    // useEffect(() => {
+    //     playerService.schedulePlaylist("4fd4f35c-c0dd-4b85-b4ec-e8cda2f4cc4c")();
+    // }, [playerService])
 
-    return <div className="player-container">
+    return <div className={clsx("player-container", trackPlaying && trackPlaying?.type !== "empty" && "player-container--visible")}>
         <Card className="player">
             <CardContent>
                 <div className="player-content">

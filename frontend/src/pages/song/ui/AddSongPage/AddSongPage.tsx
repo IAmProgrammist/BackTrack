@@ -12,7 +12,7 @@ export const AddSongPage = () =>  {
     const {service} = useSongsService();
     const navigate = useNavigate();
     
-    return <Mutate title="Создать плейлист" mutationFn={(data) => service.createSong(data)()} yupSchema={service.createSchema()} onSuccess={(data) => navigate(`/songs/view/${data.id}`)}>
+    return <Mutate title="Создать песню" mutationFn={(data) => service.createSong(data)()} yupSchema={service.createSchema()} onSuccess={(data) => navigate(`/songs/view/${data.id}`)}>
         <ControlledTextInput controlProps={{name: "name"}} inputProps={{subText: "Имя"}}/>
         <ControlledTextInput controlProps={{name: "tag"}} inputProps={{subText: "Тэг"}}/>
         <ControlledTextInput controlProps={{name: "description"}} inputProps={{subText: "Описание"}}/>

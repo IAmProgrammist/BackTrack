@@ -14,7 +14,7 @@ export interface IPlayerService {
     // Запланировать трек для проигрывания
     scheduleTrack: (id: string, version?: string) => () => Promise<void>
     // Запланировать плейлист для проигрывания
-    schedulePlaylist: (playlistId: string) => () => Promise<void>
+    schedulePlaylist: (playlistId: string, preferredIndex?: number) => () => Promise<void>
     // Переключить статус проигрывания
     togglePlay: (play?: boolean) => void
     // Выбрать следующий трек в очереди

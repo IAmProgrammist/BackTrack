@@ -1,4 +1,8 @@
+import { usePlayerContext } from "features/player/ui/usePlayerContext"
 import "./footer.css"
+import { useObservableState } from "observable-hooks";
+import clsx from "clsx";
+import { useMemo } from "react";
 
 const RANDOM_PHRASES = [
     "Oh, ho, ho, it's magic, you know!",
@@ -15,7 +19,11 @@ const RANDOM_PHRASES = [
 ]
 
 export const Footer = () => {
-    return <footer className="footer">
-        IAmProgrammist, {new Date().getFullYear()}. {RANDOM_PHRASES[Math.floor(Math.random() * RANDOM_PHRASES.length)]}
+    const playerService = usePlayerContext();
+    const trackPlaying = useObservableState(playerService.playing$);
+    const randomPhrase = useMemo(() => RANDOM_PHRASES[Math.floor(Math.random() * RANDOM_PHRASES.length)], []);
+
+    return <footer className={clsx( trackPlaying && trackPlaying?.type !== "empty" && "footer--playing", "footer")}>
+        IAmProgrammist, {new Date().getFullYear()}. {randomPhrase}
     </footer>
 }

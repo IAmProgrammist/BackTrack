@@ -15,6 +15,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.player-container--visible {
+    pointer-events: auto;
+    opacity: 1;
 }
 
 .player-content {

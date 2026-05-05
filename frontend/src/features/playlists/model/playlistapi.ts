@@ -19,6 +19,7 @@ export class PlaylistApi implements IPlaylistApi {
             tracks: data.tracks.map((track) => ({
                 id: track.id, 
                 name: track.name, 
+                version: track.version,
                 tagSelector: track.filter, 
                 duration: track.duration,
                 groups: track.groups.map((group) => ({id: group.id, name: group.name})),

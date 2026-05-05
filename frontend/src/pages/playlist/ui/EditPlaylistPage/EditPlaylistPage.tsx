@@ -15,7 +15,7 @@ export const EditPlaylistPage = () =>  {
     const navigate = useNavigate();
     const {playlistId = ""} = useParams(); 
     
-    return <Mutate title="Создать плейлист" mutationFn={(data) => service.updatePlaylist(playlistId, data)()} yupSchema={service.createSchema()} onSuccess={(data) => navigate(`/playlists/view/${data.id}`)}>
+    return <Mutate title="Изменить плейлист" mutationFn={(data) => service.updatePlaylist(playlistId, data)()} yupSchema={service.createSchema()} onSuccess={(data) => navigate(`/playlists/view/${data.id}`)}>
         <EditPlaylistFormPage/>
     </Mutate>
 }

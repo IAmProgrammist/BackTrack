@@ -30,7 +30,7 @@ export const PlaylistPage = () => {
             />
             <Card>
                 <CardContent>
-                    <SongTable tracks={playlistData.tracks}/>
+                    <SongTable playlistId={playlistId} tracks={playlistData.tracks}/>
                 </CardContent>
             </Card>
         </div>

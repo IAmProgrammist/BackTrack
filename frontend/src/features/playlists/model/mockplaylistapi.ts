@@ -58,11 +58,11 @@ export class MockPlaylistApi implements IPlaylistApi {
             description: "Relaxing tunes for winding down after a long day",
             imageURL: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=400&h=400&fit=crop",
             tracks: [
-                {id: "1", name: "Blinding Lights", tagSelector: "pop-2019", groups: [{id: "1", name: "The Weeknd"}], authors: [{id: "1", name: "Abel Tesfaye"}], duration: 200000},
-                {id: "2", name: "Watermelon Sugar", tagSelector: "pop-2020", groups: [{id: "2", name: "Harry Styles"}], authors: [{id: "2", name: "Harry Styles"}], duration: 174000},
-                {id: "3", name: "Circles", tagSelector: "pop-2019", groups: [{id: "3", name: "Post Malone"}], authors: [{id: "3", name: "Post Malone"}], duration: 215000},
-                {id: "4", name: "Levitating", tagSelector: "pop-2020", groups: [{id: "4", name: "Dua Lipa"}], authors: [{id: "4", name: "Dua Lipa"}], duration: 203000},
-                {id: "5", name: "Good Days", tagSelector: "r&b-2020", groups: [{id: "5", name: "SZA"}], authors: [{id: "5", name: "Solána Rowe"}], duration: 278000}
+                {id: "1", version: "1", name: "Blinding Lights", tagSelector: "pop-2019", groups: [{id: "1", name: "The Weeknd"}], authors: [{id: "1", name: "Abel Tesfaye"}], duration: 200000},
+                {id: "2", version: "1", name: "Watermelon Sugar", tagSelector: "pop-2020", groups: [{id: "2", name: "Harry Styles"}], authors: [{id: "2", name: "Harry Styles"}], duration: 174000},
+                {id: "3", version: "1", name: "Circles", tagSelector: "pop-2019", groups: [{id: "3", name: "Post Malone"}], authors: [{id: "3", name: "Post Malone"}], duration: 215000},
+                {id: "4", version: "1", name: "Levitating", tagSelector: "pop-2020", groups: [{id: "4", name: "Dua Lipa"}], authors: [{id: "4", name: "Dua Lipa"}], duration: 203000},
+                {id: "5", version: "1", name: "Good Days", tagSelector: "r&b-2020", groups: [{id: "5", name: "SZA"}], authors: [{id: "5", name: "Solána Rowe"}], duration: 278000}
             ]
         })
     }

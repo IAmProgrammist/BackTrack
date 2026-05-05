@@ -48,10 +48,24 @@ export class PlayerService implements IPlayerService {
     }
 
     // Обновляет очередь с нуля. Если порядок "shuffle", то перемешивает треки, иначе сохраняет исходный порядок
-    private _setQueue({fileIds}: {fileIds: SongReleaseData[]}) {
+    private _setQueue({fileIds, preferredIndex}: {fileIds: SongReleaseData[], preferredIndex?: number}) {
         const currentQueue = this._repository.playQueue$.value;
 
-        this._repository.playQueue$.next({index: 0, originalItems: fileIds, items: currentQueue.orderType === "shuffle" ? this._shuffle(fileIds) : fileIds, orderType: currentQueue.orderType})
+        if (preferredIndex && preferredIndex > 0 && preferredIndex < fileIds.length && currentQueue.orderType === "shuffle") {
+            const preferredTrack = fileIds[preferredIndex];
+            const otherTracks = fileIds.filter((_, index) => index !== preferredIndex);
+            const shuffledOtherTracks = this._shuffle(otherTracks);
+            fileIds = [preferredTrack, ...shuffledOtherTracks];
+
+            this._repository.playQueue$.next({index: 0, originalItems: fileIds, items: currentQueue.orderType === "shuffle" ? this._shuffle(fileIds) : fileIds, orderType: currentQueue.orderType})
+            return;    
+        }
+
+        this._repository.playQueue$.next({
+            index: preferredIndex && preferredIndex > 0 && preferredIndex < fileIds.length ? preferredIndex : 0, 
+            originalItems: fileIds, items: currentQueue.orderType === "shuffle" ? this._shuffle(fileIds) : fileIds, 
+            orderType: currentQueue.orderType
+        })
     }
 
     private _setPlaying(type: "track" | "playlist", id: string) {
@@ -61,23 +75,36 @@ export class PlayerService implements IPlayerService {
     }
 
     scheduleTrack(id: string, version?: string) {
-        return async () => songsApi.getSongApiV1SongsSongIdGet(id, version, getAxiosConf()).then(({data: {data}}) => {
+        return async () => songsApi.getSongApiV1SongsSongIdGet(id, version, getAxiosConf()).then(async ({data: {data}}) => {
             const file = data.files.find((file) => file.leading && file.mime.startsWith("audio/"));
             
             if (!file) {
                 throw new Error("Scheduled song has no leading audio file")
             }
 
-            this._setQueue({fileIds: [{id, version, fileId: file.id}]})
+            this._setQueue({fileIds: [{id, version, fileId: file.id}], preferredIndex: 0})
             this._setPlaying("track", id)
+
+            const currentQueue = this._repository.playQueue$.value;
+            await this._updatePlayerSourceFromFileId(currentQueue.items[currentQueue.index].fileId)
+
             this.togglePlay(true);
         })
     }
     
-    schedulePlaylist(playlistId: string) {
-        return async () => playlistApi.getPlaylistApiV1PlaylistsPlaylistIdGet(playlistId, getAxiosConf(this._authService.getToken())).then(({data: {data}}) => {
-            this._setQueue({fileIds: data.tracks.filter((track): track is PlaylistExtendedOutTracks & {id: string, version: string, fileId: string} => !!track.sound_file_id && !!track.version).map((track) => ({id: track.id, version: track.version || "", fileId: track.sound_file_id || ""}))})
+    schedulePlaylist(playlistId: string, preferredIndex?: number) {
+        return async () => playlistApi.getPlaylistApiV1PlaylistsPlaylistIdGet(playlistId, getAxiosConf(this._authService.getToken())).then(async ({data: {data}}) => {
+            this._setQueue({
+                preferredIndex, 
+                fileIds: data.tracks
+                    .filter((track): track is PlaylistExtendedOutTracks & {id: string, version: string, fileId: string} => !!track.sound_file_id && !!track.version)
+                    .map((track) => ({id: track.id, version: track.version || "", fileId: track.sound_file_id || ""}))
+            })
             this._setPlaying("playlist", playlistId)
+
+            const currentQueue = this._repository.playQueue$.value;
+            await this._updatePlayerSourceFromFileId(currentQueue.items[currentQueue.index].fileId)
+            
             this.togglePlay(true);
         })
     }
