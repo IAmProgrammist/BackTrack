@@ -8,7 +8,7 @@ from app.core.settings.app import AppSettings
 class DevAppSettings(AppSettings):
     # fastapi_kwargs
     debug: bool = True
-    title: str = "Dev FastAPI example application"
+    title: str = "BackTrack"
 
     # back-end app settings
     secret_key: SecretStr = SecretStr("secret-dev")

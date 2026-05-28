@@ -10,7 +10,7 @@ import { useObservableState } from "observable-hooks";
 import { sampleTime } from "rxjs"
 import dayjs from "dayjs";
 import { match } from "ts-pattern"
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { SONG_VERSIONS_QUERY_KEY } from "entities/song/model/query-key";
 import { useSongsService } from "features/song/lib/useSongsService";
@@ -97,7 +97,7 @@ export const Player = () => {
                             </Button>
                         </div>
                         <div className="player-volume">
-                            <Slider progress={volume} onProgressChange={(volume) => playerService.setVolume(volume)}/>
+                            <Slider progress={volume || 0} onProgressChange={(volume) => playerService.setVolume(volume)}/>
                         </div>
                     </div>
                     

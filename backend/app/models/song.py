@@ -14,8 +14,6 @@ if TYPE_CHECKING:
 
 
 class Song(RWModel):
-    __tablename__ = "song"
-
     id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
     song_releases: Mapped[list["SongRelease"]] = relationship(back_populates="song", lazy="selectin")
     comments: Mapped[list["Comment"]] = relationship(secondary=comment_song, lazy="selectin")

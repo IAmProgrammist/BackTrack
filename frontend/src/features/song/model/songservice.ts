@@ -41,7 +41,7 @@ export class SongService implements ISongService {
                 lyrics: restData.lyrics || null,
                 authors: authors as string[],
                 groups: groups as string[],
-                files: files as {file: File[], leading: boolean}[]
+                files: files as {file: File[], leading: boolean, customCodec: boolean}[]
             }, this.authService.getToken())()
         }
     }
@@ -61,7 +61,7 @@ export class SongService implements ISongService {
                 lyrics: restData.lyrics || null,
                 authors: authors as string[],
                 groups: groups as string[],
-                files: files as {file: File[], leading: boolean}[]
+                files: files as {file: File[], leading: boolean, customCodec: boolean}[]
             }, this.authService.getToken())()
         }
     }
