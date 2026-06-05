@@ -4,22 +4,27 @@ import { Card, CardContent } from "shared/ui/Card"
 import { Button } from "shared/ui/Button"
 import { Icon } from '@mdi/react';
 import { mdiShuffleDisabled } from "@mdi/js"
-import { MdPause, MdPlayArrow, MdRepeat, MdRepeatOne, MdShuffle, MdSkipNext, MdSkipPrevious } from "react-icons/md"
+import { MdClose, MdExpandLess, MdExpandMore, MdLink, MdPause, MdPlayArrow, MdRepeat, MdRepeatOne, MdShuffle, MdSkipNext, MdSkipPrevious, MdSource, MdViewAgenda } from "react-icons/md"
 import { usePlayerContext } from "features/player/ui/usePlayerContext"
 import { useObservableState } from "observable-hooks";
 import { sampleTime } from "rxjs"
 import dayjs from "dayjs";
 import { match } from "ts-pattern"
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { SONG_VERSIONS_QUERY_KEY } from "entities/song/model/query-key";
 import { useSongsService } from "features/song/lib/useSongsService";
 import { useNavigate } from "react-router";
 import clsx from "clsx";
+import { PLAYLIST_QUERY_KEY } from "entities/playlist/model/query-key";
+import { usePlaylistsService } from "features/playlists/lib/usePlaylistsService";
+import { SongTable } from "widgets/song/ui/SongTable";
 
 export const Player = () => {
+    const [expanded, setExpanded] = useState(false);
     const playerService = usePlayerContext();
     const {service: songService} = useSongsService();
+    const {service: playlistService} = usePlaylistsService();
 
     const currentTime = useObservableState(playerService.currentTime$.pipe(sampleTime(500))) || 0;
     const paused = useObservableState(playerService.paused$);
@@ -34,25 +39,65 @@ export const Player = () => {
         return playlistPlaying?.items?.[playlistPlaying.index];
     }, [playlistPlaying])
 
-    const {data: songData, isLoading: songIsLoading} = useQuery({
+    const {data: songData, isLoading: songIsLoading, isError: songIsError} = useQuery({
         queryKey: [SONG_VERSIONS_QUERY_KEY, currentTrack?.id, currentTrack?.version],
         queryFn: () => songService.getSong(currentTrack?.id || "", currentTrack?.version || undefined)(),
         enabled: !!currentTrack
     })
+
+    const {data: playlistData, isLoading: playlistIsLoading, isError: playlistIsError} = useQuery({
+        queryKey: [PLAYLIST_QUERY_KEY, trackPlaying?.id],
+        queryFn: () => playlistService.getPlaylist(trackPlaying?.id || "")(),
+        enabled: !!trackPlaying?.id && trackPlaying.type === "playlist"
+    })
+
+    const {tracksPlaying, isLoading: tracksQueueIsLoading, isError: tracksQueueIsError} = useMemo(() => {
+        if (trackPlaying?.type === "track") {
+            return {tracksPlaying: songData ? [songData] : [], isLoading: songIsLoading, isError: songIsError}
+        }
+        if (trackPlaying?.type === "playlist") {
+            return {tracksPlaying: playlistData ? playlistData.tracks : [], isLoading: playlistIsLoading, isError: playlistIsError}
+        }
+
+        return {tracksPlaying: [], isLoading: false, isError: false};
+    }, [trackPlaying, songData, songIsLoading, songIsError, playlistData, playlistIsLoading, playlistIsError])
 
     const handleOpenSong = useCallback(() => {
         if(currentTrack) {
             navigate(`/songs/view/${currentTrack.id}${currentTrack.version ? `?version=${currentTrack.version}` : ''}`)
         }
     }, [currentTrack, navigate])
-        
+    
 
-    // useEffect(() => {
-    //     playerService.schedulePlaylist("4fd4f35c-c0dd-4b85-b4ec-e8cda2f4cc4c")();
-    // }, [playerService])
-
-    return <div className={clsx("player-container", trackPlaying && trackPlaying?.type !== "empty" && "player-container--visible")}>
+    return <div className={clsx("player-container", trackPlaying && trackPlaying?.type !== "empty" && "player-container--visible", expanded && "player-container--expanded")}>
+        <div className="player-widget-actions">
+            <Button equated chonk onClick={() => {
+                if (trackPlaying?.type === "playlist") {
+                    setExpanded(false)
+                    navigate(`/playlists/view/${trackPlaying.id}`)
+                } else if (trackPlaying?.type === "track") {
+                    setExpanded(false)
+                    handleOpenSong()
+                }
+            }}>
+                <MdSource size={"2rem"}/>
+            </Button>
+            <Button equated chonk onClick={() => setExpanded(!expanded)}>
+                {expanded ? <MdExpandMore size="2rem"/> : <MdExpandLess size="2rem"/>}
+            </Button>
+            <Button equated chonk onClick={() => {
+                setExpanded(false)
+                playerService.cleanPlaylist()
+            }}>
+                <MdClose size={"2rem"}/>
+            </Button>
+        </div>
         <Card className="player">
+            <div className={clsx("player-queue", !expanded && "player-queue--hidden")}>
+                {tracksQueueIsLoading ? "Загрузка треков, подождите..." : null}
+                {tracksQueueIsError ? "Не удалось загрузить треки из очереди" : null}
+                {!tracksQueueIsError && !tracksQueueIsLoading && <SongTable playlistId={trackPlaying?.type === "playlist" ? trackPlaying?.id : undefined} tracks={tracksPlaying}/>}
+            </div>
             <CardContent>
                 <div className="player-content">
                     <div className="player-progress">

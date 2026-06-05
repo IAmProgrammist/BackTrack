@@ -25,7 +25,7 @@ export const Header = () => {
         <header className="header">
             <Button onClick={() => headerService.setSidebarOpen(!headerVals.sidebarOpen)} equated className="header-menu"><MdMenu/></Button>
             <Logo size={isMobile ? "small" : "large"}/>
-            <Input className="header-search" placeholder="Поиск..."/>
+            {/* <Input className="header-search" placeholder="Поиск..."/> */}
             {token === null && <Button onClick={() => navigate("/sign")}>Войти</Button>}
             {token !== null && isSuccess && <Avatar onClick={() => authService.logout()} text={userData.username}/>}
         </header>

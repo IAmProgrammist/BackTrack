@@ -2,22 +2,68 @@
     height: 9rem;
     left: auto;
     right: auto;
-    max-width: 135rem;
     width: 100%;
-    margin: var(--spaces-x0) var(--spaces-x12) ;
     box-shadow: var(--shadow-big);
+    display: flex;
+    flex-direction: column;
+
+    .card-content {
+        position: relative;
+    }
+}
+
+.player-widget-actions {
+    display: flex;
+    flex-direction: row; 
+    gap: var(--spaces-x4); 
+    top: -3.5rem;
+    position: absolute;
+    right: 0; 
+    z-index: 21;
+}
+
+.player-queue {
+    flex-grow: 1;
+    padding: var(--spaces-x8);
+    overflow: auto;
+}
+
+.player-queue--hidden {
+    display: none;
 }
 
 .player-container {
     position: fixed;
     bottom: 1.25rem;
-    width: 100%;
+    left: var(--spaces-x12);
+    right: var(--spaces-x12);
+    max-width: 135rem;
+    margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: opacity 0.3s ease-in-out;
     pointer-events: none;
     opacity: 0;
+}
+
+@media screen and (max-width: 720px) {
+    .player-container {
+        left: var(--spaces-x0);
+        right: var(--spaces-x0);
+    }
+}
+
+.page:has(+.player-container--expanded) {
+    overflow: hidden;
+}
+
+.player-container--expanded {
+    top: 8.25rem;
+
+    .player {
+        height: 100%
+    }
 }
 
 .player-container--visible {
@@ -82,11 +128,13 @@
 .player-name {
     text-overflow: ellipsis;
     overflow: hidden;
+    text-wrap: nowrap;
     font: var(--font-h4)
 }
 
 .player-artists {
     text-overflow: ellipsis;
     overflow: hidden;
+    text-wrap: nowrap;
     font: var(--font-p1);
 }

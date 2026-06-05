@@ -84,6 +84,8 @@ class FileService(BaseService):
         if not file:
             return None
 
+        content = await file.read()
+
         # Step 1: create file in repository database
         file_metadata = await file_repository.create_file(file_in=FileInDB(mime=file.content_type, original_name=file.filename, duration=None))
         if not file_metadata:
@@ -96,11 +98,13 @@ class FileService(BaseService):
         # Step 2.1: store using custom codec
         if custom_audio_codec and file.content_type in ["audio/wav", "audio/aiff"]:
             with NamedTemporaryFile(delete=True) as temp_file:
+                temp_file.write(content)
+                temp_file.flush()  # Ensure content is written
+
                 audio_manager.encode(temp_file.name, path)
                 file_metadata = await file_repository.update_file_mime(file=file_metadata, new_mime="audio/ae-flac")
         else:
             async with aiofiles.open(path, "wb") as out_file:
-                content = await file.read()
                 await out_file.write(content)
 
         # Step 3: attempt to get duration of a file, if it is an audio file.
@@ -108,6 +112,9 @@ class FileService(BaseService):
             return file_metadata
 
         with NamedTemporaryFile(delete=True) as temp_file:
+            temp_file.write(content)
+            temp_file.flush()  # Ensure content is written
+
             audio_duration = librosa.get_duration(path=temp_file.name) * 1000
             file_metadata = await file_repository.update_file_duration(file=file_metadata, new_duration=audio_duration)
 

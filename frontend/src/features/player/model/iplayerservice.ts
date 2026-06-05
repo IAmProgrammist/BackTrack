@@ -29,4 +29,6 @@ export interface IPlayerService {
     updateTrackOrderState: (state: TrackOrderState) => void
     // Обновить порядок проигрывания плейлиста
     updatePlaylistOrderState: (state: PlaylistOrderState) => void
+    // Убрать всё из очереди проигрывания
+    cleanPlaylist: () => void
 }

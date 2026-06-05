@@ -479,11 +479,13 @@ def run_predict(args):
 
 def run_read(args):
     device = get_device()
-    
-    checkpoint = load_meta(args.model, device)
-    
-    print(json.dumps(checkpoint))
 
+    checkpoint = load_meta(args.model, device)
+
+    with open(args.output, "w") as f:
+        f.write(json.dumps(checkpoint))
+
+    print(f"Done! Look for results in {args.output}")
 
 # ─────────────────────────────────────────────────────────────────
 # CLI
@@ -517,10 +519,12 @@ def build_parser():
                     help="Input .bin file (must be exactly 32768 bytes)")
     pr.add_argument("--out_dir", required=True,
                     help="Directory for output .latent and reconstructed .bin")
-    
+
     rr = sub.add_parser("read", help="Read data of a model")
     rr.add_argument("--model",   required=True,
                     help="Path to a saved .pt checkpoint")
+    rr.add_argument("--output",   default="./stat.json",
+                    help="Path to the output .json file")
 
     return parser
 

@@ -109,6 +109,12 @@ export class PlayerService implements IPlayerService {
         })
     }
 
+    cleanPlaylist() {
+        this._repository.playing$.next({type: "empty", id: null, state: "default"})
+        this._repository.playQueue$.next({index: 0, items: [], originalItems: [], orderType: "default"})
+        this.togglePlay(false)
+    }
+
     updateTrackOrderState(state: TrackOrderState) {
         const currentPlaying = this._repository.playing$.value;
         this._repository.playing$.next({...currentPlaying, state})

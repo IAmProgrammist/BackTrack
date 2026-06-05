@@ -40,14 +40,14 @@ class SongInCreate(SongBase):
     @field_validator("files_leading", mode="before")
     def separate_by_comma_files_leading(cls, value):
         if isinstance(value, list) and isinstance(value[0], str):
-            return [bool(leading) for leading in value[0].split(",")]
+            return [leading == 'true' for leading in value[0].split(",")]
 
         return value
 
     @field_validator("files_audio_custom_codec", mode="before")
     def separate_by_comma_files_audio_custom_codec(cls, value):
         if isinstance(value, list) and isinstance(value[0], str):
-            return [bool(leading) for leading in value[0].split(",")]
+            return [leading == 'true' for leading in value[0].split(",")]
 
         return value
 
