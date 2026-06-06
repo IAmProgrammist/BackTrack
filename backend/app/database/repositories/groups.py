@@ -44,11 +44,12 @@ class GroupsRepository(BaseRepository):
         return created_group
 
     @db_error_handler
-    async def update_group(self, *, group: Group, group_in: GroupInDB) -> Group:
+    async def update_group(self, *, group: Group, group_in: GroupInDB, authors: Author) -> Group:
         group_in_obj = group_in.model_dump(exclude_unset=True)
 
         for key, val in group_in_obj.items():
             setattr(group, key, val)
+        group.authors = authors
 
         self.connection.add(group)
         await self.connection.commit()

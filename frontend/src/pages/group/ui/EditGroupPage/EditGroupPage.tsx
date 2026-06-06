@@ -11,11 +11,12 @@ import { ControlledAuthorSelect } from "widgets/author/ui/ControlledAuthorSelect
 import { Mutate } from "widgets/mutate/ui/Mutate"
 
 export const EditGroupPage = () =>  {
+    const {groupId} = useParams(); 
     const {service} = useGroupsService();
     const navigate = useNavigate();
     
     return <Mutate title="Редактировать группу" 
-            mutationFn={(data) => service.createGroup(data)()} 
+            mutationFn={(data) => service.updateGroup(groupId || "", data)()} 
             yupSchema={service.createSchema()} 
             onSuccess={(data) => navigate(`/groups/view/${data.id}`)}
         >

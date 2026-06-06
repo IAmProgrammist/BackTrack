@@ -1,5 +1,6 @@
 .card.groupheader {
     padding: 0;
+    overflow: hidden;
 
     .groupheader-header {
         position: relative;

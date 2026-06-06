@@ -201,7 +201,7 @@ class GroupsService(BaseService):
                 context={"reason": constant.FAIL_GROUP_COULDNT_SAVE_FILE},
             )
 
-        group = await group_repo.update_group(group=group, group_in=GroupInDB(name=group_in.name, description=group_in.description, file_id=stored_file.id, authors=authors))
+        group = await group_repo.update_group(group=group, group_in=GroupInDB(name=group_in.name, description=group_in.description, file_id=stored_file.id), authors=authors)
         if not group:
             logger.error("Failed to create group")
             return response_4xx(
